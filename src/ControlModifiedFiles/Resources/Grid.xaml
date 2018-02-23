@@ -1,0 +1,51 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ControlModifiedFiles.Resources">
+
+    <Style TargetType="Grid" x:Key="BackgroundCommandPanel">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFDBFF60" Offset="1"/>
+                    <GradientStop Color="#FF6F77C3" Offset="0.008"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Grid" x:Key="BackgroundTable">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFDBFF60" Offset="0"/>
+                    <GradientStop Color="#FFFFEA8C" Offset="0.08"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="StackPanel" x:Key="BackgroundStackPanel">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFDBFF60" Offset="0"/>
+                    <GradientStop Color="#FFFFEA8C" Offset="0.08"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="DataGridCell" x:Key="DataGridCellStyle" BasedOn="{StaticResource {x:Type DataGridCell}}">
+        <Setter Property="Background" Value="{x:Null}"/>
+    </Style>
+    
+    <Style TargetType="DataGrid" x:Key="DataGridBase">
+        <Setter Property="Background" Value="{x:Null}"/>
+        <Setter Property="AutoGenerateColumns" Value="True"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="ItemsSource" Value="{Binding Path=listFiles, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Setter Property="RowBackground" Value="{x:Null}"/>
+        <Setter Property="CellStyle" Value="{StaticResource DataGridCellStyle}"/>
+    </Style>
+
+</ResourceDictionary>

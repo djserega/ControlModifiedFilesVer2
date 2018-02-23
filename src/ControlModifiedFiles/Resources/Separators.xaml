@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:AccessSystem.Resources">
+
+    <Style TargetType="Separator" x:Key="SeparatorBase">
+        <Setter Property="Background" Value="{x:Null}"/>
+    </Style>
+
+    <Style TargetType="Separator" x:Key="SeparatorBetweenElement" BasedOn="{StaticResource SeparatorBase}">
+        <Setter Property="Width" Value="2"/>
+    </Style>
+    
+    <Style TargetType="Separator" x:Key="SeparatorBetweenRow" BasedOn="{StaticResource SeparatorBase}">
+        <Setter Property="Height" Value="1"/>
+    </Style>
+
+    <Style TargetType="Separator" x:Key="SeparatorHeadSettings" BasedOn="{StaticResource SeparatorBase}">
+        <Setter Property="Height" Value="5"/>
+    </Style>
+
+</ResourceDictionary>
