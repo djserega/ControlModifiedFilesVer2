@@ -10,6 +10,15 @@ namespace ControlModifiedFiles
 {
     internal class Subscriber
     {
+        List<FileInfo> listAction = new List<FileInfo>();
+        Dictionary<FileInfo, FileSubscriber> _listSubscriber = new Dictionary<FileInfo, FileSubscriber>();
+        CallUpdateVersionEvents _callUpdate;
+
+        internal Subscriber(CallUpdateVersionEvents callUpdate)
+        {
+            _callUpdate = callUpdate;
+        }
+
         internal void Subscribe(FileSubscriber subscriber)
         {
             if (subscriber.Checked
@@ -24,6 +33,8 @@ namespace ControlModifiedFiles
 
                 watcher.Changed += Subscribe_Changed;
                 watcher.EnableRaisingEvents = true;
+
+                _listSubscriber.Add(fileInfo, subscriber);
             }
         }
 
@@ -31,22 +42,47 @@ namespace ControlModifiedFiles
         {
             try
             {
-                //Thread.Sleep(2 * 1000);
+                FileInfo fileInfo = new FileInfo(e.FullPath);
 
-                //var keyWatcher = DictionaryWatcher.First(f => f.Key.Path == e.FullPath);
-                //FileSubscriber file = keyWatcher.Key;
+                var keyAction = listAction.FirstOrDefault(f => f == fileInfo);
 
-                //FileInfo fileInfo = new FileInfo(file.Path);
-                //CreateNewVersionFile(fileInfo, file);
+                if (keyAction != null)
+                    return;
 
-                //var args = new ChangedFileEvent();
-                //if (args != null)
-                //    foreach (EventHandler<ChangedFileEvent> deleg in ChangeFileEvent.GetInvocationList())
-                //        deleg.Invoke(this, args);
-            }
+                int ind = 0;
+
+                if (!WaitTryCopyVersion(fileInfo, ref ind))
+                {
+                    Errors.Save(new Exception($"Не удалось получить доступ к файлу {fileInfo.Name}"));
+                    listAction.Remove(fileInfo);
+                    return;
+                }
+
+                //CreateNewVersionFile(fileInfo, _listSubscriber.First(f => f.Key == fileInfo).Value);
+
+                _callUpdate.Call();
+
+              }
             catch (Exception ex)
             {
                 Errors.Save(ex);
+            }
+        }
+
+        private bool WaitTryCopyVersion(FileInfo fileInfo, ref int ind)
+        {
+            if (ind > 3)
+                return false;
+            try
+            {
+                fileInfo.OpenRead();
+                return true;
+            }
+            catch (Exception)
+            {
+                Thread.Sleep(2 * 1000);
+                ind++;
+                return WaitTryCopyVersion(fileInfo, ref ind);
             }
         }
     }

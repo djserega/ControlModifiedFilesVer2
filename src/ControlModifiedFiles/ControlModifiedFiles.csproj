@@ -56,6 +56,7 @@
     </ApplicationDefinition>
     <Compile Include="Dialogs.cs" />
     <Compile Include="Errors.cs" />
+    <Compile Include="Events.cs" />
     <Compile Include="OtherMethods.cs" />
     <Compile Include="Subscriber.cs" />
     <Compile Include="UserSettings.cs" />

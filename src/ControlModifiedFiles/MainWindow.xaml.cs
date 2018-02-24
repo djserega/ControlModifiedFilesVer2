@@ -23,6 +23,9 @@ namespace ControlModifiedFiles
     public partial class MainWindow : Window
     {
 
+        CallUpdateVersionEvents callUpdate = new CallUpdateVersionEvents();
+        Subscriber _subscriber;
+
         #region Properties
 
         public static ICollection<FileSubscriber> listFiles = new List<FileSubscriber>();
@@ -36,6 +39,8 @@ namespace ControlModifiedFiles
         public MainWindow()
         {
             InitializeComponent();
+
+            _subscriber = new Subscriber(callUpdate);
         }
 
         private void MainWindowControlModifiedFiles_Loaded(object sender, RoutedEventArgs e)
@@ -47,6 +52,8 @@ namespace ControlModifiedFiles
             ChangeVisibleModifiedSettings();
 
             SetItemSouce();
+
+            callUpdate.CallUpdateVersion += UpdateVersion;
         }
 
         #endregion
@@ -233,7 +240,7 @@ namespace ControlModifiedFiles
                     SizeString = DirFile.GetSizeFormat(sizeFile)
                 };
 
-                //_subscriber.SubscribeChangeFile(fileChecked);
+                _subscriber.Subscribe(fileChecked);
 
                 list.Add(fileChecked);
             }
@@ -242,6 +249,11 @@ namespace ControlModifiedFiles
         }
 
         #endregion
+
+        private void UpdateVersion()
+        {
+            
+        }
 
     }
 }
