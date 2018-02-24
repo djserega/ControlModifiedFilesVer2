@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ControlModifiedFiles"
         mc:Ignorable="d" x:Name="WindowMessage"
-        Title="Message" Height="150" Width="200" WindowStyle="ToolWindow"
+        Title="Сообщение" Height="150" Width="300" WindowStyle="ToolWindow"
         Loaded="WindowMessage_Loaded" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
@@ -15,8 +15,12 @@
         <Grid Grid.Row="0" Style="{StaticResource BackgroundCommandPanel}"/>
         <Grid Grid.Row="1" Style="{StaticResource BackgroundTable}">
             <TextBlock Margin="5,5,5,30" x:Name="TextBlockMessage" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="ButtonOK" Click="ButtonOK_Click" Style="{StaticResource ButtonOK}"/>
+            <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,3">
+                <Button x:Name="ButtonOK" Style="{StaticResource ButtonOK}"
+                        Click="ButtonOK_Click"/>
+                <Separator Style="{StaticResource SeparatorBetweenElement10}"/>
+                <Button x:Name="ButtonCancel" Style="{StaticResource ButtonCancel}"
+                        Click="ButtonCancel_Click"/>
             </StackPanel>
         </Grid>
     </Grid>

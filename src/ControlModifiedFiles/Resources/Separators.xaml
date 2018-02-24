@@ -9,7 +9,11 @@
     <Style TargetType="Separator" x:Key="SeparatorBetweenElement" BasedOn="{StaticResource SeparatorBase}">
         <Setter Property="Width" Value="2"/>
     </Style>
-    
+
+    <Style TargetType="Separator" x:Key="SeparatorBetweenElement10" BasedOn="{StaticResource SeparatorBase}">
+        <Setter Property="Width" Value="10"/>
+    </Style>
+
     <Style TargetType="Separator" x:Key="SeparatorBetweenRow" BasedOn="{StaticResource SeparatorBase}">
         <Setter Property="Height" Value="1"/>
     </Style>

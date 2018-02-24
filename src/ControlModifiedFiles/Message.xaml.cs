@@ -19,60 +19,110 @@ namespace ControlModifiedFiles
     /// </summary>
     public partial class Message : Window
     {
-        internal string TextMessage { get; set; }
-        internal int Timer { get; set; }
-        private string _TextButtonOK;
 
-        public Message()
+        #region Properties
+
+        internal bool PressButtonOK { get; private set; }
+        internal bool PressButtonCancel { get; private set; }
+        internal bool ClosedByTimeout { get; private set; }
+
+        #endregion
+
+        internal string _textMessage;
+        private bool _question;
+        private int _timer;
+        private string _textButtonOK;
+        private string _textButtonCancel;
+
+        #region Constructors
+
+        private Message()
         {
             InitializeComponent();
         }
-        public Message(string textMessage)
+
+        public Message(string textMessage, bool question = false)
         {
             InitializeComponent();
 
-            TextMessage = textMessage;
+            _textMessage = textMessage;
+
+            _question = question;
+            PrepareForm();
         }
 
-        public Message(string textMessage, int timer)
+        public Message(string textMessage, int timer, bool question = false)
         {
             InitializeComponent();
 
-            TextMessage = textMessage;
-            Timer = timer;
+            _textMessage = textMessage;
+            _timer = timer;
+
+            _question = question;
+            PrepareForm();
         }
+
+        #endregion
+
+        #region Window
 
         private void WindowMessage_Loaded(object sender, RoutedEventArgs e)
         {
-            TextBlockMessage.Text = TextMessage;
+            TextBlockMessage.Text = _textMessage;
 
-            _TextButtonOK = ButtonOK.Content.ToString();
+            _textButtonOK = ButtonOK.Content.ToString();
+            _textButtonCancel = ButtonCancel.Content.ToString();
 
-            if (Timer > 0)
+
+            if (_timer > 0)
                 StartTimerAsync();
         }
 
-        private void ButtonClose_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+        #endregion
+
+        #region Button
 
         private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
+            PressButtonOK = true;
             Close();
         }
 
+        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            PressButtonCancel = true;
+            Close();
+        }
+
+        #endregion
+
         private async void StartTimerAsync()
         {
-            ButtonOK.Content = _TextButtonOK + $" ({Timer} с.)";
+            if (_question)
+                ButtonCancel.Content = _textButtonCancel + $" ({_timer} с.)";
+            else
+                ButtonOK.Content = _textButtonOK + $" ({_timer} с.)";
 
-            Timer--;
+            _timer--;
 
-            if (Timer > 0)
+            if (_timer >= 0)
             {
                 await OtherMethods.StartTimerPause();
                 StartTimerAsync();
             }
+            else if (_timer < 0)
+            {
+                ClosedByTimeout = true;
+                Close();
+            }
+        }
+
+        private void PrepareForm()
+        {
+            if (_question)
+                Title = "Вопрос";
+            else
+                ButtonCancel.Visibility = Visibility.Collapsed;
         }
     }
 }

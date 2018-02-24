@@ -9,23 +9,21 @@ namespace ControlModifiedFiles
 {
     internal static class Dialog
     {
-        internal static bool DialogQuestion(string textQuestion)
-        {
-            return MessageBox.Show(textQuestion, "Вопрос", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK;
-        }
-
         internal static void ShowMessage(string textMessage, int timer = 10)
+            => new Message(textMessage, timer).Show();
+
+        internal static bool? ShowQuesttion(string textMessage, int timer = 10)
         {
-            Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-                Message form = new Message(textMessage, timer);
-                form.Show();
-                if (timer > 0)
-                {
-                    await Task.Delay(timer * 1000);
-                    form.Close();
-                }
-            });
+            bool? resutQuestion = null;
+
+            Message form = new Message(textMessage, timer, true);
+            form.ShowDialog();
+            if (form.PressButtonOK)
+                resutQuestion = true;
+            else if (form.PressButtonCancel)
+                resutQuestion = false;
+
+            return resutQuestion;
         }
     }
 }

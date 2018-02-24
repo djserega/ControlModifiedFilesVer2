@@ -22,7 +22,7 @@ namespace ControlModifiedFiles
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+
         #region Properties
 
         public static ICollection<FileSubscriber> listFiles = new List<FileSubscriber>();
@@ -62,12 +62,21 @@ namespace ControlModifiedFiles
 
         private void ButtonRemoveFiles_Click(object sender, RoutedEventArgs e)
         {
-            FileSubscriber file = GetCurrentRow();
-
-            if (file == null)
+            IList listSelectedFiles = GetCurrentRows();
+            if (listSelectedFiles.Count == 0)
                 return;
 
-            listFiles.Remove(file);
+
+            bool? result = Dialog.ShowQuesttion($"Будет отменен контроль файлов - {listSelectedFiles.Count}.\n" +
+                $"Продолжить?");
+
+            if (result == null || !(bool)result)
+                return;
+
+            foreach (FileSubscriber item in listSelectedFiles)
+            {
+                listFiles.Remove(item);
+            }
 
             SetItemSouce(listFiles.ToList());
         }
