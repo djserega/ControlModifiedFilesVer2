@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ControlModifiedFiles"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" x:Name="MainWindowControlModifiedFiles"
         Title="Контроль версий файлов" Height="300" Width="800" 
         Loaded="MainWindowControlModifiedFiles_Loaded">

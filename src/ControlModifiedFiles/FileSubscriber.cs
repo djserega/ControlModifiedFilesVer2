@@ -18,7 +18,7 @@ namespace ControlModifiedFiles
         [Column("Имя файла", Visible = false)]
         public string FileName { get; set; }
 
-        [Column("Размер", Visible = false)]
+        [Column("Размер (byte)", Visible = false)]
         public ulong Size { get; set; }
 
         [Column("Размер", SortMemberPath = "Size")]

@@ -7,9 +7,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
 
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
-
                 <ResourceDictionary Source="Resources/Buttons.xaml"/>
                 <ResourceDictionary Source="Resources/CheckBox.xaml"/>
                 <ResourceDictionary Source="Resources/Grid.xaml"/>
