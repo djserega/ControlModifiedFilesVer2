@@ -55,7 +55,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Dialogs.cs" />
+    <Compile Include="Errors.cs" />
     <Compile Include="OtherMethods.cs" />
+    <Compile Include="Subscriber.cs" />
     <Compile Include="UserSettings.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
