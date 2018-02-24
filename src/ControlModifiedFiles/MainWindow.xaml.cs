@@ -49,6 +49,7 @@ namespace ControlModifiedFiles
             CheckBoxDirectoryVersion.IsChecked = UserSettings.GetUserSettings("HiddenColumnDirectoryVersion");
             CheckBoxPath.IsChecked = UserSettings.GetUserSettings("HiddenColumnPath");
             CheckBoxSize.IsChecked = UserSettings.GetUserSettings("HiddenColumnSize");
+            CheckBoxUsePrefixUserName.IsChecked = UserSettings.GetUserSettings("UsePrefixUserName");
             ChangeVisibleModifiedSettings();
 
             SetItemSouce();
@@ -120,6 +121,12 @@ namespace ControlModifiedFiles
         private void CheckBoxDirectoryVersion_Click(object sender, RoutedEventArgs e)
         {
             UserSettings.SetUserSettings("HiddenColumnDirectoryVersion", CheckBoxDirectoryVersion.IsChecked.Value);
+            IsChangedSettings();
+        }
+
+        private void CheckBoxUsePrefixUserName_Click(object sender, RoutedEventArgs e)
+        {
+            UserSettings.SetUserSettings("UsePrefixUserName", CheckBoxUsePrefixUserName.IsChecked.Value);
             IsChangedSettings();
         }
 
@@ -252,7 +259,7 @@ namespace ControlModifiedFiles
 
         private void UpdateVersion()
         {
-            
+            Errors.Save("Працюває");
         }
 
     }

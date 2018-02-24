@@ -31,10 +31,19 @@ namespace ControlModifiedFiles
                     NotifyFilter = NotifyFilters.LastWrite
                 };
 
+                _listSubscriber.Add(fileInfo, subscriber);
+
                 watcher.Changed += Subscribe_Changed;
                 watcher.EnableRaisingEvents = true;
 
-                _listSubscriber.Add(fileInfo, subscriber);
+                using (Versions versions = new Versions()
+                {
+                    SubscriberInfo = fileInfo,
+                    Subscriber = subscriber
+                })
+                {
+                    versions.CreateDirectoryVersion();
+                }
             }
         }
 
@@ -49,6 +58,8 @@ namespace ControlModifiedFiles
                 if (keyAction != null)
                     return;
 
+                listAction.Add(fileInfo);
+
                 int ind = 0;
 
                 if (!WaitTryCopyVersion(fileInfo, ref ind))
@@ -58,11 +69,20 @@ namespace ControlModifiedFiles
                     return;
                 }
 
-                //CreateNewVersionFile(fileInfo, _listSubscriber.First(f => f.Key == fileInfo).Value);
+                using (Versions versions = new Versions()
+                {
+                    SubscriberInfo = fileInfo,
+                    Subscriber = _listSubscriber.First(f => f.Key.FullName == fileInfo.FullName).Value
+                })
+                {
+                    versions.CreateNewVersionFile();
+                }
 
                 _callUpdate.Call();
 
-              }
+                listAction.Remove(fileInfo);
+
+            }
             catch (Exception ex)
             {
                 Errors.Save(ex);

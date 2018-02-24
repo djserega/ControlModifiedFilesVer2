@@ -32,8 +32,11 @@ namespace ControlModifiedFiles
                     return GetDefaultProperties().HiddenColumnPath;
                 case "HiddenColumnSize":
                     return GetDefaultProperties().HiddenColumnSize;
+                case "UsePrefixUserName":
+                    return GetDefaultProperties().UsePrefixUserName;
                 default:
-                    throw new NotImplementedException($"Не найден параметр {param}.");
+                    Errors.Save($"Не найден параметр {param}.");
+                    return false;
             }
         }
 
@@ -50,8 +53,12 @@ namespace ControlModifiedFiles
                 case "HiddenColumnSize":
                     GetDefaultProperties().HiddenColumnSize = newValue;
                     break;
+                case "UsePrefixUserName":
+                    GetDefaultProperties().UsePrefixUserName = newValue;
+                    break;
                 default:
-                    throw new NotImplementedException($"Не найден параметр {param}.");
+                    Errors.Save($"Не найден параметр {param}.");
+                    break;
             }
         }
 

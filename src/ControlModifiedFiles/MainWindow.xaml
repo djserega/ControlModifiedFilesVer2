@@ -28,7 +28,7 @@
         <Grid Grid.Row="1" Style="{StaticResource BackgroundTable}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="230"/>
             </Grid.ColumnDefinitions>
 
             <DataGrid x:Name="DataGridList" Style="{StaticResource DataGridBase}"
@@ -47,16 +47,20 @@
                         <Label x:Name="ModifiedSettings" Content="*" FontWeight="Black"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Style="{StaticResource LabelHiddenColumnPath}"/>
                         <CheckBox x:Name="CheckBoxPath" Style="{StaticResource CheckBoxBase}" Click="CheckBoxPath_Click"/>
+                        <Label Style="{StaticResource LabelHiddenColumnPath}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Style="{StaticResource LabelHiddenColumnDirectoryVersion}"/>
                         <CheckBox x:Name="CheckBoxDirectoryVersion" Style="{StaticResource CheckBoxBase}" Click="CheckBoxDirectoryVersion_Click"/>
+                        <Label Style="{StaticResource LabelHiddenColumnDirectoryVersion}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Style="{StaticResource LabelHiddenColumnSize}"/>
                         <CheckBox x:Name="CheckBoxSize" Style="{StaticResource CheckBoxBase}" Click="CheckBoxSize_Click"/>
+                        <Label Style="{StaticResource LabelHiddenColumnSize}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="CheckBoxUsePrefixUserName" Style="{StaticResource CheckBoxBase}" Click="CheckBoxUsePrefixUserName_Click"/>
+                        <Label Style="{StaticResource LabelUsPrefixUserName}"/>
                     </StackPanel>
                 </StackPanel>
 

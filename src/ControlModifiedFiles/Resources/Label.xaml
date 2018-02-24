@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:ControlModifiedFiles.Resources">
 
     <Style TargetType="Label" x:Key="LabelBase">
-        <Setter Property="Width" Value="125"/>
+        <Setter Property="Width" Value="220"/>
         <Setter Property="Background">
             <Setter.Value>
                 <SolidColorBrush Color="WhiteSmoke" Opacity="0.30"/>
@@ -16,18 +16,23 @@
     <Style TargetType="Label" x:Key="LabelHiddenColumn" BasedOn="{StaticResource LabelBase}">
         <Setter Property="Content" Value="Скрыть колонки:"/>
         <Setter Property="Width" Value="110"/>
+        <Setter Property="Margin" Value="18,0,0,0"/>
     </Style>
 
     <Style TargetType="Label" x:Key="LabelHiddenColumnPath" BasedOn="{StaticResource LabelBase}">
-        <Setter Property="Content" Value="- путь к файлу"/>
+        <Setter Property="Content" Value="путь к файлу"/>
     </Style>
 
     <Style TargetType="Label" x:Key="LabelHiddenColumnDirectoryVersion" BasedOn="{StaticResource LabelBase}">
-        <Setter Property="Content" Value="- каталог версий"/>
+        <Setter Property="Content" Value="каталог версий"/>
     </Style>
 
     <Style TargetType="Label" x:Key="LabelHiddenColumnSize" BasedOn="{StaticResource LabelBase}">
-        <Setter Property="Content" Value="- размер (в байтах)"/>
+        <Setter Property="Content" Value="размер (в байтах)"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="LabelUsPrefixUserName" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Content" Value="префикс файлов имя пользователя"/>
     </Style>
 
 </ResourceDictionary>

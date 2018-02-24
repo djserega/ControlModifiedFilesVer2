@@ -60,6 +60,7 @@
     <Compile Include="OtherMethods.cs" />
     <Compile Include="Subscriber.cs" />
     <Compile Include="UserSettings.cs" />
+    <Compile Include="Versions.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
