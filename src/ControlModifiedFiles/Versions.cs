@@ -25,6 +25,8 @@ namespace ControlModifiedFiles
 
         internal FileInfo SubscriberInfo { get; set; }
         internal FileSubscriber Subscriber { get; set; }
+        internal string FileName { get; set; }
+        internal string Extension { get; set; }
 
         internal DateTime DateVersion { get; private set; }
 
@@ -43,14 +45,15 @@ namespace ControlModifiedFiles
 
             maxVersion++;
 
-            string extension = SubscriberInfo.Extension;
-            string fileNameWithoutExtension = SubscriberInfo.Name.Remove(SubscriberInfo.Name.Length - extension.Length);
+            string fileNameWithoutExtension = FileName.Remove(FileName.Length - Extension.Length);
 
-            string newVersion = $"{fileNameWithoutExtension} {_prefixVersion} {maxVersion}{_postfixVersion}.{extension}";
-
-            SubscriberInfo.CopyTo(Path.Combine(
+            string newVersion = $"{fileNameWithoutExtension} {_prefixVersion} {maxVersion}{_postfixVersion}{Extension}";
+            string newFileName = Path.Combine(
                 Subscriber.DirectoryVersion,
-                newVersion));
+                newVersion);
+
+            if (!new FileInfo(newFileName).Exists)
+                SubscriberInfo.CopyTo(newFileName);
         }
 
         internal void CreateDirectoryVersion()
@@ -118,19 +121,15 @@ namespace ControlModifiedFiles
 
         private string GetMD5(string path)
         {
-            string hash = "";
+            string hash = String.Empty;
 
-            lock (_locker)
+            //lock (_locker)
             {
-                string fileNameTemp;
                 try
                 {
                     using (MD5 md5 = MD5.Create())
                     {
-                        fileNameTemp = Path.Combine(
-                            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                            "Temp",
-                            $"controlmodifiedfiles_{Guid.NewGuid().ToString()}.tmp");
+                        string fileNameTemp = DirFile.GetTempFile();
 
                         FileInfo fileInfoTemp = new FileInfo(fileNameTemp);
                         if (!fileInfoTemp.Exists)
@@ -144,7 +143,6 @@ namespace ControlModifiedFiles
                             byte[] hashByte = md5.ComputeHash(stream);
                             hash = BitConverter.ToString(hashByte).Replace("-", "").ToLowerInvariant();
                             stream.Close();
-                            stream.Dispose();
                         }
 
                         md5.Clear();
@@ -182,9 +180,7 @@ namespace ControlModifiedFiles
                 {
                     try
                     {
-                        item.Refresh();
-                        if (item.Exists)
-                            item.Delete();
+                        DirFile.DeleteFile(item);
                     }
                     catch (Exception ex)
                     {

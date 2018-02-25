@@ -14,14 +14,14 @@ namespace ControlModifiedFiles
         #region Fields
 
         private CallUpdateVersionEvents _callUpdate;
-        private List<FileInfo> listAction = new List<FileInfo>();
 
         private Dictionary<FileInfo, FileSubscriber> _listSubscriber = new Dictionary<FileInfo, FileSubscriber>();
         private Dictionary<FileSubscriber, FileSystemWatcher> _listWather = new Dictionary<FileSubscriber, FileSystemWatcher>();
 
         private static readonly object _locker = new object();
+
         #endregion
-        
+
         #region Internal methods
 
         internal Subscriber(CallUpdateVersionEvents callUpdate)
@@ -85,65 +85,45 @@ namespace ControlModifiedFiles
         {
             try
             {
+                Thread.Sleep(1000);
+
                 FileInfo fileInfo = new FileInfo(e.FullPath);
 
-                var keyAction = listAction.FirstOrDefault(f => f == fileInfo);
+                FileSubscriber subscriber = _listSubscriber.First(f => f.Key.FullName == fileInfo.FullName).Value;
 
-                if (keyAction != null)
-                    return;
+                string tempFileName = DirFile.GetTempFile();
+                FileInfo fileInfoTemp = fileInfo.CopyTo(tempFileName);
+                string fileName = fileInfo.Name;
+                string extension = fileInfo.Extension;
+                fileInfo = null;
 
-                lock (_locker)
+                Task.Run(() =>
                 {
-                    listAction.Add(fileInfo);
-
-                    int ind = 0;
-
-                    if (!WaitTryCopyVersion(fileInfo, ref ind))
+                    lock (_locker)
                     {
-                        Errors.Save(new Exception($"Не удалось получить доступ к файлу {fileInfo.FullName}"));
-                        listAction.Remove(fileInfo);
-                        return;
+                        using (Versions versions = new Versions()
+                        {
+                            SubscriberInfo = fileInfoTemp,
+                            Subscriber = subscriber,
+                            FileName = fileName,
+                            Extension = extension
+                        })
+                        {
+                            versions.CreateNewVersionFile();
+                        }
+
+                        _callUpdate.Call(subscriber);
+
+                        DirFile.DeleteFile(fileInfoTemp);
+
+                        fileInfoTemp = null;
                     }
-
-                    FileSubscriber subscriber = _listSubscriber.First(f => f.Key.FullName == fileInfo.FullName).Value;
-
-                    using (Versions versions = new Versions()
-                    {
-                        SubscriberInfo = fileInfo,
-                        Subscriber = subscriber
-                    })
-                    {
-                        versions.CreateNewVersionFile();
-                    }
-
-                    _callUpdate.Call(subscriber);
-
-                    listAction.Remove(fileInfo);
-
-                    fileInfo = null; 
-                }
+                });
 
             }
             catch (Exception ex)
             {
                 Errors.Save(ex);
-            }
-        }
-
-        private bool WaitTryCopyVersion(FileInfo fileInfo, ref int ind)
-        {
-            if (ind > 3)
-                return false;
-            try
-            {
-                fileInfo.OpenRead();
-                return true;
-            }
-            catch (Exception)
-            {
-                //Thread.Sleep(1 * 1000);
-                ind++;
-                return WaitTryCopyVersion(fileInfo, ref ind);
             }
         }
 
