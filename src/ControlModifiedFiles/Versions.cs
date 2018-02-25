@@ -174,6 +174,7 @@ namespace ControlModifiedFiles
                     catch (Exception ex)
                     {
                         Errors.Save($"Не удалось удалить временный файл: {item.FullName}");
+                        Errors.Save(ex);
                     }
                 }
                 _tempFiles.Clear();
