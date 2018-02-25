@@ -38,16 +38,23 @@
     <Style TargetType="DataGridCell" x:Key="DataGridCellStyle" BasedOn="{StaticResource {x:Type DataGridCell}}">
         <Setter Property="Background" Value="{x:Null}"/>
     </Style>
-    
+
+    <Style TargetType="DataGridColumnHeader" x:Key="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+        <Setter Property="Background" Value="{x:Null}"/>
+    </Style>
+
     <Style TargetType="DataGrid" x:Key="DataGridBase">
+        <Setter Property="Margin" Value="2,0,2,5"/>
         <Setter Property="Background" Value="{x:Null}"/>
         <Setter Property="AutoGenerateColumns" Value="True"/>
         <Setter Property="ItemsSource" Value="{Binding Path=listFiles, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Setter Property="RowBackground" Value="{x:Null}"/>
         <Setter Property="CellStyle" Value="{StaticResource DataGridCellStyle}"/>
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource DataGridColumnHeader}"/>
         <!--<Setter Property="IsReadOnly" Value="True"/>-->
         <Setter Property="CanUserAddRows" Value="False"/>
         <Setter Property="CanUserDeleteRows" Value="False"/>
+        <Setter Property="CanUserResizeRows" Value="False"/>
     </Style>
 
 </ResourceDictionary>
