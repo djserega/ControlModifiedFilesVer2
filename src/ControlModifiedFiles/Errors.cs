@@ -11,31 +11,19 @@ namespace ControlModifiedFiles
     {
 
         private static string _fileName = GetFileNameFileError();
-      
-        internal static void Save(string message)
+
+        private static readonly object _locker = new object();
+
+
+        internal static void Save(string message) => SaveError(GetTextMessageError(message));
+
+        internal static void Save(Exception ex) => SaveError(GetTextMessageError(ex));
+
+
+        private static void SaveError(string message)
         {
-            bool writeHeader = false;
+            lock (_locker) ;
 
-            FileInfo fileInfo = new FileInfo(_fileName);
-            if (!fileInfo.Exists)
-            {
-                fileInfo.Create();
-                
-                writeHeader = true;
-            }
-
-            using (StreamWriter writer = fileInfo.AppendText())
-            {
-                if (writeHeader)
-                    writer.WriteLine(GetTextMessageError());
-
-                writer.WriteLine(GetTextMessageError(message));
-                writer.Flush();
-            }
-        }
-
-        internal static void Save(Exception ex)
-        {
             bool writeHeader = false;
 
             FileInfo fileInfo = new FileInfo(_fileName);
@@ -50,7 +38,7 @@ namespace ControlModifiedFiles
                 if (writeHeader)
                     writer.WriteLine(GetTextMessageError());
 
-                writer.WriteLine(GetTextMessageError(ex));
+                writer.WriteLine(message);
                 writer.Flush();
             }
         }
