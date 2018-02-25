@@ -107,7 +107,7 @@ namespace ControlModifiedFiles
             DateVersion = dateTimeMaxEdited;
 
             if (fileInfoMaxEdited == null)
-                return null;
+                return 0;
 
             if (!getVersion)
                 if (listMD5Version.FirstOrDefault(f => f == currentHash) != null)
