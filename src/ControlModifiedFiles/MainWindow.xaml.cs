@@ -71,7 +71,7 @@ namespace ControlModifiedFiles
 
         private void ButtonRemoveFiles_Click(object sender, RoutedEventArgs e)
         {
-            IList listSelectedFiles = GetCurrentRows();
+            List<FileSubscriber> listSelectedFiles = GetCurrentRows();
             if (listSelectedFiles.Count == 0)
                 return;
 
@@ -239,9 +239,15 @@ namespace ControlModifiedFiles
             return (FileSubscriber)DataGridList.SelectedItem;
         }
 
-        private IList GetCurrentRows()
+        private List<FileSubscriber> GetCurrentRows()
         {
-            return DataGridList.SelectedItems;
+            List<FileSubscriber> list = new List<FileSubscriber>();
+            foreach (FileSubscriber item in DataGridList.SelectedItems)
+            {
+                list.Add(item);
+            }
+
+            return list;
         }
 
         private void AddFilesInDataGridList(string[] arrayFilesName)
