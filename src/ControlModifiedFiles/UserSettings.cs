@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ControlModifiedFiles
 {
-    internal class UserSettings
+    internal static class UserSettings
     {
 
         internal static string GetFilterFiles()
@@ -21,6 +22,16 @@ namespace ControlModifiedFiles
                 sb.Append(itemFilter);
             }
             return sb.ToString();
+        }
+
+        internal static List<string> GetFormatFiles()
+        {
+            List<string> list = new List<string>();
+            foreach (String item in GetDefaultProperties().FormatFiles)
+            {
+                list.Add(item);
+            }
+            return list;
         }
 
         internal static bool GetUserSettings(string param)
@@ -67,11 +78,11 @@ namespace ControlModifiedFiles
         {
             GetDefaultProperties().Save();
         }
-
+        
         private static Properties.Settings GetDefaultProperties()
         {
             return Properties.Settings.Default;
         }
-
+        
     }
 }

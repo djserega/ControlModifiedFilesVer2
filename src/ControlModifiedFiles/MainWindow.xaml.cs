@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -262,20 +263,23 @@ namespace ControlModifiedFiles
                     return;
                 }
 
-                FileSubscriber fileChecked = new FileSubscriber()
-                {
-                    Checked = true,
-                    Path = file,
-                    FileName = DirFile.GetFileName(file)
-                };
-                fileChecked.SetCurrentSize();
-
-                _subscriber.Subscribe(fileChecked);
-
-                listFiles.Add(fileChecked);
+                AddFileInDataGrid(file);
             }
+        }
 
-            //SetItemSouce();
+        private void AddFileInDataGrid(string file)
+        {
+            FileSubscriber subscriber = new FileSubscriber()
+            {
+                Checked = true,
+                Path = file,
+                FileName = DirFile.GetFileName(file)
+            };
+            subscriber.SetCurrentSize();
+
+            _subscriber.Subscribe(subscriber);
+
+            listFiles.Add(subscriber);
         }
 
         #endregion
@@ -286,5 +290,15 @@ namespace ControlModifiedFiles
             subscriber.SetCurrentSize();
         }
 
+        private void DataGridList_Drop(object sender, DragEventArgs e)
+        {
+            List<string> listFilter = UserSettings.GetFormatFiles();
+            foreach (string item in (string[])e.Data.GetData("FileDrop"))
+            {
+                FileInfo fileInfo = new FileInfo(item);
+                if (!String.IsNullOrWhiteSpace(listFilter.FirstOrDefault(f => f == fileInfo.Extension)))
+                    AddFileInDataGrid(item);
+            }
+        }
     }
 }
