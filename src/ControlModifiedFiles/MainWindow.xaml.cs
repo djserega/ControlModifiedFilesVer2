@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -28,7 +29,7 @@ namespace ControlModifiedFiles
 
         #region Properties
 
-        public static ICollection<FileSubscriber> listFiles = new List<FileSubscriber>();
+        public static ObservableCollection<FileSubscriber> listFiles = new ObservableCollection<FileSubscriber>();
         private bool _modifiedSettings = false;
         private Dictionary<string, string> _dictionaryNameColumn = new Dictionary<string, string>();
 
@@ -202,12 +203,8 @@ namespace ControlModifiedFiles
             ChangeVisibleColumnDataGrid();
         }
 
-        private void SetItemSouce(List<FileSubscriber> list = null)
+        private void SetItemSouce()
         {
-            if (list == null)
-                listFiles = listFiles.ToList();
-            else
-                listFiles = list;
             DataGridList.ItemsSource = listFiles;
         }
 
@@ -249,12 +246,11 @@ namespace ControlModifiedFiles
 
         private void AddFilesInDataGridList(string[] arrayFilesName)
         {
-            List<FileSubscriber> list = listFiles.ToList();
+            //List<FileSubscriber> list = listFiles.ToList();
 
             foreach (string file in arrayFilesName)
             {
-                FileSubscriber finded = list.Find(f => f.Path == file);
-
+                FileSubscriber finded = listFiles.FirstOrDefault(f => f.Path == file);
                 if (finded != null)
                 {
                     Dialog.ShowMessage($"Выбранный файл уже контролируется:\n" +
@@ -275,10 +271,10 @@ namespace ControlModifiedFiles
 
                 _subscriber.Subscribe(fileChecked);
 
-                list.Add(fileChecked);
+                listFiles.Add(fileChecked);
             }
 
-            SetItemSouce(list);
+            SetItemSouce();
         }
 
         #endregion

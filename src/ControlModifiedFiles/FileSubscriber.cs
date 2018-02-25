@@ -5,11 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace ControlModifiedFiles
 {
-    public class FileSubscriber
+    public class FileSubscriber : INotifyPropertyChanged
     {
+        private int _version;
+        private DateTime _dateMaxVersion;
+
+
         [Column("Выбрано", IsOnlyRead = false)]
         public bool Checked { get; set; }
 
@@ -26,13 +31,43 @@ namespace ControlModifiedFiles
         public string SizeString { get; set; }
 
         [Column("№ версии")]
-        public int Version { get; set; }
+        public int Version
+        {
+            get { return _version; }
+            set
+            {
+                if (_version != value)
+                {
+                    _version = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         [Column("Дата изменения")]
-        public DateTime DateMaxVersion { get; set; }
+        public DateTime DateMaxVersion
+        {
+            get { return _dateMaxVersion; }
+            set
+            {
+                if (_dateMaxVersion != value)
+                {
+                    _dateMaxVersion = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         [Column("Каталог версий", Visible = false)]
         public string DirectoryVersion { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
 
         internal void SetCurrentVersion()
         {
