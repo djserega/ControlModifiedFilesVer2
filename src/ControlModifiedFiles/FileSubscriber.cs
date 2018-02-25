@@ -123,7 +123,6 @@ namespace ControlModifiedFiles
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
         internal void SetCurrentVersion()
         {
             using (Versions versions = new Versions()
@@ -137,5 +136,10 @@ namespace ControlModifiedFiles
             }
         }
 
+        internal void SetCurrentSize()
+        {
+            Size = DirFile.GetFileSize(_path);
+            SizeString = DirFile.GetSizeFormat(_size);
+        }
     }
 }
