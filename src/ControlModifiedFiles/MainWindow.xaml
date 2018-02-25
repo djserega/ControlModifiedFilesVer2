@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ControlModifiedFiles"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" x:Name="MainWindowControlModifiedFiles"
-        Title="Контроль версий файлов" Height="300" Width="800" 
+        Title="Контроль версий файлов" Height="300" Width="800" MinHeight="250" MinWidth="600"
         Loaded="MainWindowControlModifiedFiles_Loaded">
     <Grid>
         <Grid.RowDefinitions>
@@ -43,7 +43,7 @@
                 <StackPanel Grid.Row="0" Orientation="Vertical" Style="{StaticResource BackgroundStackPanel}" >
                     <Separator Style="{StaticResource SeparatorHeadSettings}"/>
                     <StackPanel Orientation="Horizontal">
-                        <Label Style="{StaticResource LabelHiddenColumn}"/>
+                        <Label Style="{StaticResource LabelHid  denColumn}"/>
                         <Label x:Name="ModifiedSettings" Content="*" FontWeight="Black"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -58,6 +58,7 @@
                         <CheckBox x:Name="CheckBoxSize" Style="{StaticResource CheckBoxBase}" Click="CheckBoxSize_Click"/>
                         <Label Style="{StaticResource LabelHiddenColumnSize}"/>
                     </StackPanel>
+                    <Separator Style="{StaticResource SeparatorBetweenRow10}"/>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox x:Name="CheckBoxUsePrefixUserName" Style="{StaticResource CheckBoxBase}" Click="CheckBoxUsePrefixUserName_Click"/>
                         <Label Style="{StaticResource LabelUsPrefixUserName}"/>

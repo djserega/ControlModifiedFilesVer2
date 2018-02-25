@@ -14,8 +14,8 @@
     </Style>
 
     <Style TargetType="Label" x:Key="LabelHiddenColumn" BasedOn="{StaticResource LabelBase}">
-        <Setter Property="Content" Value="Скрыть колонки:"/>
-        <Setter Property="Width" Value="110"/>
+        <Setter Property="Content" Value="Видимость колонок:"/>
+        <Setter Property="Width" Value="150"/>
         <Setter Property="Margin" Value="18,0,0,0"/>
     </Style>
 
