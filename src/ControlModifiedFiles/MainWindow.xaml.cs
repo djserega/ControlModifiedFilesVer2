@@ -211,6 +211,28 @@ namespace ControlModifiedFiles
             DataGridList.ItemsSource = listFiles;
         }
 
+        private void DataGridList_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                if (e.Column is DataGridBoundColumn currentColumn)
+                {
+                    string bindingPath = ((Binding)currentColumn.Binding).Path.Path;
+
+                    if (bindingPath == "Checked")
+                        if (e.Row.Item is FileSubscriber subscriber)
+                        {
+                            subscriber.Checked = ((System.Windows.Controls.Primitives.ToggleButton)e.EditingElement).IsChecked.Value;
+
+                            if (subscriber.Checked)
+                                _subscriber.Subscribe(subscriber);
+                            else
+                                _subscriber.Unsubscribe(subscriber);
+                        }
+                }
+            }
+        }
+
         #endregion
 
         #region Row datagrid (files)
@@ -266,26 +288,5 @@ namespace ControlModifiedFiles
             subscriber.SetCurrentVersion();
         }
 
-        private void DataGridList_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            if (e.EditAction == DataGridEditAction.Commit)
-            {
-                if (e.Column is DataGridBoundColumn currentColumn)
-                {
-                    string bindingPath = ((Binding)currentColumn.Binding).Path.Path;
-
-                    if (bindingPath == "Checked")
-                        if (e.Row.Item is FileSubscriber subscriber)
-                        {
-                            subscriber.Checked = ((System.Windows.Controls.Primitives.ToggleButton)e.EditingElement).IsChecked.Value;
-
-                            if (subscriber.Checked)
-                                _subscriber.Subscribe(subscriber);
-                            else
-                                _subscriber.Unsubscribe(subscriber);
-                        }
-                }
-            }
-        }
     }
 }
