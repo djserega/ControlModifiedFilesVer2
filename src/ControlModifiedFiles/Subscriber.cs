@@ -19,6 +19,7 @@ namespace ControlModifiedFiles
         private Dictionary<FileInfo, FileSubscriber> _listSubscriber = new Dictionary<FileInfo, FileSubscriber>();
         private Dictionary<FileSubscriber, FileSystemWatcher> _listWather = new Dictionary<FileSubscriber, FileSystemWatcher>();
 
+        private static readonly object _locker = new object();
         #endregion
         
         #region Internal methods
@@ -91,31 +92,36 @@ namespace ControlModifiedFiles
                 if (keyAction != null)
                     return;
 
-                listAction.Add(fileInfo);
-
-                int ind = 0;
-
-                if (!WaitTryCopyVersion(fileInfo, ref ind))
+                lock (_locker)
                 {
-                    Errors.Save(new Exception($"Не удалось получить доступ к файлу {fileInfo.Name}"));
+                    listAction.Add(fileInfo);
+
+                    int ind = 0;
+
+                    if (!WaitTryCopyVersion(fileInfo, ref ind))
+                    {
+                        Errors.Save(new Exception($"Не удалось получить доступ к файлу {fileInfo.FullName}"));
+                        listAction.Remove(fileInfo);
+                        return;
+                    }
+
+                    FileSubscriber subscriber = _listSubscriber.First(f => f.Key.FullName == fileInfo.FullName).Value;
+
+                    using (Versions versions = new Versions()
+                    {
+                        SubscriberInfo = fileInfo,
+                        Subscriber = subscriber
+                    })
+                    {
+                        versions.CreateNewVersionFile();
+                    }
+
+                    _callUpdate.Call(subscriber);
+
                     listAction.Remove(fileInfo);
-                    return;
+
+                    fileInfo = null; 
                 }
-
-                FileSubscriber subscriber = _listSubscriber.First(f => f.Key.FullName == fileInfo.FullName).Value;
-
-                using (Versions versions = new Versions()
-                {
-                    SubscriberInfo = fileInfo,
-                    Subscriber = subscriber
-                })
-                {
-                    versions.CreateNewVersionFile();
-                }
-
-                _callUpdate.Call(subscriber);
-
-                listAction.Remove(fileInfo);
 
             }
             catch (Exception ex)
@@ -135,7 +141,7 @@ namespace ControlModifiedFiles
             }
             catch (Exception)
             {
-                Thread.Sleep(1 * 1000);
+                //Thread.Sleep(1 * 1000);
                 ind++;
                 return WaitTryCopyVersion(fileInfo, ref ind);
             }
