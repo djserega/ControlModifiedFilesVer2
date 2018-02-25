@@ -42,10 +42,12 @@
     <Style TargetType="DataGrid" x:Key="DataGridBase">
         <Setter Property="Background" Value="{x:Null}"/>
         <Setter Property="AutoGenerateColumns" Value="True"/>
-        <Setter Property="IsReadOnly" Value="True"/>
         <Setter Property="ItemsSource" Value="{Binding Path=listFiles, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Setter Property="RowBackground" Value="{x:Null}"/>
         <Setter Property="CellStyle" Value="{StaticResource DataGridCellStyle}"/>
+        <!--<Setter Property="IsReadOnly" Value="True"/>-->
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="CanUserDeleteRows" Value="False"/>
     </Style>
 
 </ResourceDictionary>
