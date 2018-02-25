@@ -43,8 +43,7 @@
                 <StackPanel Grid.Row="0" Orientation="Vertical" Style="{StaticResource BackgroundStackPanel}" >
                     <Separator Style="{StaticResource SeparatorHeadSettings}"/>
                     <StackPanel Orientation="Horizontal">
-                        <Label Style="{StaticResource LabelHid  denColumn}"/>
-                        <Label x:Name="ModifiedSettings" Content="*" FontWeight="Black"/>
+                        <Label Style="{StaticResource LabelHiddenColumn}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox x:Name="CheckBoxPath" Style="{StaticResource CheckBoxBase}" Click="CheckBoxPath_Click"/>
@@ -65,9 +64,12 @@
                     </StackPanel>
                 </StackPanel>
 
-                <Grid HorizontalAlignment="Center" Grid.Row="2">
-                    <Button x:Name="ButtonSaveSettings" Style="{StaticResource ButtonSaveSettings}"
+                <Grid Grid.Row="2">
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="ButtonSaveSettings" Style="{StaticResource ButtonSaveSettings}"
                             Click="ButtonSaveSettings_Click"/>
+                        <Label x:Name="ModifiedSettings" Content="*" FontWeight="Black"/>
+                    </StackPanel>
                 </Grid>
             </Grid>
         </Grid>

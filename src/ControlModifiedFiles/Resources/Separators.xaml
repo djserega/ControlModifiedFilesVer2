@@ -18,6 +18,10 @@
         <Setter Property="Height" Value="1"/>
     </Style>
 
+    <Style TargetType="Separator" x:Key="SeparatorBetweenRow10" BasedOn="{StaticResource SeparatorBase}">
+        <Setter Property="Height" Value="10"/>
+    </Style>
+
     <Style TargetType="Separator" x:Key="SeparatorHeadSettings" BasedOn="{StaticResource SeparatorBase}">
         <Setter Property="Height" Value="5"/>
     </Style>
