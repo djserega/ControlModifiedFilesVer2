@@ -44,6 +44,7 @@ namespace ControlModifiedFiles
                 {
                     versions.CreateDirectoryVersion();
                 }
+                _callUpdate.Call(subscriber);
             }
         }
 
