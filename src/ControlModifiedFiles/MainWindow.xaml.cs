@@ -257,9 +257,9 @@ namespace ControlModifiedFiles
 
         #endregion
 
-        private void UpdateVersion()
+        private void UpdateVersion(FileSubscriber subscriber)
         {
-            Errors.Save("Працюває");
+            subscriber.SetCurrentVersion();
         }
 
     }

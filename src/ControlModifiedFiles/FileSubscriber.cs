@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.IO;
 
 namespace ControlModifiedFiles
 {
@@ -32,6 +33,19 @@ namespace ControlModifiedFiles
 
         [Column("Каталог версий", Visible = false)]
         public string DirectoryVersion { get; set; }
+
+        internal void SetCurrentVersion()
+        {
+            using (Versions versions = new Versions()
+            {
+                SubscriberInfo = new FileInfo(Path),
+                Subscriber = this
+            })
+            {
+                Version = versions.GetVersion();
+                DateMaxVersion = versions.DateVersion;
+            }
+        }
 
     }
 }
