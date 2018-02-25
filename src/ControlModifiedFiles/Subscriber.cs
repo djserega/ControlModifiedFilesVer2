@@ -10,10 +10,18 @@ namespace ControlModifiedFiles
 {
     internal class Subscriber
     {
-        List<FileInfo> listAction = new List<FileInfo>();
-        Dictionary<FileInfo, FileSubscriber> _listSubscriber = new Dictionary<FileInfo, FileSubscriber>();
-        Dictionary<FileSubscriber, FileSystemWatcher> _listWather = new Dictionary<FileSubscriber, FileSystemWatcher>();
-        CallUpdateVersionEvents _callUpdate;
+
+        #region Fields
+
+        private CallUpdateVersionEvents _callUpdate;
+        private List<FileInfo> listAction = new List<FileInfo>();
+
+        private Dictionary<FileInfo, FileSubscriber> _listSubscriber = new Dictionary<FileInfo, FileSubscriber>();
+        private Dictionary<FileSubscriber, FileSystemWatcher> _listWather = new Dictionary<FileSubscriber, FileSystemWatcher>();
+
+        #endregion
+        
+        #region Internal methods
 
         internal Subscriber(CallUpdateVersionEvents callUpdate)
         {
@@ -67,6 +75,10 @@ namespace ControlModifiedFiles
 
             _listWather.Remove(subscriber);
         }
+
+        #endregion
+
+        #region Private methods
 
         private void Subscribe_Changed(object sender, FileSystemEventArgs e)
         {
@@ -123,10 +135,13 @@ namespace ControlModifiedFiles
             }
             catch (Exception)
             {
-                Thread.Sleep(2 * 1000);
+                Thread.Sleep(1 * 1000);
                 ind++;
                 return WaitTryCopyVersion(fileInfo, ref ind);
             }
         }
+
+        #endregion
+
     }
 }

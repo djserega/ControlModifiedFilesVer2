@@ -5,6 +5,7 @@ namespace ControlModifiedFiles
 {
     public class ColumnAttribute : Attribute
     {
+        
         #region Properties
 
         public string HeaderName { get; set; }
@@ -38,5 +39,6 @@ namespace ControlModifiedFiles
             IsOnlyRead = isOnlyRead;
             Visible = visible;
         }
+
     }
 }

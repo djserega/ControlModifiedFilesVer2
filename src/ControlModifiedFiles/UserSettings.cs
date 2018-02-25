@@ -8,6 +8,7 @@ namespace ControlModifiedFiles
 {
     internal class UserSettings
     {
+
         internal static string GetFilterFiles()
         {
             var filter = GetDefaultProperties().ListFilterFilesPredefined;
@@ -62,14 +63,15 @@ namespace ControlModifiedFiles
             }
         }
 
+        internal static void SaveUserSettings()
+        {
+            GetDefaultProperties().Save();
+        }
+
         private static Properties.Settings GetDefaultProperties()
         {
             return Properties.Settings.Default;
         }
 
-        internal static void SaveUserSettings()
-        {
-            GetDefaultProperties().Save();
-        }
     }
 }

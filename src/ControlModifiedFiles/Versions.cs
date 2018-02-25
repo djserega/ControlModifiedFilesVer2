@@ -10,17 +10,27 @@ namespace ControlModifiedFiles
 {
     internal class Versions : IDisposable
     {
+        
+        #region Fields
+
         private string _prefixVersion = "{version";
         private string _postfixVersion = "}";
+
+        private List<FileInfo> _tempFiles = new List<FileInfo>();
+        private static readonly object _locker = new object();
+
+        #endregion
+
+        #region Properties
 
         internal FileInfo SubscriberInfo { get; set; }
         internal FileSubscriber Subscriber { get; set; }
 
         internal DateTime DateVersion { get; private set; }
 
-        List<FileInfo> _tempFiles = new List<FileInfo>();
+        #endregion
 
-        private static readonly object _locker = new object();
+        #region Internal methods
 
         internal void CreateNewVersionFile()
         {
@@ -66,6 +76,10 @@ namespace ControlModifiedFiles
             return (int)maxVersion;
         }
 
+        #endregion
+
+        #region Private methods
+
         private int? GetMaxVersionFile(bool getVersion = false)
         {
             string currentHash = GetMD5(SubscriberInfo.FullName);
@@ -107,7 +121,6 @@ namespace ControlModifiedFiles
             string hash = "";
 
             lock (_locker)
-
             {
                 string fileNameTemp;
                 try
@@ -149,6 +162,8 @@ namespace ControlModifiedFiles
 
             return hash;
         }
+
+        #endregion
 
         #region IDisposable Support
         private bool disposedValue = false;

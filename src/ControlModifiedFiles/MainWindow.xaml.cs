@@ -246,8 +246,6 @@ namespace ControlModifiedFiles
 
         private void AddFilesInDataGridList(string[] arrayFilesName)
         {
-            //List<FileSubscriber> list = listFiles.ToList();
-
             foreach (string file in arrayFilesName)
             {
                 FileSubscriber finded = listFiles.FirstOrDefault(f => f.Path == file);
@@ -258,23 +256,20 @@ namespace ControlModifiedFiles
                     return;
                 }
 
-                ulong sizeFile = DirFile.GetFileSize(file);
-
                 FileSubscriber fileChecked = new FileSubscriber()
                 {
                     Checked = true,
                     Path = file,
-                    FileName = DirFile.GetFileName(file),
-                    Size = sizeFile,
-                    SizeString = DirFile.GetSizeFormat(sizeFile)
+                    FileName = DirFile.GetFileName(file)
                 };
+                fileChecked.SetCurrentSize();
 
                 _subscriber.Subscribe(fileChecked);
 
                 listFiles.Add(fileChecked);
             }
 
-            SetItemSouce();
+            //SetItemSouce();
         }
 
         #endregion
@@ -282,6 +277,7 @@ namespace ControlModifiedFiles
         private void UpdateVersion(FileSubscriber subscriber)
         {
             subscriber.SetCurrentVersion();
+            subscriber.SetCurrentSize();
         }
 
     }

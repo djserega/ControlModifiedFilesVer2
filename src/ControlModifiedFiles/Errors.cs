@@ -10,15 +10,22 @@ namespace ControlModifiedFiles
     internal static class Errors
     {
 
-        private static string _fileName = GetFileNameFileError();
+        #region Fields
 
+        private static string _fileName = GetFileNameFileError();
         private static readonly object _locker = new object();
 
+        #endregion
+
+        #region Internal methods
 
         internal static void Save(string message) => SaveError(GetTextMessageError(message));
 
         internal static void Save(Exception ex) => SaveError(GetTextMessageError(ex));
 
+        #endregion
+
+        #region Private methods
 
         private static void SaveError(string message)
         {
@@ -81,6 +88,8 @@ namespace ControlModifiedFiles
                 $" {separator} " +
                 $"{ex.StackTrace}";
         }
+
+        #endregion
 
     }
 }

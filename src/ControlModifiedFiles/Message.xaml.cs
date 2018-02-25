@@ -20,6 +20,16 @@ namespace ControlModifiedFiles
     public partial class Message : Window
     {
 
+        #region Fields
+
+        private string _textMessage;
+        private bool _question;
+        private int _timer;
+        private string _textButtonOK;
+        private string _textButtonCancel;
+
+        #endregion
+
         #region Properties
 
         internal bool PressButtonOK { get; private set; }
@@ -27,12 +37,6 @@ namespace ControlModifiedFiles
         internal bool ClosedByTimeout { get; private set; }
 
         #endregion
-
-        internal string _textMessage;
-        private bool _question;
-        private int _timer;
-        private string _textButtonOK;
-        private string _textButtonCancel;
 
         #region Constructors
 
