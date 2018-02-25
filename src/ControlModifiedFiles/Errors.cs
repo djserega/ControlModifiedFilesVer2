@@ -22,24 +22,25 @@ namespace ControlModifiedFiles
 
         private static void SaveError(string message)
         {
-            lock (_locker) ;
-
-            bool writeHeader = false;
-
-            FileInfo fileInfo = new FileInfo(_fileName);
-            if (!fileInfo.Exists)
+            lock (_locker)
             {
-                fileInfo.Create();
-                writeHeader = true;
-            }
+                bool writeHeader = false;
 
-            using (StreamWriter writer = fileInfo.AppendText())
-            {
-                if (writeHeader)
-                    writer.WriteLine(GetTextMessageError());
+                FileInfo fileInfo = new FileInfo(_fileName);
+                if (!fileInfo.Exists)
+                {
+                    fileInfo.Create();
+                    writeHeader = true;
+                }
 
-                writer.WriteLine(message);
-                writer.Flush();
+                using (StreamWriter writer = fileInfo.AppendText())
+                {
+                    if (writeHeader)
+                        writer.WriteLine(GetTextMessageError());
+
+                    writer.WriteLine(message);
+                    writer.Flush();
+                }
             }
         }
 
