@@ -69,16 +69,18 @@ namespace ControlModifiedFiles
                     return;
                 }
 
+                FileSubscriber subscriber = _listSubscriber.First(f => f.Key.FullName == fileInfo.FullName).Value;
+
                 using (Versions versions = new Versions()
                 {
                     SubscriberInfo = fileInfo,
-                    Subscriber = _listSubscriber.First(f => f.Key.FullName == fileInfo.FullName).Value
+                    Subscriber = subscriber
                 })
                 {
                     versions.CreateNewVersionFile();
                 }
 
-                _callUpdate.Call();
+                _callUpdate.Call(subscriber);
 
                 listAction.Remove(fileInfo);
 
