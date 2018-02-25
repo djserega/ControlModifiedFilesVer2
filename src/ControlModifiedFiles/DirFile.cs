@@ -11,7 +11,7 @@ namespace ControlModifiedFiles
 {
     internal static class DirFile
     {
-       
+
         #region internal methods
 
         internal static string[] SelectNewFiles(Window owner)
@@ -35,8 +35,6 @@ namespace ControlModifiedFiles
         }
 
         internal static ulong GetFileSize(string path) => CalculateFileSize(path);
-
-        internal static Tuple<DateTime, DateTime> GetDateCreateEdited(string path) => DateCreateEdited(path);
 
         internal static string GetSizeFormat(ulong size)
         {
@@ -64,34 +62,30 @@ namespace ControlModifiedFiles
 
         }
 
-        internal static DateTime CompareDatePlus(DateTime date1, DateTime date2)
-        {
-            if (date1.CompareTo(date2) == 1)
-                date1 = date2;
-
-            return date1;
-        }
-
-        internal static DateTime CompareDateMinus(DateTime date1, DateTime date2)
-        {
-            if (date1.CompareTo(date2) == -1)
-                date1 = date2;
-            return date1;
-        }
-
-        internal static string LoadFile(string path)
-        {
-            string data;
-            using (StreamReader streamReader = new StreamReader(path))
-            {
-                data = streamReader.ReadToEnd();
-            }
-            return data;
-        }
-
         internal static string GetFileName(string fileName)
         {
             return new FileInfo(fileName).Name;
+        }
+
+        internal static string GetTempFile()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Temp",
+                $"controlmodifiedfiles_{Guid.NewGuid().ToString()}.tmp");
+        }
+
+        internal static void DeleteFile(FileInfo fileInfo)
+        {
+            if (fileInfo == null)
+            {
+                Errors.Save("В метод удаления передан пустой объект.");
+                return;
+            };
+
+            fileInfo.Refresh();
+            if (fileInfo.Exists)
+                fileInfo.Delete();
         }
 
         #endregion
@@ -114,22 +108,6 @@ namespace ControlModifiedFiles
                 size += CalculateSize(dir);
 
             return size;
-        }
-
-        private static Tuple<DateTime, DateTime> DateCreateEdited(string path)
-        {
-
-            DateTime dateCreate = DateTime.MaxValue;
-            DateTime dateEdit = DateTime.MinValue;
-
-            foreach (string files in Directory.GetFiles(path, "*", SearchOption.AllDirectories))
-            {
-                FileInfo fileInfo = new FileInfo(files);
-                dateCreate = CompareDatePlus(dateCreate, fileInfo.CreationTime);
-                dateEdit = CompareDateMinus(dateEdit, fileInfo.LastWriteTime);
-            }
-
-            return new Tuple<DateTime, DateTime>(dateCreate, dateEdit);
         }
 
         #endregion
