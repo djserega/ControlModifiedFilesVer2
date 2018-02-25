@@ -16,6 +16,8 @@ namespace ControlModifiedFiles
         internal FileInfo SubscriberInfo { get; set; }
         internal FileSubscriber Subscriber { get; set; }
 
+        internal DateTime DateVersion { get; private set; }
+
         List<FileInfo> _tempFiles = new List<FileInfo>();
 
         private static readonly object _locker = new object();
@@ -56,9 +58,16 @@ namespace ControlModifiedFiles
             Subscriber.DirectoryVersion = directoryVersion.FullName;
         }
 
-        private int? GetMaxVersionFile()
+        internal int GetVersion()
         {
+            int? maxVersion = GetMaxVersionFile(true);
+            if (maxVersion == null)
+                return 0;
+            return (int)maxVersion;
+        }
 
+        private int? GetMaxVersionFile(bool getVersion = false)
+        {
             string currentHash = GetMD5(SubscriberInfo.FullName);
 
             List<string> listMD5Version = new List<string>();
@@ -81,11 +90,16 @@ namespace ControlModifiedFiles
                 }
             }
 
-            if (listMD5Version.FirstOrDefault(f => f == currentHash) != null)
+            DateVersion = dateTimeMaxEdited;
+
+            if (fileInfoMaxEdited == null)
                 return null;
 
-            return int.Parse(fileInfoMaxEdited.Name.Substring($"{_prefixVersion} ", "}"));
+            if (!getVersion)
+                if (listMD5Version.FirstOrDefault(f => f == currentHash) != null)
+                    return null;
 
+            return int.Parse(fileInfoMaxEdited.Name.Substring($"{_prefixVersion} ", "}"));
         }
 
         private string GetMD5(string path)
@@ -117,9 +131,10 @@ namespace ControlModifiedFiles
                             byte[] hashByte = md5.ComputeHash(stream);
                             hash = BitConverter.ToString(hashByte).Replace("-", "").ToLowerInvariant();
                             stream.Close();
+                            stream.Dispose();
                         }
 
-                         md5.Clear();
+                        md5.Clear();
                     }
                 }
                 catch (FileNotFoundException)
@@ -152,6 +167,7 @@ namespace ControlModifiedFiles
                 {
                     try
                     {
+                        item.Refresh();
                         if (item.Exists)
                             item.Delete();
                     }
