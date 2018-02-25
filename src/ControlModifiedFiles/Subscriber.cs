@@ -12,6 +12,7 @@ namespace ControlModifiedFiles
     {
         List<FileInfo> listAction = new List<FileInfo>();
         Dictionary<FileInfo, FileSubscriber> _listSubscriber = new Dictionary<FileInfo, FileSubscriber>();
+        Dictionary<FileSubscriber, FileSystemWatcher> _listWather = new Dictionary<FileSubscriber, FileSystemWatcher>();
         CallUpdateVersionEvents _callUpdate;
 
         internal Subscriber(CallUpdateVersionEvents callUpdate)
@@ -24,6 +25,9 @@ namespace ControlModifiedFiles
             if (subscriber.Checked
                 && !String.IsNullOrWhiteSpace(subscriber.Path))
             {
+                if (_listWather.FirstOrDefault(f => f.Key == subscriber).Key != null)
+                    return;
+
                 FileInfo fileInfo = new FileInfo(subscriber.Path);
 
                 FileSystemWatcher watcher = new FileSystemWatcher(fileInfo.DirectoryName, fileInfo.Name)
@@ -36,6 +40,8 @@ namespace ControlModifiedFiles
                 watcher.Changed += Subscribe_Changed;
                 watcher.EnableRaisingEvents = true;
 
+                _listWather.Add(subscriber, watcher);
+
                 using (Versions versions = new Versions()
                 {
                     SubscriberInfo = fileInfo,
@@ -46,6 +52,20 @@ namespace ControlModifiedFiles
                 }
                 _callUpdate.Call(subscriber);
             }
+        }
+
+        internal void Unsubscribe(FileSubscriber subscriber)
+        {
+            var keyWather = _listWather.FirstOrDefault(f => f.Key == subscriber);
+            if (keyWather.Key == null)
+                return;
+
+            FileSystemWatcher watcher = keyWather.Value;
+
+            watcher.EnableRaisingEvents = false;
+            watcher.Dispose();
+
+            _listWather.Remove(subscriber);
         }
 
         private void Subscribe_Changed(object sender, FileSystemEventArgs e)

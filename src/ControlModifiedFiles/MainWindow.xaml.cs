@@ -83,10 +83,11 @@ namespace ControlModifiedFiles
 
             foreach (FileSubscriber item in listSelectedFiles)
             {
+                _subscriber.Unsubscribe(item);
                 listFiles.Remove(item);
             }
 
-            SetItemSouce(listFiles.ToList());
+            SetItemSouce();
         }
 
         #endregion
@@ -186,6 +187,7 @@ namespace ControlModifiedFiles
 
                         _dictionaryNameColumn.Add(propInfo.Name, attribute.HeaderName);
 
+                        column.IsReadOnly = attribute.IsOnlyRead;
                         column.Header = attribute.HeaderName;
                         column.Visibility = attribute.VisibleColumn ? Visibility.Visible : Visibility.Hidden;
 
@@ -202,7 +204,9 @@ namespace ControlModifiedFiles
 
         private void SetItemSouce(List<FileSubscriber> list = null)
         {
-            if (list != null)
+            if (list == null)
+                listFiles = listFiles.ToList();
+            else
                 listFiles = list;
             DataGridList.ItemsSource = listFiles;
         }
@@ -262,5 +266,26 @@ namespace ControlModifiedFiles
             subscriber.SetCurrentVersion();
         }
 
+        private void DataGridList_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                if (e.Column is DataGridBoundColumn currentColumn)
+                {
+                    string bindingPath = ((Binding)currentColumn.Binding).Path.Path;
+
+                    if (bindingPath == "Checked")
+                        if (e.Row.Item is FileSubscriber subscriber)
+                        {
+                            subscriber.Checked = ((System.Windows.Controls.Primitives.ToggleButton)e.EditingElement).IsChecked.Value;
+
+                            if (subscriber.Checked)
+                                _subscriber.Subscribe(subscriber);
+                            else
+                                _subscriber.Unsubscribe(subscriber);
+                        }
+                }
+            }
+        }
     }
 }
