@@ -29,7 +29,7 @@
           
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="235"/>
+                <ColumnDefinition Width="290"/>
             </Grid.ColumnDefinitions>
 
             <DataGrid Grid.ColumnSpan="2" x:Name="DataGridList" Style="{StaticResource DataGridBase}"
@@ -64,6 +64,16 @@
                     <StackPanel Orientation="Horizontal">
                         <CheckBox x:Name="CheckBoxUsePrefixUserName" Style="{StaticResource CheckBoxBase}" Click="CheckBoxUsePrefixUserName_Click"/>
                         <Label Style="{StaticResource LabelUsPrefixUserName}"/>
+                    </StackPanel>
+                    <Separator Style="{StaticResource SeparatorBetweenElement}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="CheckBoxAutostart" Style="{StaticResource CheckBoxBase}" Click="Autostart_Click"/>
+                        <Label Style="{StaticResource LabelAutostart}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource TextBlockAutostart}"/>
+                                <Image x:Name="ImageShield" Style="{StaticResource ImageShield}"/>
+                            </StackPanel>
+                        </Label>
                     </StackPanel>
                 </StackPanel>
 

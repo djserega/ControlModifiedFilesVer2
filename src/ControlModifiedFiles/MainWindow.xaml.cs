@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Interop;
 
 namespace ControlModifiedFiles
 {
@@ -27,12 +29,13 @@ namespace ControlModifiedFiles
 
         CallUpdateVersionEvents callUpdate = new CallUpdateVersionEvents();
         Subscriber _subscriber;
-
+        
         #region Properties
 
         public static ObservableCollection<FileSubscriber> listFiles = new ObservableCollection<FileSubscriber>();
         private bool _modifiedSettings = false;
         private Dictionary<string, string> _dictionaryNameColumn = new Dictionary<string, string>();
+        private bool AwaitResultStatusAutoresult = false;
 
         #endregion
 
@@ -43,6 +46,8 @@ namespace ControlModifiedFiles
             InitializeComponent();
 
             _subscriber = new Subscriber(callUpdate);
+
+            ApplicationRunWithAdministration();
         }
 
         private void MainWindowControlModifiedFiles_Loaded(object sender, RoutedEventArgs e)
@@ -52,11 +57,14 @@ namespace ControlModifiedFiles
             CheckBoxPath.IsChecked = UserSettings.GetUserSettings("HiddenColumnPath");
             CheckBoxSize.IsChecked = UserSettings.GetUserSettings("HiddenColumnSize");
             CheckBoxUsePrefixUserName.IsChecked = UserSettings.GetUserSettings("UsePrefixUserName");
+            GetStatusAutostart();
             ChangeVisibleModifiedSettings();
 
             SetItemSouce();
 
             callUpdate.CallUpdateVersion += UpdateVersion;
+
+            SetIconShieldUAC();
         }
 
         #endregion
@@ -131,6 +139,16 @@ namespace ControlModifiedFiles
         {
             UserSettings.SetUserSettings("UsePrefixUserName", CheckBoxUsePrefixUserName.IsChecked.Value);
             IsChangedSettings();
+        }
+
+        private void Autostart_Click(object sender, RoutedEventArgs e)
+        {
+            if (!AwaitResultStatusAutoresult)
+                new Permission().SetRemoveAutostart(CheckBoxAutostart.IsChecked.Value);
+
+            AwaitResultStatusAutoresult = true;
+            GetStatusAutostart();
+            AwaitResultStatusAutoresult = false;
         }
 
         private void IsChangedSettings()
@@ -231,6 +249,17 @@ namespace ControlModifiedFiles
             }
         }
 
+        private void DataGridList_Drop(object sender, DragEventArgs e)
+        {
+            List<string> listFilter = UserSettings.GetFormatFiles();
+            foreach (string item in (string[])e.Data.GetData("FileDrop"))
+            {
+                FileInfo fileInfo = new FileInfo(item);
+                if (!String.IsNullOrWhiteSpace(listFilter.FirstOrDefault(f => f == fileInfo.Extension)))
+                    AddFileInDataGrid(item);
+            }
+        }
+
         #endregion
 
         #region Row datagrid (files)
@@ -284,21 +313,44 @@ namespace ControlModifiedFiles
 
         #endregion
 
+        #region Permission
+
+        private void GetStatusAutostart()
+        {
+            CheckBoxAutostart.IsChecked = new Permission().GetStatusAutostart();
+        }
+
+        private void SetIconShieldUAC()
+        {
+            ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(
+                      SystemIcons.Shield.ToBitmap().GetHbitmap(),
+                      IntPtr.Zero,
+                      Int32Rect.Empty,
+                      BitmapSizeOptions.FromEmptyOptions());
+            ImageShield.Source = wpfBitmap;
+        }
+
+        private void ApplicationRunWithAdministration()
+        {
+            bool RunWithAdmin = false;
+            string[] commandLine = Environment.GetCommandLineArgs();
+            if (commandLine.Count() >= 2)
+                RunWithAdmin = commandLine[1] == "/run from administrator";
+
+            if (RunWithAdmin)
+                GridProperties.Visibility = Visibility.Hidden;
+        }
+
+        #endregion
+
+        #region Private methods
+
         private void UpdateVersion(FileSubscriber subscriber)
         {
             subscriber.SetCurrentVersion();
             subscriber.SetCurrentSize();
         }
 
-        private void DataGridList_Drop(object sender, DragEventArgs e)
-        {
-            List<string> listFilter = UserSettings.GetFormatFiles();
-            foreach (string item in (string[])e.Data.GetData("FileDrop"))
-            {
-                FileInfo fileInfo = new FileInfo(item);
-                if (!String.IsNullOrWhiteSpace(listFilter.FirstOrDefault(f => f == fileInfo.Extension)))
-                    AddFileInDataGrid(item);
-            }
-        }
+        #endregion
     }
 }
