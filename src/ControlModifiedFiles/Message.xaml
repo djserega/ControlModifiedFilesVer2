@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Style="{StaticResource BackgroundCommandPanel}"/>
         <Grid Grid.Row="1" Style="{StaticResource BackgroundTable}">
-            <TextBlock Margin="5,5,5,30" x:Name="TextBlockMessage" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Margin="5,5,5,30" x:Name="TextBlockMessage" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
             <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,3">
                 <Button x:Name="ButtonOK" Style="{StaticResource ButtonOK}"
                         Click="ButtonOK_Click"/>
