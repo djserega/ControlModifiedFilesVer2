@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:ControlModifiedFiles.Resources">
 
     <Style TargetType="Label" x:Key="LabelBase">
-        <Setter Property="Width" Value="220"/>
+        <Setter Property="Width" Value="275"/>
         <Setter Property="Background">
             <Setter.Value>
                 <SolidColorBrush Color="WhiteSmoke" Opacity="0.30"/>
@@ -34,4 +34,14 @@
         <Setter Property="Content" Value="префикс файлов = имя пользователя"/>
     </Style>
 
+    <Style TargetType="Label" x:Key="LabelAutostart" BasedOn="{StaticResource LabelBase}"/>
+
+    <Style TargetType="Image" x:Key="ImageShield">
+        <Setter Property="Height" Value="15"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TextBlockAutostart">
+        <Setter Property="Text" Value="Автозапуск приложения"/>
+    </Style>
+    
 </ResourceDictionary>
