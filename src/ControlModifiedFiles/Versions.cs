@@ -10,7 +10,7 @@ namespace ControlModifiedFiles
 {
     internal class Versions : IDisposable
     {
-        
+
         #region Fields
 
         private string _prefixVersion = "{version";
@@ -87,24 +87,19 @@ namespace ControlModifiedFiles
         {
             string currentHash = GetMD5(SubscriberInfo.FullName);
 
-            List<string> listMD5Version = new List<string>();
-
             DirectoryInfo directoryVersion = new DirectoryInfo(Subscriber.DirectoryVersion);
 
             FileInfo fileInfoMaxEdited = null;
             DateTime dateTimeMaxEdited = DateTime.MinValue;
             foreach (FileInfo file in directoryVersion.GetFiles())
             {
-                string md5VersionFile = GetMD5(file.FullName);
-                listMD5Version.Add(md5VersionFile);
-                if (!String.IsNullOrWhiteSpace(md5VersionFile))
+
+                if (dateTimeMaxEdited <= file.LastWriteTime)
                 {
-                    if (dateTimeMaxEdited <= file.LastWriteTime)
-                    {
-                        fileInfoMaxEdited = file;
-                        dateTimeMaxEdited = file.LastWriteTime;
-                    };
-                }
+                    fileInfoMaxEdited = file;
+                    dateTimeMaxEdited = file.LastWriteTime;
+                };
+
             }
 
             DateVersion = dateTimeMaxEdited;
@@ -113,7 +108,7 @@ namespace ControlModifiedFiles
                 return 0;
 
             if (!getVersion)
-                if (listMD5Version.FirstOrDefault(f => f == currentHash) != null)
+                if (GetMD5(fileInfoMaxEdited.FullName) == currentHash)
                     return null;
 
             return int.Parse(fileInfoMaxEdited.Name.Substring($"{_prefixVersion} ", "}"));
