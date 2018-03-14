@@ -18,6 +18,11 @@
         <Setter Property="Margin" Value="18,0,0,0"/>
     </Style>
 
+    <Style TargetType="Label" x:Key="LabelOtherSettings" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Content" Value="Другие настройки:"/>
+        <Setter Property="Margin" Value="18,0,0,0"/>
+    </Style>
+
     <Style TargetType="Label" x:Key="LabelHiddenColumnPath" BasedOn="{StaticResource LabelBase}">
         <Setter Property="Content" Value="путь к файлу"/>
     </Style>
@@ -31,7 +36,7 @@
     </Style>
 
     <Style TargetType="Label" x:Key="LabelUsPrefixUserName" BasedOn="{StaticResource LabelBase}">
-        <Setter Property="Content" Value="префикс файлов = имя пользователя"/>
+        <Setter Property="Content" Value="В префиксе файлов имя пользователя"/>
     </Style>
 
     <Style TargetType="Label" x:Key="LabelAutostart" BasedOn="{StaticResource LabelBase}"/>
