@@ -27,9 +27,12 @@ namespace ControlModifiedFiles
     public partial class MainWindow : Window
     {
 
-        CallUpdateVersionEvents callUpdate = new CallUpdateVersionEvents();
-        Subscriber _subscriber;
-        
+        private CallUpdateVersionEvents _callUpdate = new CallUpdateVersionEvents();
+        private Subscriber _subscriber;
+        private UseContextMenuEvents _useContextMenu = new UseContextMenuEvents();
+
+        private NotifyIcon _notifyIcon;
+
         #region Properties
 
         public static ObservableCollection<FileSubscriber> listFiles = new ObservableCollection<FileSubscriber>();
@@ -45,7 +48,8 @@ namespace ControlModifiedFiles
         {
             InitializeComponent();
 
-            _subscriber = new Subscriber(callUpdate);
+            _subscriber = new Subscriber(_callUpdate);
+            _notifyIcon = new NotifyIcon(_useContextMenu);
 
             ApplicationRunWithAdministration();
         }
@@ -53,18 +57,33 @@ namespace ControlModifiedFiles
         private void MainWindowControlModifiedFiles_Loaded(object sender, RoutedEventArgs e)
         {
             ChangeVisiblePanelSettigs();
-            CheckBoxDirectoryVersion.IsChecked = UserSettings.GetUserSettings("HiddenColumnDirectoryVersion");
-            CheckBoxPath.IsChecked = UserSettings.GetUserSettings("HiddenColumnPath");
-            CheckBoxSize.IsChecked = UserSettings.GetUserSettings("HiddenColumnSize");
-            CheckBoxUsePrefixUserName.IsChecked = UserSettings.GetUserSettings("UsePrefixUserName");
-            GetStatusAutostart();
+            LoadUserSettings();
             ChangeVisibleModifiedSettings();
 
             SetItemSouce();
 
-            callUpdate.CallUpdateVersion += UpdateVersion;
+            _callUpdate.CallUpdateVersion += UpdateVersion;
+            _useContextMenu.CallUseContextMenu += EvokedContextMenu;
 
             SetIconShieldUAC();
+        }
+
+        private void EvokedContextMenu()
+        {
+            if (_useContextMenu.AddFiles)
+                ButtonAddFiles_Click(null, null);
+            else if (_useContextMenu.WindowsStateNormal)
+            {
+                MainMenuWindowShow();
+                WindowState = WindowState.Normal;
+            }
+            else if (_useContextMenu.ExitApp)
+                Application.Current.Shutdown();
+        }
+
+        private void MainWindowControlModifiedFiles_StateChanged(object sender, EventArgs e)
+        {
+            ChangeStateWindow();
         }
 
         #endregion
@@ -73,9 +92,7 @@ namespace ControlModifiedFiles
 
         private void ButtonAddFiles_Click(object sender, RoutedEventArgs e)
         {
-            string[] arrayFiles = DirFile.SelectNewFiles(this);
-            if (arrayFiles != null)
-                AddFilesInDataGridList(arrayFiles);
+            AddFilesInDataGridList(DirFile.SelectNewFiles(this));
         }
 
         private void ButtonRemoveFiles_Click(object sender, RoutedEventArgs e)
@@ -103,6 +120,16 @@ namespace ControlModifiedFiles
         #endregion
 
         #region Settings
+
+        private void LoadUserSettings()
+        {
+            CheckBoxDirectoryVersion.IsChecked = UserSettings.GetUserSettings("HiddenColumnDirectoryVersion");
+            CheckBoxPath.IsChecked = UserSettings.GetUserSettings("HiddenColumnPath");
+            CheckBoxSize.IsChecked = UserSettings.GetUserSettings("HiddenColumnSize");
+            CheckBoxUsePrefixUserName.IsChecked = UserSettings.GetUserSettings("UsePrefixUserName");
+            GetStatusAutostart();
+            CheckBoxHideToTray.IsChecked = UserSettings.GetUserSettings("HideToTray");
+        }
 
         private void ButtonSettings_Click(object sender, RoutedEventArgs e)
         {
@@ -156,6 +183,12 @@ namespace ControlModifiedFiles
             _modifiedSettings = true;
             ChangeVisibleModifiedSettings();
             ChangeVisibleColumnDataGrid();
+        }
+
+        private void CheckBoxHideToTray_Click(object sender, RoutedEventArgs e)
+        {
+            UserSettings.SetUserSettings("HideToTray", CheckBoxHideToTray.IsChecked.Value);
+            IsChangedSettings();
         }
 
         #region Visibility
@@ -282,18 +315,19 @@ namespace ControlModifiedFiles
 
         private void AddFilesInDataGridList(string[] arrayFilesName)
         {
-            foreach (string file in arrayFilesName)
-            {
-                FileSubscriber finded = listFiles.FirstOrDefault(f => f.Path == file);
-                if (finded != null)
+            if (arrayFilesName != null)
+                foreach (string file in arrayFilesName)
                 {
-                    Dialog.ShowMessage($"Выбранный файл уже контролируется:\n" +
-                        $"{file}");
-                    return;
-                }
+                    FileSubscriber finded = listFiles.FirstOrDefault(f => f.Path == file);
+                    if (finded != null)
+                    {
+                        Dialog.ShowMessage($"Выбранный файл уже контролируется:\n" +
+                            $"{file}");
+                        return;
+                    }
 
-                AddFileInDataGrid(file);
-            }
+                    AddFileInDataGrid(file);
+                }
         }
 
         private void AddFileInDataGrid(string file)
@@ -351,6 +385,35 @@ namespace ControlModifiedFiles
             subscriber.SetCurrentSize();
         }
 
+        private void MainMenuWindowShow()
+        {
+            ShowInTaskbar = true;
+            Show();
+        }
+
+        private void MainMenuWindowHide()
+        {
+            Hide();
+            ShowInTaskbar = false;
+        }
+
+        private void ChangeStateWindow()
+        {
+            if (WindowState == WindowState.Minimized
+                && UserSettings.GetUserSettings("HideToTray"))
+            {
+                _notifyIcon.ChangeStateWindow();
+                MainMenuWindowHide();
+            }
+            else
+            {
+                MainMenuWindowShow();
+
+                _notifyIcon.HideIcon();
+            }
+        }
+
         #endregion
+
     }
 }

@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:ControlModifiedFiles"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" x:Name="MainWindowControlModifiedFiles"
-        Title="Контроль версий файлов" Height="400" Width="800" MinHeight="250" MinWidth="600"
-        Loaded="MainWindowControlModifiedFiles_Loaded">
+        Title="Контроль версий файлов" Height="350" Width="800" MinHeight="250" MinWidth="600"
+        Loaded="MainWindowControlModifiedFiles_Loaded" StateChanged="MainWindowControlModifiedFiles_StateChanged">
     <Grid>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
@@ -76,6 +77,10 @@
                                 <Image x:Name="ImageShield" Style="{StaticResource ImageShield}"/>
                             </StackPanel>
                         </Label>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="CheckBoxHideToTray" Style="{StaticResource CheckBoxBase}" Click="CheckBoxHideToTray_Click"/>
+                        <Label Style="{StaticResource LabelHideToTray}"/>
                     </StackPanel>
                 </StackPanel>
 

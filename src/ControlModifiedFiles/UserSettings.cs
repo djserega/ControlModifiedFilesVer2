@@ -46,6 +46,8 @@ namespace ControlModifiedFiles
                     return GetDefaultProperties().HiddenColumnSize;
                 case "UsePrefixUserName":
                     return GetDefaultProperties().UsePrefixUserName;
+                case "HideToTray":
+                    return GetDefaultProperties().HideToTray;
                 default:
                     Errors.Save($"Не найден параметр {param}.");
                     return false;
@@ -68,6 +70,10 @@ namespace ControlModifiedFiles
                 case "UsePrefixUserName":
                     GetDefaultProperties().UsePrefixUserName = newValue;
                     break;
+                case "HideToTray":
+                    GetDefaultProperties().HideToTray = newValue;
+                    break;
+
                 default:
                     Errors.Save($"Не найден параметр {param}.");
                     break;
