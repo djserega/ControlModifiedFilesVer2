@@ -30,3 +30,7 @@
 - № версии: Текущий номер версии.
 - Дата изменения: Дата изменения файла последней версии.
 - Каталог версий: Каталог сохранения версий файлов.
+
+
+
+Use icon from https://www.flaticon.com/ is licensed by http://creativecommons.org/licenses/by/3.0/
