@@ -97,5 +97,17 @@ namespace ControlModifiedFiles.Properties {
                 return ((global::System.Collections.Specialized.StringCollection)(this["FormatFiles"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool HideToTray {
+            get {
+                return ((bool)(this["HideToTray"]));
+            }
+            set {
+                this["HideToTray"] = value;
+            }
+        }
     }
 }
