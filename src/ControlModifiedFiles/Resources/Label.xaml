@@ -41,12 +41,8 @@
 
     <Style TargetType="Label" x:Key="LabelAutostart" BasedOn="{StaticResource LabelBase}"/>
 
-    <Style TargetType="Image" x:Key="ImageShield">
-        <Setter Property="Height" Value="15"/>
+    <Style TargetType="Label" x:Key="LabelHideToTray" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Content" Value="Сворачивать в трей"/>
     </Style>
 
-    <Style TargetType="TextBlock" x:Key="TextBlockAutostart">
-        <Setter Property="Text" Value="Автозапуск приложения"/>
-    </Style>
-    
 </ResourceDictionary>
