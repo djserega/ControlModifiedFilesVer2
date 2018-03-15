@@ -63,8 +63,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Dialogs.cs" />
+    <Compile Include="ElementsFormConverter.cs" />
     <Compile Include="Errors.cs" />
     <Compile Include="Events.cs" />
+    <Compile Include="ListVersion.cs" />
     <Compile Include="NotifyIcon.cs" />
     <Compile Include="OtherMethods.cs" />
     <Compile Include="Permission.cs" />
@@ -157,6 +159,9 @@
     <Resource Include="icon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="check.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
