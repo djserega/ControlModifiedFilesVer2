@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Interop;
+using System.Diagnostics;
 
 namespace ControlModifiedFiles
 {
@@ -34,6 +35,11 @@ namespace ControlModifiedFiles
         private NotifyIcon _notifyIcon;
 
         private bool _handlerLoadForm;
+
+        private bool _openedGridListVersion;
+        private bool _openedGridSettings;
+
+        private ICollection<ListVersion> _listVersion = new List<ListVersion>();
 
         #region Properties
 
@@ -60,9 +66,11 @@ namespace ControlModifiedFiles
         {
             _handlerLoadForm = true;
 
-            SetItemSouce();
+            SetItemSouceDataGridList();
+            SetItemSourceVersion();
 
-            ChangeVisiblePanelSettigs(true);
+            ChangeVisiblePanelSettings(true);
+            ChangeVisiblePanelVersion(true);
             LoadUserSettings();
             ChangeVisibleModifiedSettings();
 
@@ -120,7 +128,7 @@ namespace ControlModifiedFiles
                 listFiles.Remove(item);
             }
 
-            SetItemSouce();
+            SetItemSouceDataGridList();
         }
 
         #endregion
@@ -140,14 +148,17 @@ namespace ControlModifiedFiles
 
         private void ButtonSettings_Click(object sender, RoutedEventArgs e)
         {
-            ChangeVisiblePanelSettigs();
+            if (_openedGridListVersion)
+                ChangeVisiblePanelVersion();
+
+            ChangeVisiblePanelSettings();
         }
 
         private void ButtonSaveSettings_Click(object sender, RoutedEventArgs e)
         {
             UserSettings.SaveUserSettings();
             _modifiedSettings = false;
-            ChangeVisiblePanelSettigs();
+            ChangeVisiblePanelSettings();
             ChangeVisibleModifiedSettings();
         }
 
@@ -242,7 +253,7 @@ namespace ControlModifiedFiles
                     f2 => f2.Key == columnName).Value).Visibility = valueVisible == true ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void ChangeVisiblePanelSettigs(bool onLoad = false)
+        private void ChangeVisiblePanelSettings(bool onLoad = false)
         {
             bool fadingIn = false;
 
@@ -274,10 +285,65 @@ namespace ControlModifiedFiles
             else
                 GridProperties.Opacity = 0;
 
+            _openedGridSettings = fadingIn;
             ButtonSettings.FontWeight = fadingIn ? FontWeights.Heavy : FontWeights.Normal;
         }
 
+        private void ChangeVisiblePanelVersion(bool onLoad = false)
+        {
+            bool fadingIn = false;
+
+            if (!onLoad)
+            {
+                fadingIn = GridListVersion.Opacity <= 0;
+
+                System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+                timer.Tick += (s, e1) =>
+                        {
+                            if (fadingIn)
+                            {
+                                if ((GridListVersion.Opacity += 0.1d) >= 1)
+                                {
+                                    timer.Stop();
+                                }
+                            }
+                            else
+                            {
+                                if ((GridListVersion.Opacity -= 0.1d) <= 0)
+                                {
+                                    timer.Stop();
+                                }
+                            }
+                        };
+                timer.Interval = 50;
+                timer.Start();
+            }
+            else
+                GridListVersion.Opacity = 0;
+
+            _openedGridListVersion = fadingIn;
+            ButtonVersions.FontWeight = fadingIn ? FontWeights.Heavy : FontWeights.Normal;
+        }
+
         #endregion
+
+        #endregion
+
+        #region List version
+
+        private void DataGridList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                if (e.AddedItems[0] is FileSubscriber subscriber)
+                {
+                    _listVersion = new Versions() { Subscriber = subscriber }.GetListVersion();
+                    SetItemSourceVersion();
+                }
+            }
+            else if (_listVersion.Count > 0)
+                _listVersion.Clear();
+        }
 
         #endregion
 
@@ -314,9 +380,14 @@ namespace ControlModifiedFiles
             ChangeVisibleColumnDataGrid();
         }
 
-        private void SetItemSouce()
+        private void SetItemSouceDataGridList()
         {
             DataGridList.ItemsSource = listFiles;
+        }
+
+        private void SetItemSourceVersion()
+        {
+            DataGridVersion.ItemsSource = _listVersion;
         }
 
         private void DataGridList_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -359,6 +430,49 @@ namespace ControlModifiedFiles
                 }
             }
             AddFilesInDataGridList(addedFiles);
+        }
+
+        #endregion
+
+        #region DataGridVersion
+
+        private void ButtonVersions_Click(object sender, RoutedEventArgs e)
+        {
+            if (_openedGridSettings)
+                ChangeVisiblePanelSettings();
+
+            ChangeVisiblePanelVersion();
+        }
+
+        private void DataGridVersion_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            if (!e.Cancel)
+                ((ListVersion)e.Row.DataContext).Checked = !((ListVersion)e.Row.DataContext).Checked;
+        }
+
+        private void ButtonCompareVersion_Click(object sender, RoutedEventArgs e)
+        {
+            string path1 = string.Empty;
+            string path2 = string.Empty;
+
+            foreach (ListVersion item in _listVersion)
+            {
+                if (!string.IsNullOrWhiteSpace(path1)
+                    && !string.IsNullOrWhiteSpace(path2))
+                    break;
+
+                if (item.Checked)
+                {
+                    if (string.IsNullOrWhiteSpace(path1))
+                        path1 = item.Path;
+                    else
+                        path2 = item.Path;
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(path1)
+                && !string.IsNullOrWhiteSpace(path2))
+                Process.Start("C:\\Program Files (x86)\\V8 Viewer\\v8viewer.exe", $" -diff \"{path1}\" \"{path2}\"");
         }
 
         #endregion

@@ -79,6 +79,20 @@ namespace ControlModifiedFiles
             return (int)maxVersion;
         }
 
+        internal List<ListVersion> GetListVersion()
+        {
+            List<ListVersion> list = new List<ListVersion>();
+
+            foreach (FileInfo item in GetFilesInDirectoryVersion())
+            {
+                list.Add(new ListVersion(item.FullName, item.Name, item.LastWriteTime));
+            }
+
+            list.Sort((el1, el2) => el2.DateModified.CompareTo(el1.DateModified));
+
+            return list;
+        }
+
         #endregion
 
         #region Private methods
@@ -87,11 +101,9 @@ namespace ControlModifiedFiles
         {
             string currentHash = GetMD5(SubscriberInfo.FullName);
 
-            DirectoryInfo directoryVersion = new DirectoryInfo(Subscriber.DirectoryVersion);
-
             FileInfo fileInfoMaxEdited = null;
             DateTime dateTimeMaxEdited = DateTime.MinValue;
-            foreach (FileInfo file in directoryVersion.GetFiles())
+            foreach (FileInfo file in GetFilesInDirectoryVersion())
             {
 
                 if (dateTimeMaxEdited <= file.LastWriteTime)
@@ -155,6 +167,9 @@ namespace ControlModifiedFiles
 
             return hash;
         }
+
+        private FileInfo[] GetFilesInDirectoryVersion() 
+            => new DirectoryInfo(Subscriber.DirectoryVersion).GetFiles();
 
         #endregion
 
