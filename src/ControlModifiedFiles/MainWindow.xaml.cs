@@ -353,7 +353,7 @@ namespace ControlModifiedFiles
                     {
                         Dialog.ShowMessage($"Выбранный файл уже контролируется:\n" +
                             $"{file}");
-                        return;
+                        continue;
                     }
 
                     AddFileInDataGrid(file);
