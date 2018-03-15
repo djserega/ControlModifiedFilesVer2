@@ -50,4 +50,9 @@
         <Setter Property="Content" Value="Уведомлять о создании версии каждые"/>
     </Style>
 
+    <Style TargetType="Label" x:Key="LabelListVersion" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Content" Value="Список версий:"/>
+        <Setter Property="Width" Value="auto"/>
+    </Style>
+     
 </ResourceDictionary>
