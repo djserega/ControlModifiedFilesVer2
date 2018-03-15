@@ -26,6 +26,7 @@ namespace ControlModifiedFiles
                 ContextMenu = CreateContextMenu(),
                 Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)
             };
+            _notifyIcon.DoubleClick += ContextMenuItemStateNormal;
 
             SetBalloonTipTextDefault();
         }
@@ -35,14 +36,14 @@ namespace ControlModifiedFiles
         private WF.ContextMenu CreateContextMenu()
         {
             var contextMenu = new WF.ContextMenu();
-
-            var menuItemAdd = AddMenuItemContextMenu(ref contextMenu, "Добавить файлы", "ContextMenuAddFiles", this.ContextMenuItemAdd_Click);
+            
+            var menuItemAdd = AddMenuItemContextMenu(ref contextMenu, "Добавить файлы", "ContextMenuAddFiles", ContextMenuItemAdd_Click);
             menuItemAdd.DefaultItem = true;
             menuItemAdd.Shortcut = WF.Shortcut.Ins;
-
-            AddMenuItemContextMenu(ref contextMenu, "Развернуть", "ContextMenuStateNormal", this.ContextMenuItemStateNormal);
-            AddMenuItemContextMenu(ref contextMenu, "", "br");
-            AddMenuItemContextMenu(ref contextMenu, "Закрыть", "ContextMenuExit", this.ContextMenuItemExit);
+            
+            AddMenuItemContextMenu(ref contextMenu, "Развернуть", "ContextMenuStateNormal", ContextMenuItemStateNormal);
+            AddMenuItemContextMenu(ref contextMenu, "-", "br");
+            AddMenuItemContextMenu(ref contextMenu, "Закрыть", "ContextMenuExit", ContextMenuItemExit);
 
             return contextMenu;
         }
