@@ -85,7 +85,7 @@ namespace ControlModifiedFiles
             }
         }
 
-        [Column("№ предыдущей версии", Visible = false)]
+        [Column("№ предыдущей версии", VisibleColumn = false)]
         public int PreviousVersion { get; set; }
 
         [Column("№ версии")]
@@ -119,7 +119,7 @@ namespace ControlModifiedFiles
         [Column("Каталог версий", Visible = false)]
         public string DirectoryVersion { get; set; }
 
-        [Column("Версии без уведомлений", Visible = false)]
+        [Column("Версии без уведомлений", VisibleColumn = false)]
         public int CountVersionWithoutNotify { get; set; }
 
         #endregion
