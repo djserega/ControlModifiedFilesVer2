@@ -62,7 +62,7 @@ namespace ControlModifiedFiles
 
             SetItemSouce();
 
-            ChangeVisiblePanelSettigs();
+            ChangeVisiblePanelSettigs(true);
             LoadUserSettings();
             ChangeVisibleModifiedSettings();
 
@@ -242,10 +242,39 @@ namespace ControlModifiedFiles
                     f2 => f2.Key == columnName).Value).Visibility = valueVisible == true ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void ChangeVisiblePanelSettigs()
+        private void ChangeVisiblePanelSettigs(bool onLoad = false)
         {
-            GridProperties.Visibility = GridProperties.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
-            ButtonSettings.FontWeight = GridProperties.Visibility == Visibility.Visible ? FontWeights.Heavy : FontWeights.Normal;
+            bool fadingIn = false;
+
+            if (!onLoad)
+            {
+                fadingIn = GridProperties.Opacity <= 0;
+
+                System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+                timer.Tick += (s, e1) =>
+                {
+                    if (fadingIn)
+                    {
+                        if ((GridProperties.Opacity += 0.1d) >= 1)
+                        {
+                            timer.Stop();
+                        }
+                    }
+                    else
+                    {
+                        if ((GridProperties.Opacity -= 0.1d) <= 0)
+                        {
+                            timer.Stop();
+                        }
+                    }
+                };
+                timer.Interval = 50;
+                timer.Start();
+            }
+            else
+                GridProperties.Opacity = 0;
+
+            ButtonSettings.FontWeight = fadingIn ? FontWeights.Heavy : FontWeights.Normal;
         }
 
         #endregion

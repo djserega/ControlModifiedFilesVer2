@@ -17,12 +17,9 @@
 
         <Grid Grid.Row="0" Style="{StaticResource BackgroundCommandPanel}">
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="ButtonAddFiles" Style="{StaticResource ButtonAddFiles}"
-                        Click="ButtonAddFiles_Click"/>
-                <Button x:Name="ButtonRemoveFiles" Style="{StaticResource ButtonRemoveFiles}"
-                        Click="ButtonRemoveFiles_Click"/>
-                <Button x:Name="ButtonSettings" Style="{StaticResource ButtonSettings}"
-                        Click="ButtonSettings_Click"/>
+                <Button x:Name="ButtonAddFiles" Style="{StaticResource ButtonAddFiles}" Click="ButtonAddFiles_Click"/>
+                <Button x:Name="ButtonRemoveFiles" Style="{StaticResource ButtonRemoveFiles}" Click="ButtonRemoveFiles_Click"/>
+                <Button x:Name="ButtonSettings" Style="{StaticResource ButtonSettings}" Click="ButtonSettings_Click"/>
             </StackPanel>
         </Grid>
 
