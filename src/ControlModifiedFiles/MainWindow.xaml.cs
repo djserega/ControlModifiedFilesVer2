@@ -444,7 +444,7 @@ namespace ControlModifiedFiles
                 if (userSettingsNotifyCount > 0
                     && subscriber.CountVersionWithoutNotify >= userSettingsNotifyCount)
                 {
-                    _notifyIcon.CreateVersion(subscriber.Version);
+                    _notifyIcon.CreateVersion(subscriber);
                     subscriber.CountVersionWithoutNotify = 0;
                 }
             }

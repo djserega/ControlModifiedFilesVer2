@@ -114,6 +114,13 @@ namespace ControlModifiedFiles
             SetBalloonTipTextDefault();
         }
 
+        internal void CreateVersion(FileSubscriber subscriber)
+        {
+            SetBalloonTipTextNewVersionFile(subscriber);
+            ShowIcon();
+            SetBalloonTipTextDefault();
+        }
+
         internal void AddFile(int i, string[] addedFiles)
         {
             if (i > 0)
@@ -169,6 +176,11 @@ namespace ControlModifiedFiles
         private void SetBalloonTipTextNewVersionFile(int version)
         {
             SetBalloonTipText($"Актуальная версия {version}.");
+        }
+
+        private void SetBalloonTipTextNewVersionFile(FileSubscriber subscriber)
+        {
+            SetBalloonTipText($"Файл: {subscriber.FileName}\nАктуальная версия {subscriber.Version}.");
         }
 
         private void SetBalloonTipTextHideToTray()
