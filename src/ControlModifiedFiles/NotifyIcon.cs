@@ -102,14 +102,47 @@ namespace ControlModifiedFiles
 
         internal void CreateVersion()
         {
-            SetBalloonTipTextAddFiles();
+            SetBalloonTipTextNewVersionFile();
             ShowIcon();
             SetBalloonTipTextDefault();
         }
 
         internal void CreateVersion(int version)
         {
-            SetBalloonTipTextAddFiles(version);
+            SetBalloonTipTextNewVersionFile(version);
+            ShowIcon();
+            SetBalloonTipTextDefault();
+        }
+
+        internal void AddFile(int i, string[] addedFiles)
+        {
+            if (i > 0)
+            {
+                string text;
+                if (i == 1)
+                {
+                    text = $"Добавлен файл {addedFiles[--i]}";
+                }
+                else
+                {
+                    text = $"Добавлено файлов: {i}";
+                    if (i < 4)
+                    {
+                        StringBuilder stringBuilder = new StringBuilder(text);
+                        foreach (string fileName in addedFiles)
+                        {
+                            stringBuilder.AppendLine(fileName);
+                        }
+                        text = stringBuilder.ToString();
+                    }
+                }
+                AddFile(text);
+            }
+        }
+
+        internal void AddFile(string text)
+        {
+            SetBalloonTipTextAddFiles(text);
             ShowIcon();
             SetBalloonTipTextDefault();
         }
@@ -123,19 +156,19 @@ namespace ControlModifiedFiles
             SetBalloonTipText(_balloonTipTextByDefault);
         }
 
-        private void SetBalloonTipTextAddFiles()
+        private void SetBalloonTipTextAddFiles(string text)
         {
-            SetBalloonTipText("Добавлен новый файл.");
-        }
-
-        private void SetBalloonTipTextAddFiles(int version)
-        {
-            SetBalloonTipText($"Актуальная версия {version}.");
+            SetBalloonTipText(text);
         }
 
         private void SetBalloonTipTextNewVersionFile()
         {
             SetBalloonTipText("Создана новая версия файла.");
+        }
+
+        private void SetBalloonTipTextNewVersionFile(int version)
+        {
+            SetBalloonTipText($"Актуальная версия {version}.");
         }
 
         private void SetBalloonTipTextHideToTray()

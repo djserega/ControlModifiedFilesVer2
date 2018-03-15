@@ -29,7 +29,7 @@ namespace ControlModifiedFiles
             _callUpdate = callUpdate;
         }
 
-        internal void Subscribe(FileSubscriber subscriber)
+        internal void Subscribe(FileSubscriber subscriber, bool notified = true)
         {
             if (subscriber.Checked
                 && !String.IsNullOrWhiteSpace(subscriber.Path))
@@ -59,6 +59,7 @@ namespace ControlModifiedFiles
                 {
                     versions.CreateDirectoryVersion();
                 }
+                _callUpdate.NeedNotified = notified;
                 _callUpdate.Call(subscriber);
             }
         }
@@ -111,7 +112,8 @@ namespace ControlModifiedFiles
                         {
                             versions.CreateNewVersionFile();
                         }
-                        
+
+                        _callUpdate.NeedNotified = true;
                         _callUpdate.Call(subscriber);
 
                         DirFile.DeleteFile(fileInfoTemp);

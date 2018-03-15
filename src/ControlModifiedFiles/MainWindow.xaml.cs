@@ -98,7 +98,7 @@ namespace ControlModifiedFiles
 
         private void ButtonAddFiles_Click(object sender, RoutedEventArgs e)
         {
-            AddFilesInDataGridList(DirFile.SelectNewFiles(this));
+            AddFilesInDataGridList(DirFile.SelectNewFiles(this), sender == null);
         }
 
         private void ButtonRemoveFiles_Click(object sender, RoutedEventArgs e)
@@ -315,12 +315,21 @@ namespace ControlModifiedFiles
         private void DataGridList_Drop(object sender, DragEventArgs e)
         {
             List<string> listFilter = UserSettings.GetFormatFiles();
-            foreach (string item in (string[])e.Data.GetData("FileDrop"))
+
+            string[] selectedFiles = (string[])e.Data.GetData("FileDrop");
+
+            string[] addedFiles = new string[selectedFiles.Count()];
+
+            int i = 0;
+            foreach (string item in selectedFiles)
             {
                 FileInfo fileInfo = new FileInfo(item);
                 if (!String.IsNullOrWhiteSpace(listFilter.FirstOrDefault(f => f == fileInfo.Extension)))
-                    AddFileInDataGrid(item);
+                {
+                    addedFiles[i++] = item;
+                }
             }
+            AddFilesInDataGridList(addedFiles);
         }
 
         #endregion
@@ -343,24 +352,34 @@ namespace ControlModifiedFiles
             return list;
         }
 
-        private void AddFilesInDataGridList(string[] arrayFilesName)
+        private void AddFilesInDataGridList(string[] arrayFilesName, bool notified = false)
         {
             if (arrayFilesName != null)
+            {
+                string[] addedFiles = new string[arrayFilesName.Count()];
+                int i = 0;
                 foreach (string file in arrayFilesName)
                 {
-                    FileSubscriber finded = listFiles.FirstOrDefault(f => f.Path == file);
-                    if (finded != null)
+                    if (!string.IsNullOrWhiteSpace(file))
                     {
-                        Dialog.ShowMessage($"Выбранный файл уже контролируется:\n" +
-                            $"{file}");
-                        continue;
-                    }
+                        FileSubscriber finded = listFiles.FirstOrDefault(f => f.Path == file);
+                        if (finded != null)
+                        {
+                            Dialog.ShowMessage($"Выбранный файл уже контролируется:\n" +
+                                $"{file}");
+                            continue;
+                        }
 
-                    AddFileInDataGrid(file);
+                        FileSubscriber subscriber = AddFileInDataGrid(file, notified);
+                        addedFiles[i++] = subscriber.FileName;
+                    }
                 }
+                if (notified)
+                    _notifyIcon.AddFile(i, addedFiles);
+            }
         }
 
-        private void AddFileInDataGrid(string file)
+        private FileSubscriber AddFileInDataGrid(string file, bool notified = false)
         {
             FileSubscriber subscriber = new FileSubscriber()
             {
@@ -370,9 +389,11 @@ namespace ControlModifiedFiles
             };
             subscriber.SetCurrentSize();
 
-            _subscriber.Subscribe(subscriber);
+            _subscriber.Subscribe(subscriber, notified);
 
             listFiles.Add(subscriber);
+
+            return subscriber;
         }
 
         #endregion
@@ -409,20 +430,23 @@ namespace ControlModifiedFiles
 
         #region Private methods
 
-        private void UpdateVersion(FileSubscriber subscriber)
+        private void UpdateVersion(FileSubscriber subscriber, bool NeedNotified)
         {
             subscriber.SetCurrentVersion();
             subscriber.SetCurrentSize();
 
-            if (subscriber.Version != subscriber.PreviousVersion)
-                subscriber.CountVersionWithoutNotify++;
-
-            int userSettingsNotifyCount = UserSettings.GetUserSettings("NotifyVersionCreation");
-            if (userSettingsNotifyCount > 0
-                && subscriber.CountVersionWithoutNotify >= userSettingsNotifyCount)
+            if (NeedNotified)
             {
-                _notifyIcon.CreateVersion(subscriber.Version);
-                subscriber.CountVersionWithoutNotify = 0;
+                if (subscriber.Version != subscriber.PreviousVersion)
+                    subscriber.CountVersionWithoutNotify++;
+
+                int userSettingsNotifyCount = UserSettings.GetUserSettings("NotifyVersionCreation");
+                if (userSettingsNotifyCount > 0
+                    && subscriber.CountVersionWithoutNotify >= userSettingsNotifyCount)
+                {
+                    _notifyIcon.CreateVersion(subscriber.Version);
+                    subscriber.CountVersionWithoutNotify = 0;
+                }
             }
         }
 

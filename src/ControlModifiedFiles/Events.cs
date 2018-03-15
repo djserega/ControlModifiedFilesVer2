@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 
 namespace ControlModifiedFiles
 {
-    internal delegate void UpdateVersion(FileSubscriber subscriber);
+    internal delegate void UpdateVersion(FileSubscriber subscriber, bool NeedNotified);
 
     internal class CallUpdateVersionEvents : EventArgs
     {
         internal event UpdateVersion CallUpdateVersion;
+
+        internal bool NeedNotified { get; set; }
         
         internal void Call(FileSubscriber subscriber)
         {
             if (CallUpdateVersion == null)
                 return;
 
-            CallUpdateVersion(subscriber);
+            CallUpdateVersion(subscriber, NeedNotified);
         }
 
     }
