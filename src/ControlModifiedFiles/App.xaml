@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="Resources/Label.xaml"/>
                 <ResourceDictionary Source="Resources/Separators.xaml"/>
                 <ResourceDictionary Source="Resources/TextBlock.xaml"/>
+                <ResourceDictionary Source="Resources/TextBox.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

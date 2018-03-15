@@ -85,6 +85,9 @@ namespace ControlModifiedFiles
             }
         }
 
+        [Column("№ предыдущей версии", Visible = false)]
+        public int PreviousVersion { get; set; }
+
         [Column("№ версии")]
         public int Version
         {
@@ -116,6 +119,9 @@ namespace ControlModifiedFiles
         [Column("Каталог версий", Visible = false)]
         public string DirectoryVersion { get; set; }
 
+        [Column("Версии без уведомлений", Visible = false)]
+        public int CountVersionWithoutNotify { get; set; }
+
         #endregion
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
@@ -131,6 +137,7 @@ namespace ControlModifiedFiles
                 Subscriber = this
             })
             {
+                PreviousVersion = _version;
                 Version = versions.GetVersion();
                 DateMaxVersion = versions.DateVersion;
             }

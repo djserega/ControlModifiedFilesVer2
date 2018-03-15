@@ -99,6 +99,20 @@ namespace ControlModifiedFiles
             SetBalloonTipTextDefault();
         }
 
+        internal void CreateVersion()
+        {
+            SetBalloonTipTextAddFiles();
+            ShowIcon();
+            SetBalloonTipTextDefault();
+        }
+
+        internal void CreateVersion(int version)
+        {
+            SetBalloonTipTextAddFiles(version);
+            ShowIcon();
+            SetBalloonTipTextDefault();
+        }
+
         #endregion
 
         #region Private methods
@@ -111,6 +125,11 @@ namespace ControlModifiedFiles
         private void SetBalloonTipTextAddFiles()
         {
             SetBalloonTipText("Добавлен новый файл.");
+        }
+
+        private void SetBalloonTipTextAddFiles(int version)
+        {
+            SetBalloonTipText($"Актуальная версия {version}.");
         }
 
         private void SetBalloonTipTextNewVersionFile()

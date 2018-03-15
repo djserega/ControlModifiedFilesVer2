@@ -111,7 +111,7 @@ namespace ControlModifiedFiles
                         {
                             versions.CreateNewVersionFile();
                         }
-
+                        
                         _callUpdate.Call(subscriber);
 
                         DirFile.DeleteFile(fileInfoTemp);

@@ -109,5 +109,17 @@ namespace ControlModifiedFiles.Properties {
                 this["HideToTray"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int NotifyVersionCreation {
+            get {
+                return ((int)(this["NotifyVersionCreation"]));
+            }
+            set {
+                this["NotifyVersionCreation"] = value;
+            }
+        }
     }
 }

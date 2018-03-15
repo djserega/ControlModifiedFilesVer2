@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ControlModifiedFiles"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" x:Name="MainWindowControlModifiedFiles"
-        Title="Контроль версий файлов" Height="350" Width="800" MinHeight="250" MinWidth="600"
+        Title="Контроль версий файлов" Height="400" Width="800" MinHeight="400" MinWidth="600"
         Loaded="MainWindowControlModifiedFiles_Loaded" StateChanged="MainWindowControlModifiedFiles_StateChanged">
     <Grid>
         
@@ -61,7 +61,7 @@
                         <CheckBox x:Name="CheckBoxSize" Style="{StaticResource CheckBoxBase}" Click="CheckBoxSize_Click"/>
                         <Label Style="{StaticResource LabelHiddenColumnSize}"/>
                     </StackPanel>
-                    <Separator Style="{StaticResource SeparatorBetweenRow10}"/>
+                    <Separator Style="{StaticResource SeparatorHeadSettings}"/>
                     <StackPanel Orientation="Horizontal">
                         <Label Style="{StaticResource LabelOtherSettings}"/>
                     </StackPanel>
@@ -81,6 +81,11 @@
                     <StackPanel Orientation="Horizontal">
                         <CheckBox x:Name="CheckBoxHideToTray" Style="{StaticResource CheckBoxBase}" Click="CheckBoxHideToTray_Click"/>
                         <Label Style="{StaticResource LabelHideToTray}"/>
+                    </StackPanel>
+                    <Separator Style="{StaticResource SeparatorHeadSettings}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource LabelNotifyVersionCreation}"/>
+                        <TextBox x:Name="TextBoxNotifyVersionCreation" Style="{StaticResource TextBoxNotifyVersionCreation}" TextChanged="TextBoxNotifyVersionCreation_TextChanged"/>
                     </StackPanel>
                 </StackPanel>
 

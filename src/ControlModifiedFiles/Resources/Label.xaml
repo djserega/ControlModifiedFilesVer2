@@ -45,4 +45,9 @@
         <Setter Property="Content" Value="Сворачивать в трей"/>
     </Style>
 
+    <Style TargetType="Label" x:Key="LabelNotifyVersionCreation" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Width" Value="230"/>
+        <Setter Property="Content" Value="Уведомлять о создании версии каждые"/>
+    </Style>
+
 </ResourceDictionary>

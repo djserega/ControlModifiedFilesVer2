@@ -34,7 +34,7 @@ namespace ControlModifiedFiles
             return list;
         }
 
-        internal static bool GetUserSettings(string param)
+        internal static dynamic GetUserSettings(string param)
         {
             switch (param)
             {
@@ -48,6 +48,8 @@ namespace ControlModifiedFiles
                     return GetDefaultProperties().UsePrefixUserName;
                 case "HideToTray":
                     return GetDefaultProperties().HideToTray;
+                case "NotifyVersionCreation":
+                    return GetDefaultProperties().NotifyVersionCreation;
                 default:
                     Errors.Save($"Не найден параметр {param}.");
                     return false;
@@ -79,6 +81,20 @@ namespace ControlModifiedFiles
                     break;
             }
         }
+        internal static void SetUserSettings(string param, int newValue)
+        {
+            switch (param)
+            {
+                case "NotifyVersionCreation":
+                    GetDefaultProperties().NotifyVersionCreation = newValue;
+                    break;
+
+                default:
+                    Errors.Save($"Не найден параметр {param}.");
+                    break;
+            }
+        }
+
 
         internal static void SaveUserSettings()
         {

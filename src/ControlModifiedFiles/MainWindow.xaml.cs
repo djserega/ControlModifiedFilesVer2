@@ -33,6 +33,8 @@ namespace ControlModifiedFiles
 
         private NotifyIcon _notifyIcon;
 
+        private bool _handlerLoadForm;
+
         #region Properties
 
         public static ObservableCollection<FileSubscriber> listFiles = new ObservableCollection<FileSubscriber>();
@@ -56,16 +58,20 @@ namespace ControlModifiedFiles
 
         private void MainWindowControlModifiedFiles_Loaded(object sender, RoutedEventArgs e)
         {
+            _handlerLoadForm = true;
+
+            SetItemSouce();
+
             ChangeVisiblePanelSettigs();
             LoadUserSettings();
             ChangeVisibleModifiedSettings();
-
-            SetItemSouce();
 
             _callUpdate.CallUpdateVersion += UpdateVersion;
             _useContextMenu.CallUseContextMenu += EvokedContextMenu;
 
             SetIconShieldUAC();
+
+            _handlerLoadForm = false;
         }
 
         private void EvokedContextMenu()
@@ -129,6 +135,7 @@ namespace ControlModifiedFiles
             CheckBoxUsePrefixUserName.IsChecked = UserSettings.GetUserSettings("UsePrefixUserName");
             GetStatusAutostart();
             CheckBoxHideToTray.IsChecked = UserSettings.GetUserSettings("HideToTray");
+            TextBoxNotifyVersionCreation.Text = Convert.ToString(UserSettings.GetUserSettings("NotifyVersionCreation"));
         }
 
         private void ButtonSettings_Click(object sender, RoutedEventArgs e)
@@ -180,7 +187,9 @@ namespace ControlModifiedFiles
 
         private void IsChangedSettings()
         {
-            _modifiedSettings = true;
+            if (!_handlerLoadForm)
+                _modifiedSettings = true;
+
             ChangeVisibleModifiedSettings();
             ChangeVisibleColumnDataGrid();
         }
@@ -188,6 +197,27 @@ namespace ControlModifiedFiles
         private void CheckBoxHideToTray_Click(object sender, RoutedEventArgs e)
         {
             UserSettings.SetUserSettings("HideToTray", CheckBoxHideToTray.IsChecked.Value);
+            IsChangedSettings();
+        }
+
+        private void TextBoxNotifyVersionCreation_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string textNotifyVersiob = TextBoxNotifyVersionCreation.Text.ToString();
+
+            int notifyVersion;
+            try
+            {
+                checked
+                {
+                    notifyVersion = Convert.ToInt32(textNotifyVersiob);
+                }
+            }
+            catch (Exception)
+            {
+                notifyVersion = 0;
+            }
+
+            UserSettings.SetUserSettings("NotifyVersionCreation", notifyVersion);
             IsChangedSettings();
         }
 
@@ -383,6 +413,17 @@ namespace ControlModifiedFiles
         {
             subscriber.SetCurrentVersion();
             subscriber.SetCurrentSize();
+
+            if (subscriber.Version != subscriber.PreviousVersion)
+                subscriber.CountVersionWithoutNotify++;
+
+            int userSettingsNotifyCount = UserSettings.GetUserSettings("NotifyVersionCreation");
+            if (userSettingsNotifyCount > 0
+                && subscriber.CountVersionWithoutNotify >= userSettingsNotifyCount)
+            {
+                _notifyIcon.CreateVersion(subscriber.Version);
+                subscriber.CountVersionWithoutNotify = 0;
+            }
         }
 
         private void MainMenuWindowShow()
