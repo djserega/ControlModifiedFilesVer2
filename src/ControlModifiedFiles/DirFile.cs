@@ -63,9 +63,10 @@ namespace ControlModifiedFiles
         }
 
         internal static string GetFileName(string fileName)
-        {
-            return new FileInfo(fileName).Name;
-        }
+            => new FileInfo(fileName).Name;
+
+        internal static string GetExtension(string fileName)
+            => new FileInfo(fileName).Extension;
 
         internal static string GetTempFile()
         {
