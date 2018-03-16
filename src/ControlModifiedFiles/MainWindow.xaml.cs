@@ -37,6 +37,10 @@ namespace ControlModifiedFiles
 
         #endregion
 
+        private List<string> _listFilter = UserSettings.GetFormatFiles();
+        private List<string> _listExtensionV8 = UserSettings.GetExtension(ExtensionVersion.v8);
+        private List<string> _listExtensionV7 = UserSettings.GetExtension(ExtensionVersion.v7);
+
         private Subscriber _subscriber;
         private NotifyIcon _notifyIcon;
 
@@ -274,13 +278,16 @@ namespace ControlModifiedFiles
                 fadingIn = GridProperties.Opacity <= 0;
 
                 System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+
                 timer.Tick += (s, e1) =>
                 {
                     if (fadingIn)
                     {
+                        GridProperties.Visibility = _openedGridSettings ? Visibility.Visible : Visibility.Hidden;
                         if ((GridProperties.Opacity += 0.1d) >= 1)
                         {
                             timer.Stop();
+                            timer.Dispose();
                         }
                     }
                     else
@@ -288,9 +295,12 @@ namespace ControlModifiedFiles
                         if ((GridProperties.Opacity -= 0.1d) <= 0)
                         {
                             timer.Stop();
+                            timer.Dispose();
                         }
                     }
                 };
+                timer.Disposed += (sender, e) => GridProperties.Visibility = _openedGridSettings ? Visibility.Visible : Visibility.Hidden;
+
                 timer.Interval = 50;
                 timer.Start();
             }
@@ -298,7 +308,8 @@ namespace ControlModifiedFiles
                 GridProperties.Opacity = 0;
 
             _openedGridSettings = fadingIn;
-            ButtonSettings.FontWeight = fadingIn ? FontWeights.Heavy : FontWeights.Normal;
+
+            ButtonSettings.FontWeight = _openedGridSettings ? FontWeights.Heavy : FontWeights.Normal;
         }
 
         private void ChangeVisiblePanelVersion(bool onLoad = false)
@@ -310,13 +321,16 @@ namespace ControlModifiedFiles
                 fadingIn = GridListVersion.Opacity <= 0;
 
                 System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-                timer.Tick += (s, e1) =>
+
+                timer.Tick += (sender, e) =>
                 {
                     if (fadingIn)
                     {
+                        GridListVersion.Visibility = _openedGridListVersion ? Visibility.Visible : Visibility.Hidden;
                         if ((GridListVersion.Opacity += 0.1d) >= 1)
                         {
                             timer.Stop();
+                            timer.Dispose();
                         }
                     }
                     else
@@ -324,9 +338,12 @@ namespace ControlModifiedFiles
                         if ((GridListVersion.Opacity -= 0.1d) <= 0)
                         {
                             timer.Stop();
+                            timer.Dispose();
                         }
                     }
                 };
+                timer.Disposed += (sender, e) => GridListVersion.Visibility = _openedGridListVersion ? Visibility.Visible : Visibility.Hidden;
+
                 timer.Interval = 50;
                 timer.Start();
             }
@@ -334,11 +351,25 @@ namespace ControlModifiedFiles
                 GridListVersion.Opacity = 0;
 
             _openedGridListVersion = fadingIn;
-            ButtonVersions.FontWeight = fadingIn ? FontWeights.Heavy : FontWeights.Normal;
+
+            ButtonVersions.FontWeight = _openedGridListVersion ? FontWeights.Heavy : FontWeights.Normal;
         }
 
         private void ChangeVisibleV8Comparer()
-            => ButtonCompareVersion.Visibility = _v8Viewer.V8VieverInstalled ? Visibility.Visible : Visibility.Hidden;
+        {
+            ButtonCompareVersion.Visibility = _v8Viewer.V8VieverInstalled ? Visibility.Visible : Visibility.Hidden;
+            ChangeVisibleV8Viewer(false); 
+        }
+
+        private void ChangeVisibleV8Viewer(bool visible)
+        {
+            if (!_v8Viewer.V8VieverInstalled)
+                visible = false;
+
+            ButtonCompareVersion.Visibility = visible ? Visibility.Visible : Visibility.Hidden;
+            CheckBoxSelectVersion.Visibility = visible ? Visibility.Visible : Visibility.Hidden;
+        }
+
 
         #endregion
 
@@ -363,6 +394,9 @@ namespace ControlModifiedFiles
                         column.IsReadOnly = attribute.IsOnlyRead;
                         column.Header = attribute.HeaderName;
                         column.Visibility = attribute.VisibleColumn ? Visibility.Visible : Visibility.Hidden;
+
+                        if (propInfo.Name == "DateMaxVersion")
+                            ((DataGridTextColumn)column).Binding.StringFormat = "dd.MM.yyyy HH:mm:ss";
 
                         if (!string.IsNullOrWhiteSpace(attribute.SortMemberPath))
                             column.SortMemberPath = attribute.SortMemberPath;
@@ -409,8 +443,6 @@ namespace ControlModifiedFiles
 
         private void DataGridList_Drop(object sender, DragEventArgs e)
         {
-            List<string> listFilter = UserSettings.GetFormatFiles();
-
             string[] selectedFiles = (string[])e.Data.GetData("FileDrop");
 
             string[] addedFiles = new string[selectedFiles.Count()];
@@ -419,7 +451,7 @@ namespace ControlModifiedFiles
             foreach (string item in selectedFiles)
             {
                 FileInfo fileInfo = new FileInfo(item);
-                if (!String.IsNullOrWhiteSpace(listFilter.FirstOrDefault(f => f == fileInfo.Extension)))
+                if (!String.IsNullOrWhiteSpace(_listFilter.FirstOrDefault(f => f == fileInfo.Extension)))
                 {
                     addedFiles[i++] = item;
                 }
@@ -439,7 +471,6 @@ namespace ControlModifiedFiles
             else if (_listVersion.Count > 0)
                 _listVersion.Clear();
         }
-
 
         #endregion
 
@@ -487,9 +518,7 @@ namespace ControlModifiedFiles
         {
             List<FileSubscriber> list = new List<FileSubscriber>();
             foreach (FileSubscriber item in DataGridList.SelectedItems)
-            {
                 list.Add(item);
-            }
 
             return list;
         }
@@ -546,8 +575,9 @@ namespace ControlModifiedFiles
         {
             _listVersion = new Versions() { Subscriber = subscriber }.GetListVersion();
             SetItemSourceVersion();
-        }
 
+            ChangeVisibleV8Viewer(!string.IsNullOrWhiteSpace(_listExtensionV8.FirstOrDefault(f => f == subscriber.Extension)));
+        }
 
         #endregion
 

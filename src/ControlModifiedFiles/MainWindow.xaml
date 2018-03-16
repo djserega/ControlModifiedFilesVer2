@@ -37,7 +37,7 @@
                       Drop="DataGridList_Drop" AllowDrop="True"
                       SelectionChanged="DataGridList_SelectionChanged"/>
             
-            <Grid x:Name="GridProperties" Grid.Column="1" Margin="0,0,3,0" VerticalAlignment="Top"
+            <Grid x:Name="GridProperties" Grid.Column="1" Margin="0,0,3,0" VerticalAlignment="Top" 
                   Height="{Binding Path=ActualHeight, ElementName=GridWorkPanel, Converter={local:ElementsFormConverter}, ConverterParameter='15'}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -98,9 +98,10 @@
                 </Grid>
             </Grid>
 
-            <Grid x:Name="GridListVersion" Grid.Column="1" Margin="0,0,3,0" VerticalAlignment="Top">
+            <Grid x:Name="GridListVersion" Grid.Column="1" Margin="0,0,3,0" VerticalAlignment="Top"
+                  Height="{Binding Path=ActualHeight, ElementName=GridWorkPanel, Converter={local:ElementsFormConverter}, ConverterParameter='6'}">
                 <StackPanel Orientation="Vertical" Style="{StaticResource BackgroundStackPanel}"
-                            Height="{Binding Path=ActualHeight, ElementName=GridWorkPanel, Converter={local:ElementsFormConverter}, ConverterParameter='10'}">
+                            Height="{Binding Path=ActualHeight, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='0'}">
                     <Separator Style="{StaticResource SeparatorBetweenRow}"/>
                     <StackPanel Orientation="Horizontal">
                         <Label Style="{StaticResource LabelListVersion}"/>
@@ -108,10 +109,10 @@
                         <Button x:Name="ButtonCompareVersion" Style="{StaticResource ButtonCompareVersion}" Click="ButtonCompareVersion_Click"/>
                     </StackPanel>
                     <DataGrid x:Name="DataGridVersion" ItemsSource="{Binding _listVersion}" AutoGenerateColumns="False" IsReadOnly="True" Style="{StaticResource DataGridBase}" 
-                              Height="{Binding Path=ActualHeight, ElementName=GridWorkPanel, Converter={local:ElementsFormConverter}, ConverterParameter='40'}"
+                              Height="{Binding Path=ActualHeight, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='37'}"
                               RowEditEnding="DataGridVersion_RowEditEnding" MouseDoubleClick="DataGridVersion_MouseDoubleClick">
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Width="15" Binding="{Binding Checked}">
+                            <DataGridCheckBoxColumn x:Name="CheckBoxSelectVersion" Width="15" Binding="{Binding Checked}">
                                 <DataGridCheckBoxColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <Image Source="/check.png"/>
