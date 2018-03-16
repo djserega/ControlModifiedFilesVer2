@@ -28,9 +28,25 @@ namespace ControlModifiedFiles
         {
             List<string> list = new List<string>();
             foreach (String item in GetDefaultProperties().FormatFiles)
-            {
                 list.Add(item);
-            }
+
+            return list;
+        }
+
+        internal static List<string> GetExtension(ExtensionVersion version)
+        {
+            StringCollection collection;
+            if (version == ExtensionVersion.v8)
+                collection = GetDefaultProperties().ExtensionV8;
+            else if (version == ExtensionVersion.v7)
+                collection = GetDefaultProperties().ExtensionV7;
+            else
+                return null;
+
+            List<string> list = new List<string>();
+            foreach (String item in collection)
+                list.Add(item);
+
             return list;
         }
 
