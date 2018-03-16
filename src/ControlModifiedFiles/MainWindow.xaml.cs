@@ -28,10 +28,16 @@ namespace ControlModifiedFiles
     public partial class MainWindow : Window
     {
 
+        #region Private fields
+
+        #region Events
+
         private CallUpdateVersionEvents _callUpdate = new CallUpdateVersionEvents();
-        private Subscriber _subscriber;
         private UseContextMenuEvents _useContextMenu = new UseContextMenuEvents();
 
+        #endregion
+
+        private Subscriber _subscriber;
         private NotifyIcon _notifyIcon;
 
         private bool _handlerLoadForm;
@@ -40,6 +46,9 @@ namespace ControlModifiedFiles
         private bool _openedGridSettings;
 
         private ICollection<ListVersion> _listVersion = new List<ListVersion>();
+        private V8Viewer _v8Viewer = new V8Viewer();
+
+        #endregion
 
         #region Properties
 
@@ -71,6 +80,7 @@ namespace ControlModifiedFiles
 
             ChangeVisiblePanelSettings(true);
             ChangeVisiblePanelVersion(true);
+            ChangeVisibleV8Comparer();
             LoadUserSettings();
             ChangeVisibleModifiedSettings();
 
@@ -232,6 +242,8 @@ namespace ControlModifiedFiles
             IsChangedSettings();
         }
 
+        #endregion
+
         #region Visibility
 
         private void ChangeVisibleModifiedSettings()
@@ -299,22 +311,22 @@ namespace ControlModifiedFiles
 
                 System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
                 timer.Tick += (s, e1) =>
+                {
+                    if (fadingIn)
+                    {
+                        if ((GridListVersion.Opacity += 0.1d) >= 1)
                         {
-                            if (fadingIn)
-                            {
-                                if ((GridListVersion.Opacity += 0.1d) >= 1)
-                                {
-                                    timer.Stop();
-                                }
-                            }
-                            else
-                            {
-                                if ((GridListVersion.Opacity -= 0.1d) <= 0)
-                                {
-                                    timer.Stop();
-                                }
-                            }
-                        };
+                            timer.Stop();
+                        }
+                    }
+                    else
+                    {
+                        if ((GridListVersion.Opacity -= 0.1d) <= 0)
+                        {
+                            timer.Stop();
+                        }
+                    }
+                };
                 timer.Interval = 50;
                 timer.Start();
             }
@@ -325,25 +337,8 @@ namespace ControlModifiedFiles
             ButtonVersions.FontWeight = fadingIn ? FontWeights.Heavy : FontWeights.Normal;
         }
 
-        #endregion
-
-        #endregion
-
-        #region List version
-
-        private void DataGridList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count > 0)
-            {
-                if (e.AddedItems[0] is FileSubscriber subscriber)
-                {
-                    _listVersion = new Versions() { Subscriber = subscriber }.GetListVersion();
-                    SetItemSourceVersion();
-                }
-            }
-            else if (_listVersion.Count > 0)
-                _listVersion.Clear();
-        }
+        private void ChangeVisibleV8Comparer()
+            => ButtonCompareVersion.Visibility = _v8Viewer.V8VieverInstalled ? Visibility.Visible : Visibility.Hidden;
 
         #endregion
 
@@ -432,6 +427,20 @@ namespace ControlModifiedFiles
             AddFilesInDataGridList(addedFiles);
         }
 
+        private void DataGridList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                if (e.AddedItems[0] is FileSubscriber subscriber)
+                    LoadListVersion(subscriber);
+                else
+                    _listVersion.Clear();
+            }
+            else if (_listVersion.Count > 0)
+                _listVersion.Clear();
+        }
+
+
         #endregion
 
         #region DataGridVersion
@@ -442,6 +451,10 @@ namespace ControlModifiedFiles
                 ChangeVisiblePanelSettings();
 
             ChangeVisiblePanelVersion();
+
+            if (_openedGridListVersion)
+                if (DataGridList.SelectedItem is FileSubscriber subscriber)
+                    LoadListVersion(subscriber);
         }
 
         private void DataGridVersion_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
@@ -451,28 +464,14 @@ namespace ControlModifiedFiles
         }
 
         private void ButtonCompareVersion_Click(object sender, RoutedEventArgs e)
+            => _v8Viewer.CompareVersion(_listVersion);
+
+        private void DataGridVersion_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            string path1 = string.Empty;
-            string path2 = string.Empty;
-
-            foreach (ListVersion item in _listVersion)
+            if (((DataGrid)e.Source).SelectedItem is ListVersion selectedVersion)
             {
-                if (!string.IsNullOrWhiteSpace(path1)
-                    && !string.IsNullOrWhiteSpace(path2))
-                    break;
-
-                if (item.Checked)
-                {
-                    if (string.IsNullOrWhiteSpace(path1))
-                        path1 = item.Path;
-                    else
-                        path2 = item.Path;
-                }
+                selectedVersion.Checked = !selectedVersion.Checked;
             }
-
-            if (!string.IsNullOrWhiteSpace(path1)
-                && !string.IsNullOrWhiteSpace(path2))
-                Process.Start("C:\\Program Files (x86)\\V8 Viewer\\v8viewer.exe", $" -diff \"{path1}\" \"{path2}\"");
         }
 
         #endregion
@@ -538,6 +537,17 @@ namespace ControlModifiedFiles
 
             return subscriber;
         }
+
+        #endregion
+
+        #region Versions
+
+        private void LoadListVersion(FileSubscriber subscriber)
+        {
+            _listVersion = new Versions() { Subscriber = subscriber }.GetListVersion();
+            SetItemSourceVersion();
+        }
+
 
         #endregion
 
