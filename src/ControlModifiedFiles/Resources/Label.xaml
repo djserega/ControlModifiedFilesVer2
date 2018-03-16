@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:ControlModifiedFiles.Resources">
 
     <Style TargetType="Label" x:Key="LabelBase">
-        <Setter Property="Width" Value="275"/>
+        <Setter Property="Width" Value="200"/>
         <Setter Property="Background">
             <Setter.Value>
                 <SolidColorBrush Color="WhiteSmoke" Opacity="0.30"/>
@@ -36,7 +36,7 @@
     </Style>
 
     <Style TargetType="Label" x:Key="LabelUsPrefixUserName" BasedOn="{StaticResource LabelBase}">
-        <Setter Property="Content" Value="В префиксе файлов имя пользователя"/>
+        <Setter Property="Content" Value="Имя пользователя в префиксах"/>
     </Style>
 
     <Style TargetType="Label" x:Key="LabelAutostart" BasedOn="{StaticResource LabelBase}"/>
