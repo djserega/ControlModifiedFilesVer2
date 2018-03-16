@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Globalization;
 
 namespace ControlModifiedFiles
 {
@@ -17,6 +18,8 @@ namespace ControlModifiedFiles
 
         private bool _checked;
         private string _path;
+        private string _fileName;
+        private string _extension;
         private ulong _size;
         private string _sizeString;
         private int _version;
@@ -55,7 +58,21 @@ namespace ControlModifiedFiles
         }
 
         [Column("Имя файла", Visible = false)]
-        public string FileName { get; set; }
+        public string FileName
+        {
+            get { return _fileName; }
+            set
+            {
+                if (_fileName != value)
+                {
+                    _fileName = value;
+                    _extension = DirFile.GetExtension(_fileName);
+                }
+            }
+        }
+
+        [Column("Расширение", VisibleColumn = false)]
+        public string Extension { get { return _extension; } }
 
         [Column("Размер (byte)", Visible = false)]
         public ulong Size
