@@ -121,5 +121,33 @@ namespace ControlModifiedFiles.Properties {
                 this["NotifyVersionCreation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
+            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
+            "tring>.epf</string>\r\n  <string>.erf</string>\r\n</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection ExtensionV8 {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["ExtensionV8"]));
+            }
+            set {
+                this["ExtensionV8"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
+            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
+            "tring>.ert</string>\r\n</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection ExtensionV7 {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["ExtensionV7"]));
+            }
+            set {
+                this["ExtensionV7"] = value;
+            }
+        }
     }
 }
