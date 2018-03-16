@@ -122,7 +122,7 @@ namespace ControlModifiedFiles.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
             "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
@@ -131,12 +131,9 @@ namespace ControlModifiedFiles.Properties {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["ExtensionV8"]));
             }
-            set {
-                this["ExtensionV8"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
             "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
@@ -144,9 +141,6 @@ namespace ControlModifiedFiles.Properties {
         public global::System.Collections.Specialized.StringCollection ExtensionV7 {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["ExtensionV7"]));
-            }
-            set {
-                this["ExtensionV7"] = value;
             }
         }
     }
