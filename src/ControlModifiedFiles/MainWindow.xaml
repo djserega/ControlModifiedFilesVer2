@@ -9,7 +9,7 @@
         Title="Контроль версий файлов" Height="400" Width="800" MinHeight="400" MinWidth="800"
         Loaded="MainWindowControlModifiedFiles_Loaded" StateChanged="MainWindowControlModifiedFiles_StateChanged">
     <Grid>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
@@ -25,7 +25,7 @@
         </Grid>
 
         <Grid x:Name="GridWorkPanel" Grid.Row="1" Style="{StaticResource BackgroundTable}">
-          
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="450"/>
@@ -38,8 +38,8 @@
                       Drop="DataGridList_Drop" AllowDrop="True"
                       SelectionChanged="DataGridList_SelectionChanged"/>
 
-            <Grid x:Name="GridProperties" Grid.Column="1" Margin="0,0,3,0" VerticalAlignment="Top"
-                  Height="{Binding Path=ActualHeight, ElementName=GridWorkPanel, Converter={local:ElementsFormConverter}, ConverterParameter='15'}">
+            <Grid x:Name="GridProperties" Grid.Column="1" Margin="0,0,8,0" VerticalAlignment="Top"
+                  Height="{Binding Path=ActualHeight, ElementName=GridWorkPanel, Converter={local:ElementsFormConverter}, ConverterParameter='8'}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="35"/>
@@ -95,6 +95,24 @@
                         <Label Style="{StaticResource LabelNotifyVersionCreation}"/>
                         <TextBox x:Name="TextBoxNotifyVersionCreation" Style="{StaticResource TextBoxNotifyVersionCreation}" TextChanged="TextBoxNotifyVersionCreation_TextChanged"/>
                     </StackPanel>
+                    <Separator Style="{StaticResource SeparatorBetweenRow10}"/>
+                    <Label Style="{StaticResource LabelUseComparsion}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="CheckBoxUseV8Viewer" Style="{StaticResource CheckBoxBase}"/>
+                        <Label Style="{StaticResource LabelUseV8Viewer}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox x:Name="CheckBoxUseDefy" Style="{StaticResource CheckBoxBase}"/>
+                            <Label Style="{StaticResource LabelUseDefy}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox x:Name="TextBoxPathDefy" Style="{StaticResource TextBoxPathDefy}" TextChanged="TextBoxPathDefy_TextChanged"
+                                      Width="{Binding Path=ActualWidth, ElementName=GridProperties, Converter={local:ElementsFormConverter}, ConverterParameter='30'}"/>
+                            <Button x:Name="ButtonSelectDefy" Style="{StaticResource ButtonBase}" Content="..." Width="20" BorderThickness="1"
+                                    Click="ButtonSelectDefy_Click"/>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
 
                 <Grid Grid.Row="2">
@@ -106,7 +124,7 @@
                 </Grid>
             </Grid>
 
-            <Grid x:Name="GridListVersion" Grid.Column="1" Margin="0,0,3,0" VerticalAlignment="Top"
+            <Grid x:Name="GridListVersion" Grid.Column="1" Margin="0,0,8,0" VerticalAlignment="Top" Visibility="Hidden"
                   Height="{Binding Path=ActualHeight, ElementName=GridWorkPanel, Converter={local:ElementsFormConverter}, ConverterParameter='6'}">
                 <StackPanel Orientation="Vertical" Style="{StaticResource BackgroundStackPanel}"
                             Height="{Binding Path=ActualHeight, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='0'}">
@@ -119,7 +137,7 @@
                     <DataGrid x:Name="DataGridVersion" ItemsSource="{Binding _listVersion}" AutoGenerateColumns="False" IsReadOnly="True"
                               Style="{StaticResource DataGridBase}" 
                               Height="{Binding Path=ActualHeight, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='37'}"
-                              Width="{Binding Path=ActualWidth, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='15'}"
+                              Width="{Binding Path=ActualWidth, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='4'}"
                               RowEditEnding="DataGridVersion_RowEditEnding" MouseDoubleClick="DataGridVersion_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn x:Name="CheckBoxSelectVersion" Width="15" Binding="{Binding Checked}">
@@ -134,7 +152,7 @@
                     </DataGrid>
                 </StackPanel>
             </Grid>
-            
+
         </Grid>
     </Grid>
 </Window>

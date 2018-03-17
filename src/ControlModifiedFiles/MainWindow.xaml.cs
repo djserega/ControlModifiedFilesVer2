@@ -44,13 +44,16 @@ namespace ControlModifiedFiles
         private Subscriber _subscriber;
         private NotifyIcon _notifyIcon;
 
+        private FileSubscriber _fileSubscriberCurrentRow;
+
         private bool _handlerLoadForm;
 
         private bool _openedGridListVersion;
         private bool _openedGridSettings;
 
         private ICollection<ListVersion> _listVersion = new List<ListVersion>();
-        private V8Viewer _v8Viewer = new V8Viewer();
+        private ComparsionV8Viewer _comparsionV8Viewer = new ComparsionV8Viewer();
+        private ComparsionDefy _comparsionDefy = new ComparsionDefy();
 
         #endregion
 
@@ -84,7 +87,8 @@ namespace ControlModifiedFiles
 
             ChangeVisiblePanelSettings(true);
             ChangeVisiblePanelVersion(true);
-            ChangeVisibleV8Comparer();
+            ChangeVisibleComparer(false);
+
             LoadUserSettings();
             ChangeVisibleModifiedSettings();
 
@@ -158,6 +162,9 @@ namespace ControlModifiedFiles
             GetStatusAutostart();
             CheckBoxHideToTray.IsChecked = UserSettings.GetUserSettings("HideToTray");
             TextBoxNotifyVersionCreation.Text = Convert.ToString(UserSettings.GetUserSettings("NotifyVersionCreation"));
+            CheckBoxUseV8Viewer.IsChecked = UserSettings.GetUserSettings("UseV8Viewer");
+            CheckBoxUseDefy.IsChecked = UserSettings.GetUserSettings("UseDefy");
+            TextBoxPathDefy.Text = UserSettings.GetUserSettings("PathDefy");
         }
 
         private void ButtonSettings_Click(object sender, RoutedEventArgs e)
@@ -355,16 +362,11 @@ namespace ControlModifiedFiles
             ButtonVersions.FontWeight = _openedGridListVersion ? FontWeights.Heavy : FontWeights.Normal;
         }
 
-        private void ChangeVisibleV8Comparer()
+        private void ChangeVisibleComparer(bool visible)
         {
-            ButtonCompareVersion.Visibility = _v8Viewer.V8VieverInstalled ? Visibility.Visible : Visibility.Hidden;
-            ChangeVisibleV8Viewer(false); 
-        }
-
-        private void ChangeVisibleV8Viewer(bool visible)
-        {
-            if (!_v8Viewer.V8VieverInstalled)
-                visible = false;
+            if (!_comparsionV8Viewer.ProgramInstalled
+                && !_comparsionDefy.ProgramInstalled)
+                    visible = false;
 
             ButtonCompareVersion.Visibility = visible ? Visibility.Visible : Visibility.Hidden;
             CheckBoxSelectVersion.Visibility = visible ? Visibility.Visible : Visibility.Hidden;
@@ -461,10 +463,14 @@ namespace ControlModifiedFiles
 
         private void DataGridList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            _fileSubscriberCurrentRow = null;
             if (e.AddedItems.Count > 0)
             {
                 if (e.AddedItems[0] is FileSubscriber subscriber)
-                    LoadListVersion(subscriber);
+                {
+                    _fileSubscriberCurrentRow = subscriber;
+                    LoadListVersion();
+                }
                 else
                     _listVersion.Clear();
             }
@@ -484,8 +490,7 @@ namespace ControlModifiedFiles
             ChangeVisiblePanelVersion();
 
             if (_openedGridListVersion)
-                if (DataGridList.SelectedItem is FileSubscriber subscriber)
-                    LoadListVersion(subscriber);
+                LoadListVersion();
         }
 
         private void DataGridVersion_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
@@ -495,7 +500,34 @@ namespace ControlModifiedFiles
         }
 
         private void ButtonCompareVersion_Click(object sender, RoutedEventArgs e)
-            => _v8Viewer.CompareVersion(_listVersion);
+        {
+            string path1 = string.Empty;
+            string path2 = string.Empty;
+
+            foreach (ListVersion item in _listVersion)
+            {
+                if (!string.IsNullOrWhiteSpace(path1)
+                    && !string.IsNullOrWhiteSpace(path2))
+                    break;
+
+                if (item.Checked)
+                {
+                    if (string.IsNullOrWhiteSpace(path1))
+                        path1 = item.Path;
+                    else
+                        path2 = item.Path;
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(path1)
+                && !string.IsNullOrWhiteSpace(path2))
+            {
+                if (!string.IsNullOrWhiteSpace(_listExtensionV8.FirstOrDefault(f => f == _fileSubscriberCurrentRow.Extension)))
+                    _comparsionV8Viewer.CompareVersion(path1, path2);
+                else if (!string.IsNullOrWhiteSpace(_listExtensionV7.FirstOrDefault(f => f == _fileSubscriberCurrentRow.Extension)))
+                    _comparsionDefy.CompareVersion(path1, path2);
+            }
+        }
 
         private void DataGridVersion_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -571,12 +603,24 @@ namespace ControlModifiedFiles
 
         #region Versions
 
-        private void LoadListVersion(FileSubscriber subscriber)
+        private void LoadListVersion()
         {
-            _listVersion = new Versions() { Subscriber = subscriber }.GetListVersion();
-            SetItemSourceVersion();
+            if (_fileSubscriberCurrentRow != null)
+            {
+                _listVersion = new Versions() { Subscriber = _fileSubscriberCurrentRow }.GetListVersion();
+                SetItemSourceVersion();
 
-            ChangeVisibleV8Viewer(!string.IsNullOrWhiteSpace(_listExtensionV8.FirstOrDefault(f => f == subscriber.Extension)));
+                ChangeVisibleComparer(true);
+            }
+            else
+                ChangeVisibleComparer(false);
+        }
+
+        private void ButtonSelectDefy_Click(object sender, RoutedEventArgs e)
+        {
+            TextBoxPathDefy.Text = _comparsionDefy.SelectFile();
+            UserSettings.SetUserSettings("PathDefy", TextBoxPathDefy.Text);
+            _comparsionDefy = new ComparsionDefy();
         }
 
         #endregion
@@ -663,5 +707,9 @@ namespace ControlModifiedFiles
 
         #endregion
 
+        private void TextBoxPathDefy_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _comparsionDefy = new ComparsionDefy();
+        }
     }
 }
