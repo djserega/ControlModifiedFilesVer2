@@ -143,5 +143,41 @@ namespace ControlModifiedFiles.Properties {
                 return ((global::System.Collections.Specialized.StringCollection)(this["ExtensionV7"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseV8Viewer {
+            get {
+                return ((bool)(this["UseV8Viewer"]));
+            }
+            set {
+                this["UseV8Viewer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseDefy {
+            get {
+                return ((bool)(this["UseDefy"]));
+            }
+            set {
+                this["UseDefy"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathDefy {
+            get {
+                return ((string)(this["PathDefy"]));
+            }
+            set {
+                this["PathDefy"] = value;
+            }
+        }
     }
 }

@@ -66,13 +66,19 @@ namespace ControlModifiedFiles
                     return GetDefaultProperties().HideToTray;
                 case "NotifyVersionCreation":
                     return GetDefaultProperties().NotifyVersionCreation;
+                case "UseV8Viewer":
+                    return GetDefaultProperties().UseV8Viewer;
+                case "UseDefy":
+                    return GetDefaultProperties().UseDefy;
+                case "PathDefy":
+                    return GetDefaultProperties().PathDefy;
                 default:
                     Errors.Save($"Не найден параметр {param}.");
                     return false;
             }
         }
 
-        internal static void SetUserSettings(string param, bool newValue)
+        internal static void SetUserSettings(string param, dynamic newValue)
         {
             switch (param)
             {
@@ -91,36 +97,33 @@ namespace ControlModifiedFiles
                 case "HideToTray":
                     GetDefaultProperties().HideToTray = newValue;
                     break;
-
-                default:
-                    Errors.Save($"Не найден параметр {param}.");
-                    break;
-            }
-        }
-        internal static void SetUserSettings(string param, int newValue)
-        {
-            switch (param)
-            {
                 case "NotifyVersionCreation":
                     GetDefaultProperties().NotifyVersionCreation = newValue;
                     break;
-
+                case "UseV8Viewer":
+                    GetDefaultProperties().UseV8Viewer = newValue;
+                    break;
+                case "UseDefy":
+                    GetDefaultProperties().UseDefy = newValue;
+                    break;
+                case "PathDefy":
+                    GetDefaultProperties().PathDefy = newValue;
+                    break;
                 default:
                     Errors.Save($"Не найден параметр {param}.");
                     break;
             }
         }
-
 
         internal static void SaveUserSettings()
         {
             GetDefaultProperties().Save();
         }
-        
+
         private static Properties.Settings GetDefaultProperties()
         {
             return Properties.Settings.Default;
         }
-        
+
     }
 }
