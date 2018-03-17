@@ -34,6 +34,26 @@ namespace ControlModifiedFiles
                 return null;
         }
 
+        internal static string SelectFile(string title, string filter)
+        {
+            OpenFileDialog openFile = new OpenFileDialog()
+            {
+                Filter = filter,
+                FilterIndex = 0,
+                Multiselect = false,
+                Title = title,
+                CheckFileExists = true,
+                CheckPathExists = true
+            };
+
+            bool? result = openFile.ShowDialog();
+
+            if (result.HasValue && result.Value)
+                return openFile.FileName;
+            else
+                return null;
+        }
+
         internal static ulong GetFileSize(string path) => CalculateFileSize(path);
 
         internal static string GetSizeFormat(ulong size)
@@ -87,6 +107,11 @@ namespace ControlModifiedFiles
             fileInfo.Refresh();
             if (fileInfo.Exists)
                 fileInfo.Delete();
+        }
+
+        internal static bool FileExists(string fileName)
+        {
+            return new FileInfo(fileName).Exists;
         }
 
         #endregion
