@@ -618,9 +618,13 @@ namespace ControlModifiedFiles
 
         private void ButtonSelectDefy_Click(object sender, RoutedEventArgs e)
         {
-            TextBoxPathDefy.Text = _comparsionDefy.SelectFile();
-            UserSettings.SetUserSettings("PathDefy", TextBoxPathDefy.Text);
-            _comparsionDefy = new ComparsionDefy();
+            string selectedFile = _comparsionDefy.SelectFile();
+            if (!string.IsNullOrWhiteSpace(selectedFile))
+            {
+                TextBoxPathDefy.Text = selectedFile;
+                UserSettings.SetUserSettings("PathDefy", TextBoxPathDefy.Text);
+                _comparsionDefy = new ComparsionDefy();
+            }
         }
 
         #endregion
