@@ -25,24 +25,59 @@
 
     <Style TargetType="Label" x:Key="LabelHiddenColumnPath" BasedOn="{StaticResource LabelBase}">
         <Setter Property="Content" Value="путь к файлу"/>
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip>
+                    <TextBlock Text="Колонка с полным адресом версионированного файла"/>
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="Label" x:Key="LabelHiddenColumnDirectoryVersion" BasedOn="{StaticResource LabelBase}">
         <Setter Property="Content" Value="каталог версий"/>
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip>
+                    <TextBlock Text="Каталог версий файлов"/>
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="Label" x:Key="LabelHiddenColumnSize" BasedOn="{StaticResource LabelBase}">
         <Setter Property="Content" Value="размер (в байтах)"/>
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip>
+                    <TextBlock Text="Размер версионируемого файла в байтах"/>
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="Label" x:Key="LabelUsPrefixUserName" BasedOn="{StaticResource LabelBase}">
         <Setter Property="Content" Value="Имя пользователя в префиксах"/>
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip>
+                    <TextBlock Text="В префикс каталога версий файлов будет дописано имя пользователя"/>
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="Label" x:Key="LabelAutostart" BasedOn="{StaticResource LabelBase}"/>
 
     <Style TargetType="Label" x:Key="LabelHideToTray" BasedOn="{StaticResource LabelBase}">
         <Setter Property="Content" Value="Сворачивать в трей"/>
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip>
+                    <TextBlock Text="Свернутая программа 'перемещается' в трей. Открыть приложение можно через выбор из меню вызванного правой кнопкой мыши"/>
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="Label" x:Key="LabelNotifyVersionCreation" BasedOn="{StaticResource LabelBase}">
@@ -54,5 +89,32 @@
         <Setter Property="Content" Value="Список версий:"/>
         <Setter Property="Width" Value="auto"/>
     </Style>
-     
+
+    <Style TargetType="Label" x:Key="LabelUseComparsion" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Content" Value="Сравнение версий:"/>
+        <Setter Property="Margin" Value="18,0,0,0"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="LabelUseV8Viewer" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Content" Value="Использовать V8Viewer (epf, erf)"/>
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip>
+                    <TextBlock Text="Программа для сравнения данных внешних обработок, отчетов версии платформы 8.x"/>
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Label" x:Key="LabelUseDefy" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Content" Value="Использовать Defy (ert)"/>
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip>
+                    <TextBlock Text="Программа для сравнения данных внешних обработок версии платформы 7.7"/>
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

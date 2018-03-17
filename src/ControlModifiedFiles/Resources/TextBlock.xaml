@@ -4,6 +4,13 @@
 
     <Style TargetType="TextBlock" x:Key="TextBlockAutostart">
         <Setter Property="Text" Value="Автозапуск приложения"/>
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip>
+                    <TextBlock Text="Приложение будет запущено при старте системы"/>
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>
