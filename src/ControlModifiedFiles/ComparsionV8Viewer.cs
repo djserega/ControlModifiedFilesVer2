@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 
 namespace ControlModifiedFiles
 {
-    internal class V8Viewer
+    internal class ComparsionV8Viewer
     {
 
-        internal bool V8VieverInstalled { get; }
+        internal bool ProgramInstalled { get; }
+
         internal string Path { get; }
 
-        internal V8Viewer()
+        internal ComparsionV8Viewer()
         {
             try
             {
@@ -24,14 +25,14 @@ namespace ControlModifiedFiles
                     && stringValue.Count() > 1)
                 {
                     Path = stringValue[1];
-                    V8VieverInstalled = true;
+                    ProgramInstalled = true;
                 }
                 else
-                    V8VieverInstalled = false;
+                    ProgramInstalled = false;
             }
             catch (Exception)
             {
-                V8VieverInstalled = false;
+                ProgramInstalled = false;
             }
         }
 
@@ -40,26 +41,8 @@ namespace ControlModifiedFiles
             return Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\UFH\SHC\", false);
         }
 
-        internal void CompareVersion(ICollection<ListVersion> listVersion)
+        internal void CompareVersion(string path1, string path2)
         {
-            string path1 = string.Empty;
-            string path2 = string.Empty;
-
-            foreach (ListVersion item in listVersion)
-            {
-                if (!string.IsNullOrWhiteSpace(path1)
-                    && !string.IsNullOrWhiteSpace(path2))
-                    break;
-
-                if (item.Checked)
-                {
-                    if (string.IsNullOrWhiteSpace(path1))
-                        path1 = item.Path;
-                    else
-                        path2 = item.Path;
-                }
-            }
-
             if (!string.IsNullOrWhiteSpace(path1)
                 && !string.IsNullOrWhiteSpace(path2))
                 Process.Start("C:\\Program Files (x86)\\V8 Viewer\\v8viewer.exe", $" -diff \"{path1}\" \"{path2}\"");
