@@ -38,7 +38,7 @@
                       Drop="DataGridList_Drop" AllowDrop="True"
                       SelectionChanged="DataGridList_SelectionChanged"/>
 
-            <Grid x:Name="GridProperties" Grid.Column="1" Margin="0,0,8,0" VerticalAlignment="Top"
+            <Grid x:Name="GridProperties" Grid.Column="1" Margin="0,0,8,0" VerticalAlignment="Top"  Visibility="Hidden"
                   Height="{Binding Path=ActualHeight, ElementName=GridWorkPanel, Converter={local:ElementsFormConverter}, ConverterParameter='8'}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -98,12 +98,12 @@
                     <Separator Style="{StaticResource SeparatorBetweenRow10}"/>
                     <Label Style="{StaticResource LabelUseComparsion}"/>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="CheckBoxUseV8Viewer" Style="{StaticResource CheckBoxBase}"/>
+                        <CheckBox x:Name="CheckBoxUseV8Viewer" Style="{StaticResource CheckBoxBase}" Click="CheckBoxUseV8Viewer_Click"/>
                         <Label Style="{StaticResource LabelUseV8Viewer}"/>
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
                         <StackPanel Orientation="Horizontal">
-                            <CheckBox x:Name="CheckBoxUseDefy" Style="{StaticResource CheckBoxBase}"/>
+                            <CheckBox x:Name="CheckBoxUseDefy" Style="{StaticResource CheckBoxBase}" Click="CheckBoxUseDefy_Click"/>
                             <Label Style="{StaticResource LabelUseDefy}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">

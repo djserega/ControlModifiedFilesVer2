@@ -253,6 +253,36 @@ namespace ControlModifiedFiles
             IsChangedSettings();
         }
 
+        private void TextBoxPathDefy_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _comparsionDefy = new ComparsionDefy();
+            IsChangedSettings();
+        }
+
+        private void CheckBoxUseV8Viewer_Click(object sender, RoutedEventArgs e)
+        {
+            UserSettings.SetUserSettings("UseV8Viewer", CheckBoxUseV8Viewer.IsChecked.Value);
+            IsChangedSettings();
+        }
+
+        private void CheckBoxUseDefy_Click(object sender, RoutedEventArgs e)
+        {
+            UserSettings.SetUserSettings("UseDefy", CheckBoxUseDefy.IsChecked.Value);
+            IsChangedSettings();
+        }
+
+        private void ButtonSelectDefy_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedFile = _comparsionDefy.SelectFile();
+            if (!string.IsNullOrWhiteSpace(selectedFile))
+            {
+                TextBoxPathDefy.Text = selectedFile;
+                UserSettings.SetUserSettings("PathDefy", TextBoxPathDefy.Text);
+                _comparsionDefy = new ComparsionDefy();
+                IsChangedSettings();
+            }
+        }
+
         #endregion
 
         #region Visibility
@@ -364,10 +394,21 @@ namespace ControlModifiedFiles
 
         private void ChangeVisibleComparer(bool visible)
         {
-            if (!_comparsionV8Viewer.ProgramInstalled
-                && !_comparsionDefy.ProgramInstalled)
-                    visible = false;
-
+            if (_fileSubscriberCurrentRow == null)
+                visible = false;
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(_listExtensionV8.FirstOrDefault(f => f == _fileSubscriberCurrentRow.Extension)))
+                {
+                    if (!(UserSettings.GetUserSettings("UseV8Viewer") && _comparsionV8Viewer.ProgramInstalled))
+                        visible = false;
+                }
+                else if (!string.IsNullOrWhiteSpace(_listExtensionV7.FirstOrDefault(f => f == _fileSubscriberCurrentRow.Extension)))
+                {
+                    if (!(UserSettings.GetUserSettings("UseDefy") && _comparsionDefy.ProgramInstalled))
+                        visible = false;
+                }
+            }
             ButtonCompareVersion.Visibility = visible ? Visibility.Visible : Visibility.Hidden;
             CheckBoxSelectVersion.Visibility = visible ? Visibility.Visible : Visibility.Hidden;
         }
@@ -616,17 +657,6 @@ namespace ControlModifiedFiles
                 ChangeVisibleComparer(false);
         }
 
-        private void ButtonSelectDefy_Click(object sender, RoutedEventArgs e)
-        {
-            string selectedFile = _comparsionDefy.SelectFile();
-            if (!string.IsNullOrWhiteSpace(selectedFile))
-            {
-                TextBoxPathDefy.Text = selectedFile;
-                UserSettings.SetUserSettings("PathDefy", TextBoxPathDefy.Text);
-                _comparsionDefy = new ComparsionDefy();
-            }
-        }
-
         #endregion
 
         #region Permission
@@ -711,9 +741,5 @@ namespace ControlModifiedFiles
 
         #endregion
 
-        private void TextBoxPathDefy_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            _comparsionDefy = new ComparsionDefy();
-        }
     }
 }
