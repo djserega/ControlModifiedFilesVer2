@@ -35,7 +35,7 @@ namespace ControlModifiedFiles
         {
             if (!string.IsNullOrWhiteSpace(path1)
                 && !string.IsNullOrWhiteSpace(path2))
-                Process.Start(Path, $" -compare \"{path1}\" \"{path2}\"");
+                Process.Start(Path, $" compare \"{path1}\" \"{path2}\"");
         }
 
     }
