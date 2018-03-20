@@ -62,20 +62,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ComparsionDefy.cs" />
-    <Compile Include="Dialogs.cs" />
-    <Compile Include="ElementsFormConverter.cs" />
+    <Compile Include="Comparsion\ComparsionDefy.cs" />
+    <Compile Include="IO\Dialogs.cs" />
+    <Compile Include="Forms\ElementsFormConverter.cs" />
     <Compile Include="Errors.cs" />
     <Compile Include="Events.cs" />
-    <Compile Include="ListVersion.cs" />
+    <Compile Include="Models\ListVersion.cs" />
     <Compile Include="NotifyIcon.cs" />
     <Compile Include="OtherMethods.cs" />
     <Compile Include="Permission.cs" />
-    <Compile Include="Subscriber.cs" />
+    <Compile Include="Version\Subscriber.cs" />
     <Compile Include="UserSettings.cs" />
-    <Compile Include="ComparsionV8Viewer.cs" />
-    <Compile Include="Versions.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Comparsion\ComparsionV8Viewer.cs" />
+    <Compile Include="Version\Versions.cs" />
+    <Page Include="Forms\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -84,14 +84,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Attributes.cs" />
-    <Compile Include="DirFile.cs" />
+    <Compile Include="IO\DirFile.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="FileSubscriber.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Models\FileSubscriber.cs" />
+    <Compile Include="Forms\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Message.xaml">
+    <Page Include="Forms\Message.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,7 +129,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Message.xaml.cs">
+    <Compile Include="Forms\Message.xaml.cs">
       <DependentUpon>Message.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -165,5 +165,6 @@
   <ItemGroup>
     <Resource Include="check.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
