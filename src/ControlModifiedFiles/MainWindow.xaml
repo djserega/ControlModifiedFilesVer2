@@ -147,7 +147,7 @@
                                     </DataTemplate>
                                 </DataGridCheckBoxColumn.HeaderTemplate>
                             </DataGridCheckBoxColumn>
-                            <DataGridTextColumn Header="Имя файла" Binding="{Binding FileName}" MaxWidth="400"/>
+                            <DataGridTextColumn Header="Имя файла" Binding="{Binding FileName}" MaxWidth="390"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>

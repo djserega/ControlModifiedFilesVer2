@@ -96,7 +96,7 @@
     </Style>
 
     <Style TargetType="Label" x:Key="LabelUseV8Viewer" BasedOn="{StaticResource LabelBase}">
-        <Setter Property="Content" Value="Использовать V8Viewer (epf, erf)"/>
+        <Setter Property="Content" Value="Использовать v8Viewer (epf, erf)"/>
         <Setter Property="ToolTip">
             <Setter.Value>
                 <ToolTip>
