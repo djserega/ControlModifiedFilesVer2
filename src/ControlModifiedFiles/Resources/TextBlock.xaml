@@ -13,4 +13,35 @@
         </Setter>
     </Style>
 
+    <Style TargetType="TextBlock" x:Key="TextBlockInfoBase">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+
+    <Style TargetType="TextBlock" x:Key="TextBlockHeadeInfo" BasedOn="{StaticResource TextBlockInfoBase}">
+        <Setter Property="Text" Value="%1"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TextBlockVersion" BasedOn="{StaticResource TextBlockInfoBase}">
+        <Setter Property="Text" Value="Версия: %1"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TextBlockInfo" BasedOn="{StaticResource TextBlockInfoBase}">
+        <Setter Property="Text" Value="Описание программы"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TextBlockDeveloper" BasedOn="{StaticResource TextBlockInfoBase}">
+        <Setter Property="Text" Value="Разработчик:"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TextBlockSiteInfostart" BasedOn="{StaticResource TextBlockInfoBase}">
+        <Setter Property="Text" Value="infostart.ru"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TextBlockSiteGithub" BasedOn="{StaticResource TextBlockInfoBase}">
+        <Setter Property="Text" Value="github.com"/>
+    </Style>
+
 </ResourceDictionary>

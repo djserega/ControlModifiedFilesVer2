@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ControlModifiedFiles.Resources">
+
+    <Style TargetType="Hyperlink" x:Key="HyperLinkInfo">
+        <Setter Property="NavigateUri" Value="https://infostart.ru/public/791344/"/>
+    </Style>
+
+    <Style TargetType="Hyperlink" x:Key="HyperLinkProfileInfostart">
+        <Setter Property="NavigateUri" Value="https://infostart.ru/profile/150823/"/>
+    </Style>
+
+    <Style TargetType="Hyperlink" x:Key="HyperLinkProfileGithub">
+        <Setter Property="NavigateUri" Value="https://infostart.ru/profile/150823/"/>
+    </Style>
+
+</ResourceDictionary>

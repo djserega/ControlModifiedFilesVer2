@@ -28,6 +28,11 @@
     <Style TargetType="Button" x:Key="ButtonVersions" BasedOn="{StaticResource ButtonBase}">
         <Setter Property="Content" Value="Версии"/>
     </Style>
+
+    <Style TargetType="Button" x:Key="ButtonInfo" BasedOn="{StaticResource ButtonBase}">
+        <Setter Property="Content" Value="О программе"/>
+        <Setter Property="Width" Value="90"/>
+    </Style>
      
     <Style TargetType="Button" x:Key="ButtonOK" BasedOn="{StaticResource ButtonBase}">
         <Setter Property="Content" Value="ОК"/>
