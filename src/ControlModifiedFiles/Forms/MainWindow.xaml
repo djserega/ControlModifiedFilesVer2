@@ -21,6 +21,7 @@
                 <Button x:Name="ButtonRemoveFiles" Style="{StaticResource ButtonRemoveFiles}" Click="ButtonRemoveFiles_Click"/>
                 <Button x:Name="ButtonSettings" Style="{StaticResource ButtonSettings}" Click="ButtonSettings_Click"/>
                 <Button x:Name="ButtonVersions" Style="{StaticResource ButtonVersions}" Click="ButtonVersions_Click"/>
+                <Button x:Name="ButtonInfo" Style="{StaticResource ButtonInfo}" Click="ButtonInfo_Click"/>
             </StackPanel>
         </Grid>
 

@@ -149,6 +149,11 @@ namespace ControlModifiedFiles
             SetItemSouceDataGridList();
         }
 
+        private void ButtonInfo_Click(object sender, RoutedEventArgs e)
+        {
+            new FormInfo().ShowDialog();
+        }
+
         #endregion
 
         #region Settings
