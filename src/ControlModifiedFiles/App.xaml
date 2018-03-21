@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="Resources/Buttons.xaml"/>
                 <ResourceDictionary Source="Resources/CheckBox.xaml"/>
                 <ResourceDictionary Source="Resources/Grid.xaml"/>
+                <ResourceDictionary Source="Resources/HyperLink.xaml"/>
                 <ResourceDictionary Source="Resources/Image.xaml"/>
                 <ResourceDictionary Source="Resources/Label.xaml"/>
                 <ResourceDictionary Source="Resources/Separators.xaml"/>
