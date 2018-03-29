@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 
@@ -108,6 +109,16 @@ namespace ControlModifiedFiles
         internal static bool FileExists(string fileName)
         {
             return new FileInfo(fileName).Exists;
+        }
+
+        internal static void OpenDirectory(string path)
+        {
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                DirectoryInfo directory = new DirectoryInfo(path);
+                if (directory.Exists)
+                    Process.Start("explorer.exe", $"{path}");
+            }
         }
 
         #endregion
