@@ -517,6 +517,12 @@ namespace ControlModifiedFiles
                 _listVersion.Clear();
         }
 
+        private void DataGridListContextMenuOpenCatalog(object sender, RoutedEventArgs e)
+        {
+            if (DataGridList.SelectedItem is FileSubscriber subscriber)
+                DirFile.OpenDirectory(subscriber.DirectoryVersion);
+        }
+
         #endregion
 
         #region DataGridVersion
@@ -733,7 +739,7 @@ namespace ControlModifiedFiles
             {
                 MainMenuWindowShow();
 
-                _notifyIcon.HideIcon();
+                //_notifyIcon.HideIcon();
             }
         }
 
