@@ -11,7 +11,7 @@
     </Style>
 
     <Style TargetType="Hyperlink" x:Key="HyperLinkProfileGithub">
-        <Setter Property="NavigateUri" Value="https://infostart.ru/profile/150823/"/>
+        <Setter Property="NavigateUri" Value="https://github.com/djserega/"/>
     </Style>
 
 </ResourceDictionary>
