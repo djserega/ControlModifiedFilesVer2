@@ -63,6 +63,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Comparsion\ComparsionDefy.cs" />
+    <Compile Include="Forms\FormComment.xaml.cs">
+      <DependentUpon>FormComment.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormInfo.xaml.cs">
       <DependentUpon>FormInfo.xaml</DependentUpon>
     </Compile>
@@ -78,6 +81,10 @@
     <Compile Include="UserSettings.cs" />
     <Compile Include="Comparsion\ComparsionV8Viewer.cs" />
     <Compile Include="Version\Versions.cs" />
+    <Page Include="Forms\FormComment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -102,7 +109,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resources\Buttons.xaml">
+    <Page Include="Resources\Button.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

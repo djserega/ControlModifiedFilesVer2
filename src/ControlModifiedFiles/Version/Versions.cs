@@ -90,6 +90,19 @@ namespace ControlModifiedFiles
             return list;
         }
 
+        internal void SetCommentFile(int version)
+        {
+            if (Subscriber == null)
+                return;
+
+            FileInfo[] filesVersion = GetFilesInDirectoryVersion(version);
+            
+            if (filesVersion.Length > 0)
+            {
+                
+            }
+        }
+
         #endregion
 
         #region Private methods
@@ -102,13 +115,11 @@ namespace ControlModifiedFiles
             DateTime dateTimeMaxEdited = DateTime.MinValue;
             foreach (FileInfo file in GetFilesInDirectoryVersion())
             {
-
                 if (dateTimeMaxEdited <= file.LastWriteTime)
                 {
                     fileInfoMaxEdited = file;
                     dateTimeMaxEdited = file.LastWriteTime;
                 };
-
             }
 
             DateVersion = dateTimeMaxEdited;
@@ -167,6 +178,9 @@ namespace ControlModifiedFiles
 
         private FileInfo[] GetFilesInDirectoryVersion() 
             => new DirectoryInfo(Subscriber.DirectoryVersion).GetFiles();
+
+        private FileInfo[] GetFilesInDirectoryVersion(int version)
+            => new DirectoryInfo(Subscriber.DirectoryVersion).GetFiles($"*{_prefixVersion} {version}*");
 
         #endregion
 

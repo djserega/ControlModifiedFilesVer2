@@ -67,6 +67,7 @@ namespace ControlModifiedFiles
 
             _subscriber = new Subscriber(_callUpdate);
             _notifyIcon = new NotifyIcon(_useContextMenu);
+            _notifyIcon.StartProgram();
 
             ApplicationRunWithAdministration();
         }
@@ -104,6 +105,7 @@ namespace ControlModifiedFiles
             }
             else if (_useContextMenu.ExitApp)
                 Application.Current.Shutdown();
+                
         }
 
         private void MainWindowControlModifiedFiles_StateChanged(object sender, EventArgs e)
@@ -709,7 +711,8 @@ namespace ControlModifiedFiles
                 if (userSettingsNotifyCount > 0
                     && subscriber.CountVersionWithoutNotify >= userSettingsNotifyCount)
                 {
-                    _notifyIcon.CreateVersion(subscriber);
+                    _notifyIcon.Subscriber = subscriber;
+                    _notifyIcon.CreateVersion();
                     subscriber.CountVersionWithoutNotify = 0;
                 }
             }

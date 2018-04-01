@@ -10,6 +10,7 @@ namespace ControlModifiedFiles
         private WF.NotifyIcon _notifyIcon;
         private string _balloonTipTextByDefault;
         private UseContextMenuEvents _useContextMenu;
+        public FileSubscriber Subscriber { get; set; }
 
         internal NotifyIcon(UseContextMenuEvents useContextMenu)
         {
@@ -23,8 +24,21 @@ namespace ControlModifiedFiles
                 Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)
             };
             _notifyIcon.DoubleClick += ContextMenuItemStateNormal;
+            _notifyIcon.BalloonTipClicked += _notifyIcon_BalloonTipClicked;
 
             SetBalloonTipTextDefault();
+        }
+
+        private void _notifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            if (Subscriber != null)
+            {
+                FormComment form = new FormComment(Subscriber);
+                form.ShowDialog();
+                if (form.ClickOK)
+                    if (!string.IsNullOrWhiteSpace(form.TextBoxComment.Text))
+                        new Versions() { Subscriber = Subscriber }.SetCommentFile(form.Version);
+            }
         }
 
         #region CreateContextMenu
@@ -32,11 +46,11 @@ namespace ControlModifiedFiles
         private WF.ContextMenu CreateContextMenu()
         {
             var contextMenu = new WF.ContextMenu();
-            
+
             var menuItemAdd = AddMenuItemContextMenu(ref contextMenu, "Добавить файлы", "ContextMenuAddFiles", ContextMenuItemAdd_Click);
             menuItemAdd.DefaultItem = true;
             menuItemAdd.Shortcut = WF.Shortcut.Ins;
-            
+
             AddMenuItemContextMenu(ref contextMenu, "Развернуть", "ContextMenuStateNormal", ContextMenuItemStateNormal);
             AddMenuItemContextMenu(ref contextMenu, "-", "br");
             AddMenuItemContextMenu(ref contextMenu, "Закрыть", "ContextMenuExit", ContextMenuItemExit);
@@ -83,10 +97,17 @@ namespace ControlModifiedFiles
             _notifyIcon.Visible = false;
         }
 
-        private void ShowIcon()
+        private void ShowIcon(bool showBalloonTip = true)
         {
             _notifyIcon.Visible = true;
-            _notifyIcon.ShowBalloonTip(3 * 1000);
+
+            if (showBalloonTip)
+                _notifyIcon.ShowBalloonTip(3 * 1000);
+        }
+
+        internal void StartProgram()
+        {
+            ShowIcon(false);
         }
 
         internal void ChangeStateWindow()
@@ -106,13 +127,6 @@ namespace ControlModifiedFiles
         internal void CreateVersion(int version)
         {
             SetBalloonTipTextNewVersionFile(version);
-            ShowIcon();
-            SetBalloonTipTextDefault();
-        }
-
-        internal void CreateVersion(FileSubscriber subscriber)
-        {
-            SetBalloonTipTextNewVersionFile(subscriber);
             ShowIcon();
             SetBalloonTipTextDefault();
         }
@@ -164,19 +178,14 @@ namespace ControlModifiedFiles
             SetBalloonTipText(text);
         }
 
-        private void SetBalloonTipTextNewVersionFile()
-        {
-            SetBalloonTipText("Создана новая версия файла.");
-        }
-
         private void SetBalloonTipTextNewVersionFile(int version)
         {
             SetBalloonTipText($"Актуальная версия {version}.");
         }
 
-        private void SetBalloonTipTextNewVersionFile(FileSubscriber subscriber)
+        private void SetBalloonTipTextNewVersionFile()
         {
-            SetBalloonTipText($"Файл: {subscriber.FileName}\nАктуальная версия {subscriber.Version}.");
+            SetBalloonTipText($"Файл: {Subscriber.FileName}\nАктуальная версия {Subscriber.Version}.");
         }
 
         private void SetBalloonTipTextHideToTray()

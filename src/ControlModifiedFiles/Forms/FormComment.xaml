@@ -1,0 +1,31 @@
+﻿<Window x:Class="ControlModifiedFiles.FormComment"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ControlModifiedFiles"
+        mc:Ignorable="d" ResizeMode="NoResize"
+        Title="Комментарий версии" Height="200" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Style="{StaticResource BackgroundCommandPanel}">
+            <TextBlock Grid.Row="0" x:Name="TextBlockHeader" Text="Версия: %1"/>
+        </Grid>
+        <Grid Grid.Row="1" Style="{StaticResource BackgroundTable}">
+
+            <StackPanel Grid.Row="1" x:Name="StackPanelComment">
+                <TextBox x:Name="TextBoxComment" TextWrapping="Wrap" Background="{x:Null}"
+                     Height="{Binding Path=ActualHeight, ElementName=StackPanelComment, Converter={local:ElementsFormConverter}, ConverterParameter='30'}"
+                     Width="{Binding Path=ActualWidth, ElementName=StackPanelComment, Converter={local:ElementsFormConverter}, ConverterParameter='4'}"/>
+                <Separator Style="{StaticResource SeparatorBetweenRow}"/>
+                <Grid HorizontalAlignment="Center">
+                    <Button x:Name="ButtonOK" Style="{StaticResource ButtonOK}" Click="ButtonOK_Click"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
