@@ -28,8 +28,6 @@ namespace ControlModifiedFiles
         internal event UseContextMenu CallUseContextMenu;
 
         internal bool AddFiles { get; private set; }
-        internal bool WindowsStateNormal { get; private set; }
-        internal bool ExitApp { get; private set; }
 
         internal void CallAddFiles()
         {
@@ -42,7 +40,10 @@ namespace ControlModifiedFiles
 
             AddFiles = false;
         }
-        
+
+
+        internal bool WindowsStateNormal { get; private set; }
+
         internal void CallWindowsStateNormal()
         {
             if (CallUseContextMenu == null)
@@ -55,6 +56,9 @@ namespace ControlModifiedFiles
             WindowsStateNormal = false;
         }
 
+
+        internal bool ExitApp { get; private set; }
+
         internal void CallExitApp()
         {
             if (CallUseContextMenu == null)
@@ -66,5 +70,6 @@ namespace ControlModifiedFiles
 
             ExitApp = false;
         }
+
     }
 }
