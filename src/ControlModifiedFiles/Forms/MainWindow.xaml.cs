@@ -105,7 +105,7 @@ namespace ControlModifiedFiles
             }
             else if (_useContextMenu.ExitApp)
                 Application.Current.Shutdown();
-                
+
         }
 
         private void MainWindowControlModifiedFiles_StateChanged(object sender, EventArgs e)
@@ -146,7 +146,7 @@ namespace ControlModifiedFiles
 
         private void ButtonInfo_Click(object sender, RoutedEventArgs e)
         {
-            new FormInfo().ShowDialog();
+            new FormInfo() { Owner = this }.ShowDialog();
         }
 
         #endregion

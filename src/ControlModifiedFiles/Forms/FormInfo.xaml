@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ControlModifiedFiles"
         mc:Ignorable="d" ResizeMode="NoResize" x:Name="WindowInfo"
         Title="О программе" Height="150" Width="250"
-        Loaded="WindowInfo_Loaded">
+        Loaded="WindowInfo_Loaded" LocationChanged="WindowInfo_LocationChanged" MouseMove="WindowInfo_MouseMove" MouseDown="WindowInfo_MouseDown" MouseUp="WindowInfo_MouseUp">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
