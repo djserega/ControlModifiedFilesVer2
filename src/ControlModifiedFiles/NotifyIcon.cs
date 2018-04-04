@@ -36,8 +36,11 @@ namespace ControlModifiedFiles
                 FormComment form = new FormComment(Subscriber);
                 form.ShowDialog();
                 if (form.ClickOK)
-                    if (!string.IsNullOrWhiteSpace(form.TextBoxComment.Text))
-                        new Versions() { Subscriber = Subscriber }.SetCommentFile(form.Version);
+                {
+                    string textComment = form.TextBoxComment.Text;
+                    if (!string.IsNullOrWhiteSpace(textComment))
+                        new Versions() { Subscriber = Subscriber }.SetCommentFile(form.Version, textComment);
+                }
             }
         }
 
