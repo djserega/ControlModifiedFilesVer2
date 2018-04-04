@@ -13,11 +13,10 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Style="{StaticResource BackgroundCommandPanel}">
-            <TextBlock Grid.Row="0" x:Name="TextBlockHeader" Text="Версия: %1"/>
+            <TextBlock Margin="5,0,5,0" Grid.Row="0" x:Name="TextBlockHeader" Text="Версия: %1"/>
         </Grid>
         <Grid Grid.Row="1" Style="{StaticResource BackgroundTable}">
-
-            <StackPanel Grid.Row="1" x:Name="StackPanelComment">
+            <StackPanel Margin="5,0,5,0" Grid.Row="1" x:Name="StackPanelComment">
                 <TextBox x:Name="TextBoxComment" TextWrapping="Wrap" Background="{x:Null}"
                      Height="{Binding Path=ActualHeight, ElementName=StackPanelComment, Converter={local:ElementsFormConverter}, ConverterParameter='30'}"
                      Width="{Binding Path=ActualWidth, ElementName=StackPanelComment, Converter={local:ElementsFormConverter}, ConverterParameter='4'}"/>
