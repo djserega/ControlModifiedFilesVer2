@@ -43,6 +43,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -73,10 +74,13 @@
     <Compile Include="Forms\ElementsFormConverter.cs" />
     <Compile Include="Errors.cs" />
     <Compile Include="Events.cs" />
+    <Compile Include="JSON.cs" />
+    <Compile Include="Models\CommentsVersion.cs" />
     <Compile Include="Models\ListVersion.cs" />
     <Compile Include="NotifyIcon.cs" />
     <Compile Include="OtherMethods.cs" />
     <Compile Include="Permission.cs" />
+    <Compile Include="Version\Comments.cs" />
     <Compile Include="Version\Subscriber.cs" />
     <Compile Include="UserSettings.cs" />
     <Compile Include="Comparsion\ComparsionV8Viewer.cs" />
