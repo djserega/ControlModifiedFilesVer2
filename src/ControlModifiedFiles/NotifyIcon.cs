@@ -39,7 +39,10 @@ namespace ControlModifiedFiles
                 {
                     string textComment = form.TextBoxComment.Text;
                     if (!string.IsNullOrWhiteSpace(textComment))
+                    {
                         new Versions() { Subscriber = Subscriber }.SetCommentFile(form.Version, textComment);
+                        Subscriber = null;
+                    }
                 }
             }
         }
