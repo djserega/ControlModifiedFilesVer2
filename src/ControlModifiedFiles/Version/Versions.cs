@@ -90,7 +90,7 @@ namespace ControlModifiedFiles
             return list;
         }
 
-        internal void SetCommentFile(int version)
+        internal void SetCommentFile(int version, string textComment)
         {
             if (Subscriber == null)
                 return;
@@ -99,7 +99,7 @@ namespace ControlModifiedFiles
             
             if (filesVersion.Length > 0)
             {
-                
+                new Comments(Subscriber, filesVersion[0]).UpdateCommentFile(textComment);
             }
         }
 
@@ -176,14 +176,18 @@ namespace ControlModifiedFiles
             return hash;
         }
 
+        private DirectoryInfo GetDirectoryInfoSubscriber()
+            => new DirectoryInfo(Subscriber.DirectoryVersion);
+
         private FileInfo[] GetFilesInDirectoryVersion() 
-            => new DirectoryInfo(Subscriber.DirectoryVersion).GetFiles();
+            => GetDirectoryInfoSubscriber().GetFiles($"*{_prefixVersion}*");
 
         private FileInfo[] GetFilesInDirectoryVersion(int version)
-            => new DirectoryInfo(Subscriber.DirectoryVersion).GetFiles($"*{_prefixVersion} {version}*");
+            => GetDirectoryInfoSubscriber().GetFiles($"*{_prefixVersion} {version}*");
 
         #endregion
 
+        
         #region IDisposable Support
         private bool disposedValue = false;
 
