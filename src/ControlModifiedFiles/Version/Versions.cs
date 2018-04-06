@@ -78,11 +78,19 @@ namespace ControlModifiedFiles
 
         internal List<ListVersion> GetListVersion()
         {
+            List<CommentsVersion> commentsVersions = new Comments(Subscriber, SubscriberInfo).GetListComments();
+
             List<ListVersion> list = new List<ListVersion>();
 
             foreach (FileInfo item in GetFilesInDirectoryVersion())
             {
-                list.Add(new ListVersion(item.FullName, item.Name, item.LastWriteTime));
+                ListVersion listVersion = new ListVersion(
+                    item.FullName,
+                    item.Name,
+                    item.LastWriteTime,
+                    commentsVersions.Find(f => f.FileName == item.Name));
+
+                list.Add(listVersion);
             }
 
             list.Sort((el1, el2) => el2.DateModified.CompareTo(el1.DateModified));
@@ -180,13 +188,12 @@ namespace ControlModifiedFiles
             => new DirectoryInfo(Subscriber.DirectoryVersion);
 
         private FileInfo[] GetFilesInDirectoryVersion() 
-            => GetDirectoryInfoSubscriber().GetFiles($"*{_prefixVersion}*");
+            => GetDirectoryInfoSubscriber().GetFiles($"*{_prefixVersion}*}}.*");
 
         private FileInfo[] GetFilesInDirectoryVersion(int version)
-            => GetDirectoryInfoSubscriber().GetFiles($"*{_prefixVersion} {version}*");
+            => GetDirectoryInfoSubscriber().GetFiles($"*{_prefixVersion} {version}*}}.*");
 
         #endregion
-
         
         #region IDisposable Support
         private bool disposedValue = false;

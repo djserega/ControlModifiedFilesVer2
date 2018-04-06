@@ -11,25 +11,58 @@ namespace ControlModifiedFiles
     {
         internal FileSubscriber Subscriber { get; }
         internal FileInfo FileInfo { get; }
+        private FileInfo _fileInfoComment;
 
         public Comments(FileSubscriber subscriber, FileInfo fileInfo)
         {
             Subscriber = subscriber;
             FileInfo = fileInfo;
-        }
 
-        internal void UpdateCommentFile(string textComment)
-        {
             DirectoryInfo directoryInfo = new DirectoryInfo(Subscriber.DirectoryVersion);
 
             string pathFileComment = Path.Combine(directoryInfo.FullName, "comments.js");
 
-            FileInfo fileInfoComment = new FileInfo(pathFileComment);
+            _fileInfoComment = new FileInfo(pathFileComment);
 
-            string dataFile = string.Empty;
-            if (fileInfoComment.Exists)
+        }
+
+        internal void UpdateCommentFile(string textComment)
+        {
+            List<CommentsVersion> comments = GetListComments();
+
+            comments.Add(new CommentsVersion()
             {
-                using (StreamReader reader = new StreamReader(fileInfoComment.FullName))
+                Comment = textComment,
+                FileName = FileInfo.Name,
+                DateTime = DateTime.Now
+            });
+
+            string dataFile = new Json<CommentsVersion>().Serialize(comments);
+
+            if (!string.IsNullOrWhiteSpace(dataFile))
+            {
+                try
+                {
+                    using (StreamWriter stream = new StreamWriter(_fileInfoComment.FullName, false))
+                    {
+                        stream.WriteLine(dataFile);
+                        stream.Flush();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Dialog.ShowMessage("Не удалось записать комментарий к версии.");
+                    Errors.Save(ex);
+                }
+            }
+        }
+
+        internal List<CommentsVersion> GetListComments()
+        {
+            string dataFile = string.Empty;
+            if (_fileInfoComment.Exists)
+            {
+                using (StreamReader reader = new StreamReader(_fileInfoComment.FullName))
                 {
                     dataFile = reader.ReadToEnd();
                 }
@@ -40,21 +73,8 @@ namespace ControlModifiedFiles
                 comments = new List<CommentsVersion>();
             else
                 comments = new Json<CommentsVersion>().Deserialize(dataFile);
-                         
-            comments.Add(new CommentsVersion()
-            {
-                Comment = textComment,
-                FileName = FileInfo.Name,
-                DateTime = DateTime.Now
-            });
 
-            dataFile = new Json<CommentsVersion>().Serialize(comments);
-
-            using (StreamWriter stream = new StreamWriter(fileInfoComment.FullName, false))
-            {
-                stream.WriteLine(dataFile);
-                stream.Flush();
-            }
+            return comments;
         }
 
     }
