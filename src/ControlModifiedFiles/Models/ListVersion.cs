@@ -12,10 +12,12 @@ namespace ControlModifiedFiles
         private string _path;
         private string _fileName;
         private DateTime _dateModified;
+        private string _comment;
+        private DateTime? _dateComment;
 
         public bool Checked
         {
-            get { return _checked; }
+            get { return false; } //_checked; }
             set
             {
                 if (_checked != value)
@@ -25,7 +27,6 @@ namespace ControlModifiedFiles
                 }
             }
         }
-
         public string Path
         {
             get { return _path; }
@@ -38,7 +39,6 @@ namespace ControlModifiedFiles
                 }
             }
         }
-
         public string FileName
         {
             get { return _fileName; }
@@ -51,7 +51,6 @@ namespace ControlModifiedFiles
                 }
             }
         }
-        
         public DateTime DateModified
         {
             get { return _dateModified; }
@@ -64,6 +63,45 @@ namespace ControlModifiedFiles
                 }
             }
         }
+        //public bool CommentIsFilled
+        //{
+        //    get { return !string.IsNullOrWhiteSpace(_comment); }
+        //}
+        public string CommentIsFilled
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(_comment) ? "" : "есть";
+            }
+        }
+
+        public string Comment
+        {
+            get { return _comment; }
+            set
+            {
+                if (_comment != value)
+                {
+                    _comment = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public DateTime DateComment
+        {
+            get
+            {
+                return _dateComment == null ? DateTime.MinValue : (DateTime)_dateComment;
+            }
+            set
+            {
+                if (_dateComment != value)
+                {
+                    _dateComment = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
@@ -71,11 +109,13 @@ namespace ControlModifiedFiles
         }
 
 
-        public ListVersion(string path, string fileName, DateTime dateModified)
+        public ListVersion(string path, string fileName, DateTime dateModified, CommentsVersion commentVersion)
         {
             _path = path;
             _fileName = fileName;
             _dateModified = dateModified;
+            _comment = commentVersion?.Comment;
+            _dateComment = commentVersion?.DateTime;
         }
 
     }
