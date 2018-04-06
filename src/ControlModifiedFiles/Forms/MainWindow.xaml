@@ -154,8 +154,17 @@
                                     </DataTemplate>
                                 </DataGridCheckBoxColumn.HeaderTemplate>
                             </DataGridCheckBoxColumn>
+                            <!--<DataGridCheckBoxColumn Width="15" Binding="{Binding CommentIsFilled}"/>-->
+                            <DataGridTextColumn Header="Комментарий" Binding="{Binding CommentIsFilled}"/>
                             <DataGridTextColumn Header="Имя файла" Binding="{Binding FileName}" MaxWidth="390"/>
                         </DataGrid.Columns>
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <Border Margin="10,5" Padding="5" BorderBrush="BurlyWood" BorderThickness="2" CornerRadius="5">
+                                    <TextBlock Text="{Binding Path=Comment}" TextWrapping="Wrap"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
                     </DataGrid>
                 </StackPanel>
             </Grid>
