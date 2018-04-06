@@ -543,7 +543,10 @@ namespace ControlModifiedFiles
         private void DataGridVersion_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
             if (!e.Cancel)
-                ((ListVersion)e.Row.DataContext).Checked = !((ListVersion)e.Row.DataContext).Checked;
+            {
+                if (e.Row.DataContext is ListVersion listVersion)
+                    listVersion.Checked = !listVersion.Checked;
+            }
         }
 
         private void ButtonCompareVersion_Click(object sender, RoutedEventArgs e)
@@ -569,10 +572,18 @@ namespace ControlModifiedFiles
             if (!string.IsNullOrWhiteSpace(path1)
                 && !string.IsNullOrWhiteSpace(path2))
             {
-                if (!string.IsNullOrWhiteSpace(_listExtensionV8.FirstOrDefault(f => f == _fileSubscriberCurrentRow.Extension)))
-                    _comparsionV8Viewer.CompareVersion(path1, path2);
-                else if (!string.IsNullOrWhiteSpace(_listExtensionV7.FirstOrDefault(f => f == _fileSubscriberCurrentRow.Extension)))
-                    _comparsionDefy.CompareVersion(path1, path2);
+                try
+                {
+                    if (!string.IsNullOrWhiteSpace(_listExtensionV8.FirstOrDefault(f => f == _fileSubscriberCurrentRow.Extension)))
+                        _comparsionV8Viewer.CompareVersion(path1, path2);
+                    else if (!string.IsNullOrWhiteSpace(_listExtensionV7.FirstOrDefault(f => f == _fileSubscriberCurrentRow.Extension)))
+                        _comparsionDefy.CompareVersion(path1, path2);
+                }
+                catch (Exception ex)
+                {
+                    Dialog.ShowMessage("Не запустить программу сравнения.");
+                    Errors.Save(ex);
+                }
             }
         }
 
@@ -654,7 +665,15 @@ namespace ControlModifiedFiles
         {
             if (_fileSubscriberCurrentRow != null)
             {
-                _listVersion = new Versions() { Subscriber = _fileSubscriberCurrentRow }.GetListVersion();
+                try
+                {
+                    _listVersion = new Versions() { Subscriber = _fileSubscriberCurrentRow }.GetListVersion();
+                }
+                catch (Exception ex)
+                {
+                    Dialog.ShowMessage("Не удалось загрузить файл версий.");
+                    Errors.Save(ex);
+                }
                 SetItemSourceVersion();
 
                 ChangeVisibleComparer(true);
