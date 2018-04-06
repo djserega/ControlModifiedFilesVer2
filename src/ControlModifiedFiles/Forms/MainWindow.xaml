@@ -136,7 +136,7 @@
                 <StackPanel Orientation="Vertical" Style="{StaticResource BackgroundStackPanel}"
                             Height="{Binding Path=ActualHeight, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='0'}">
                     <Separator Style="{StaticResource SeparatorBetweenRow}"/>
-                    
+
                     <StackPanel Orientation="Horizontal">
                         <Label Style="{StaticResource LabelListVersion}"/>
                         <Separator Style="{StaticResource SeparatorBetweenElement10}"/>
@@ -147,7 +147,8 @@
                               Style="{StaticResource DataGridBase}" 
                               Height="{Binding Path=ActualHeight, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='37'}"
                               Width="{Binding Path=ActualWidth, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='4'}"
-                              RowEditEnding="DataGridVersion_RowEditEnding" MouseDoubleClick="DataGridVersion_MouseDoubleClick">
+                              RowEditEnding="DataGridVersion_RowEditEnding" MouseDoubleClick="DataGridVersion_MouseDoubleClick"
+                              RowDetailsVisibilityChanged="DataGridVersion_RowDetailsVisibilityChanged">
 
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn x:Name="CheckBoxSelectVersion" Width="15" Binding="{Binding Checked}">
@@ -161,7 +162,7 @@
                                 <DataGridTextColumn.CellStyle>
                                     <Style TargetType="DataGridCell">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding CommentIsFilled}" Value="False">
+                                            <DataTrigger Binding="{Binding CommentIsFilled}" Value="True">
                                                 <Setter Property="Background" Value="SandyBrown"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -177,9 +178,9 @@
                                 </Border>
                             </DataTemplate>
                         </DataGrid.RowDetailsTemplate>
-                        
+
                     </DataGrid>
-                
+
                 </StackPanel>
             </Grid>
 

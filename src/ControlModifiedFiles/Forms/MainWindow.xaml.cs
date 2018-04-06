@@ -764,5 +764,10 @@ namespace ControlModifiedFiles
 
         #endregion
 
+        private void DataGridVersion_RowDetailsVisibilityChanged(object sender, DataGridRowDetailsEventArgs e)
+        {
+            if (DataGridVersion.SelectedItem is ListVersion listVersion)
+                e.DetailsElement.Visibility = listVersion.CommentIsFilled ? Visibility.Visible : Visibility.Collapsed;
+        }
     }
 }
