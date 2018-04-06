@@ -17,7 +17,7 @@ namespace ControlModifiedFiles
 
         public bool Checked
         {
-            get { return false; } //_checked; }
+            get { return _checked; }
             set
             {
                 if (_checked != value)
@@ -67,11 +67,11 @@ namespace ControlModifiedFiles
         //{
         //    get { return !string.IsNullOrWhiteSpace(_comment); }
         //}
-        public string CommentIsFilled
+        public bool CommentIsFilled
         {
             get
             {
-                return string.IsNullOrWhiteSpace(_comment) ? "" : "есть";
+                return string.IsNullOrWhiteSpace(_comment);
             }
         }
 

@@ -543,10 +543,7 @@ namespace ControlModifiedFiles
         private void DataGridVersion_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
             if (!e.Cancel)
-            {
-                if (e.Row.DataContext is ListVersion listVersion)
-                    listVersion.Checked = !listVersion.Checked;
-            }
+                ((ListVersion)e.Row.DataContext).Checked = !((ListVersion)e.Row.DataContext).Checked;
         }
 
         private void ButtonCompareVersion_Click(object sender, RoutedEventArgs e)
