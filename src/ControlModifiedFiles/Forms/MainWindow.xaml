@@ -173,7 +173,7 @@
                         <DataGrid.RowDetailsTemplate>
                             <DataTemplate>
                                 <Border Margin="10,5" Padding="5" BorderBrush="BurlyWood" BorderThickness="2" CornerRadius="5">
-                                    <TextBlock Text="{Binding Path=Comment}" TextWrapping="Wrap" MaxWidth="350"/>
+                                    <TextBlock Text="{Binding Path=Comment}" TextWrapping="Wrap" MaxWidth="380"/>
                                 </Border>
                             </DataTemplate>
                         </DataGrid.RowDetailsTemplate>
