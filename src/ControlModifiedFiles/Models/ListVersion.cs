@@ -71,7 +71,7 @@ namespace ControlModifiedFiles
         {
             get
             {
-                return string.IsNullOrWhiteSpace(_comment);
+                return !string.IsNullOrWhiteSpace(_comment);
             }
         }
 
