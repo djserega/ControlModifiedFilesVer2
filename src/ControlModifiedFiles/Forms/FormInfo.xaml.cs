@@ -10,15 +10,11 @@ namespace ControlModifiedFiles
     /// </summary>
     public partial class FormInfo : Window
     {
-
         private MainWindow _owner;
         private double _minLeft;
         private double _maxLeft;
         private double _minTop;
         private double _maxTop;
-
-        private bool _dragDrop;
-
 
         public FormInfo()
         {
