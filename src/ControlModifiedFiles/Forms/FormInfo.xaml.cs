@@ -80,24 +80,5 @@ namespace ControlModifiedFiles
         {
             SetPositionWindow();
         }
-
-        private void WindowInfo_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            //if (_dragDrop)
-            //    if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
-            //    {
-            //        SetPositionWindow();
-            //    }
-        }
-
-        private void WindowInfo_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            _dragDrop = true;
-        }
-
-        private void WindowInfo_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            _dragDrop = false;
-        }
     }
 }
