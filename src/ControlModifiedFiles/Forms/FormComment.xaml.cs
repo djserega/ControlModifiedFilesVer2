@@ -39,5 +39,11 @@ namespace ControlModifiedFiles
             ClickOK = true;
             Close();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Activate();
+            TextBoxComment.Focus();
+        }
     }
 }

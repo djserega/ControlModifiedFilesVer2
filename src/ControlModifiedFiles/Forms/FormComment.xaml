@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ControlModifiedFiles"
         mc:Ignorable="d" ResizeMode="NoResize"
-        Title="Комментарий версии" Height="200" Width="400">
+        Title="Комментарий версии" Height="200" Width="400"
+        Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -17,12 +18,12 @@
         </Grid>
         <Grid Grid.Row="1" Style="{StaticResource BackgroundTable}">
             <StackPanel Margin="5,0,5,0" Grid.Row="1" x:Name="StackPanelComment">
-                <TextBox x:Name="TextBoxComment" TextWrapping="Wrap" Background="{x:Null}"
+                <TextBox x:Name="TextBoxComment" TextWrapping="Wrap" Background="{x:Null}" TabIndex="0" AcceptsReturn="True"
                      Height="{Binding Path=ActualHeight, ElementName=StackPanelComment, Converter={local:ElementsFormConverter}, ConverterParameter='30'}"
                      Width="{Binding Path=ActualWidth, ElementName=StackPanelComment, Converter={local:ElementsFormConverter}, ConverterParameter='4'}"/>
                 <Separator Style="{StaticResource SeparatorBetweenRow}"/>
                 <Grid HorizontalAlignment="Center">
-                    <Button x:Name="ButtonOK" Style="{StaticResource ButtonOK}" Click="ButtonOK_Click"/>
+                    <Button x:Name="ButtonOK" Style="{StaticResource ButtonOK}" Click="ButtonOK_Click" TabIndex="1"/>
                 </Grid>
             </StackPanel>
         </Grid>

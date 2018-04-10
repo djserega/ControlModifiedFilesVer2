@@ -33,6 +33,8 @@ namespace ControlModifiedFiles
         {
             if (Subscriber != null)
             {
+                App.Current.MainWindow.Activate();
+
                 FormComment form = new FormComment(Subscriber);
                 form.ShowDialog();
                 if (form.ClickOK)
