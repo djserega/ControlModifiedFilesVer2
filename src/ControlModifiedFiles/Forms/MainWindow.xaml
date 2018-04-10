@@ -136,16 +136,20 @@
                 <StackPanel Orientation="Vertical" Style="{StaticResource BackgroundStackPanel}"
                             Height="{Binding Path=ActualHeight, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='0'}">
                     <Separator Style="{StaticResource SeparatorBetweenRow}"/>
+
                     <StackPanel Orientation="Horizontal">
                         <Label Style="{StaticResource LabelListVersion}"/>
                         <Separator Style="{StaticResource SeparatorBetweenElement10}"/>
                         <Button x:Name="ButtonCompareVersion" Style="{StaticResource ButtonCompareVersion}" Click="ButtonCompareVersion_Click"/>
                     </StackPanel>
+
                     <DataGrid x:Name="DataGridVersion" ItemsSource="{Binding _listVersion}" AutoGenerateColumns="False" IsReadOnly="True"
                               Style="{StaticResource DataGridBase}" 
                               Height="{Binding Path=ActualHeight, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='37'}"
                               Width="{Binding Path=ActualWidth, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='4'}"
-                              RowEditEnding="DataGridVersion_RowEditEnding" MouseDoubleClick="DataGridVersion_MouseDoubleClick">
+                              RowEditEnding="DataGridVersion_RowEditEnding" MouseDoubleClick="DataGridVersion_MouseDoubleClick"
+                              RowDetailsVisibilityChanged="DataGridVersion_RowDetailsVisibilityChanged">
+
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn x:Name="CheckBoxSelectVersion" Width="15" Binding="{Binding Checked}">
                                 <DataGridCheckBoxColumn.HeaderTemplate>
@@ -154,18 +158,29 @@
                                     </DataTemplate>
                                 </DataGridCheckBoxColumn.HeaderTemplate>
                             </DataGridCheckBoxColumn>
-                            <!--<DataGridCheckBoxColumn Width="15" Binding="{Binding CommentIsFilled}"/>-->
-                            <DataGridTextColumn Header="Комментарий" Binding="{Binding CommentIsFilled}"/>
-                            <DataGridTextColumn Header="Имя файла" Binding="{Binding FileName}" MaxWidth="390"/>
+                            <DataGridTextColumn Header="Имя файла" Binding="{Binding FileName}" MaxWidth="390">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CommentIsFilled}" Value="True">
+                                                <Setter Property="Background" Value="SandyBrown"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
                         </DataGrid.Columns>
+
                         <DataGrid.RowDetailsTemplate>
                             <DataTemplate>
                                 <Border Margin="10,5" Padding="5" BorderBrush="BurlyWood" BorderThickness="2" CornerRadius="5">
-                                    <TextBlock Text="{Binding Path=Comment}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Path=Comment}" TextWrapping="Wrap" MaxWidth="380"/>
                                 </Border>
                             </DataTemplate>
                         </DataGrid.RowDetailsTemplate>
+
                     </DataGrid>
+
                 </StackPanel>
             </Grid>
 
