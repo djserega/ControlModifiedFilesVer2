@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ControlModifiedFiles"
         mc:Ignorable="d" ResizeMode="NoResize"
         Title="Комментарий версии" Height="200" Width="400"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded" LocationChanged="Window_LocationChanged">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>

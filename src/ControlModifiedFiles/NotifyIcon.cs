@@ -33,9 +33,10 @@ namespace ControlModifiedFiles
         {
             if (Subscriber != null)
             {
-                App.Current.MainWindow.Activate();
+                var mainWindow = App.Current.MainWindow;
+                mainWindow.Activate();
 
-                FormComment form = new FormComment(Subscriber);
+                FormComment form = new FormComment(Subscriber) { Owner = mainWindow };
                 form.ShowDialog();
                 if (form.ClickOK)
                 {
