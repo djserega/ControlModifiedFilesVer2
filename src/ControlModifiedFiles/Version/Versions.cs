@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ControlModifiedFiles
 {
@@ -33,8 +35,6 @@ namespace ControlModifiedFiles
 
         internal void CreateNewVersionFile()
         {
-            string md5CurrentFile = GetMD5(SubscriberInfo.FullName);
-
             int? maxVersion = GetMaxVersionFile();
 
             if (maxVersion == null)
@@ -104,11 +104,32 @@ namespace ControlModifiedFiles
                 return;
 
             FileInfo[] filesVersion = GetFilesInDirectoryVersion(version);
-            
+
             if (filesVersion.Length > 0)
             {
                 new Comments(Subscriber, filesVersion[0]).UpdateCommentFile(textComment);
             }
+        }
+
+        internal void RestoreVersion(ListVersion version)
+        {
+            if (Subscriber == null)
+                return;
+
+            FileInfo fileInfoVersion = new FileInfo(version.Path);
+            if (!DirFile.FileExists(fileInfoVersion))
+                return;
+
+            FileInfo tempFileVersion = new FileInfo(DirFile.GetTempFile());
+
+            fileInfoVersion.CopyTo(tempFileVersion.FullName);
+            tempFileVersion.LastWriteTime = DateTime.Now;
+
+            FileInfo fileInfoRestore = new FileInfo(Subscriber.Path);
+
+            tempFileVersion.CopyTo(fileInfoRestore.FullName, true);
+
+            DirFile.DeleteFile(tempFileVersion);
         }
 
         #endregion
@@ -146,39 +167,36 @@ namespace ControlModifiedFiles
         {
             string hash = String.Empty;
 
-            //lock (_locker)
+            try
             {
-                try
+                using (MD5 md5 = MD5.Create())
                 {
-                    using (MD5 md5 = MD5.Create())
+                    string fileNameTemp = DirFile.GetTempFile();
+
+                    FileInfo fileInfoTemp = new FileInfo(fileNameTemp);
+                    if (!fileInfoTemp.Exists)
                     {
-                        string fileNameTemp = DirFile.GetTempFile();
-
-                        FileInfo fileInfoTemp = new FileInfo(fileNameTemp);
-                        if (!fileInfoTemp.Exists)
-                        {
-                            new FileInfo(path).CopyTo(fileNameTemp);
-                            _tempFiles.Add(fileInfoTemp);
-                        }
-
-                        using (FileStream stream = new FileStream(fileNameTemp, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        {
-                            byte[] hashByte = md5.ComputeHash(stream);
-                            hash = BitConverter.ToString(hashByte).Replace("-", "").ToLowerInvariant();
-                            stream.Close();
-                        }
-
-                        md5.Clear();
+                        new FileInfo(path).CopyTo(fileNameTemp);
+                        _tempFiles.Add(fileInfoTemp);
                     }
+
+                    using (FileStream stream = new FileStream(fileNameTemp, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        byte[] hashByte = md5.ComputeHash(stream);
+                        hash = BitConverter.ToString(hashByte).Replace("-", "").ToLowerInvariant();
+                        stream.Close();
+                    }
+
+                    md5.Clear();
                 }
-                catch (FileNotFoundException)
-                {
-                    Errors.Save($"Файл '{path}' перемещен или удален.");
-                }
-                catch (IOException ex)
-                {
-                    Errors.Save(ex);
-                }
+            }
+            catch (FileNotFoundException)
+            {
+                Errors.Save($"Файл '{path}' перемещен или удален.");
+            }
+            catch (IOException ex)
+            {
+                Errors.Save(ex);
             }
 
             return hash;
@@ -187,14 +205,14 @@ namespace ControlModifiedFiles
         private DirectoryInfo GetDirectoryInfoSubscriber()
             => new DirectoryInfo(Subscriber.DirectoryVersion);
 
-        private FileInfo[] GetFilesInDirectoryVersion() 
+        private FileInfo[] GetFilesInDirectoryVersion()
             => GetDirectoryInfoSubscriber().GetFiles($"*{_prefixVersion}*}}.*");
 
         private FileInfo[] GetFilesInDirectoryVersion(int version)
             => GetDirectoryInfoSubscriber().GetFiles($"*{_prefixVersion} {version}*}}.*");
 
         #endregion
-        
+
         #region IDisposable Support
         private bool disposedValue = false;
 

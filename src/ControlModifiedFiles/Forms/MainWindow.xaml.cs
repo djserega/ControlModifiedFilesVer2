@@ -91,6 +91,8 @@ namespace ControlModifiedFiles
 
             SetIconShieldUAC();
 
+            DirFile.DeleteTempFile();
+
             _handlerLoadForm = false;
         }
 
@@ -529,23 +531,6 @@ namespace ControlModifiedFiles
 
         #region DataGridVersion
 
-        private void ButtonVersions_Click(object sender, RoutedEventArgs e)
-        {
-            if (_openedGridSettings)
-                ChangeVisiblePanelSettings();
-
-            ChangeVisiblePanelVersion();
-
-            if (_openedGridListVersion)
-                LoadListVersion();
-        }
-
-        private void DataGridVersion_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
-        {
-            if (!e.Cancel)
-                ((ListVersion)e.Row.DataContext).Checked = !((ListVersion)e.Row.DataContext).Checked;
-        }
-
         private void ButtonCompareVersion_Click(object sender, RoutedEventArgs e)
         {
             string path1 = string.Empty;
@@ -578,10 +563,51 @@ namespace ControlModifiedFiles
                 }
                 catch (Exception ex)
                 {
-                    Dialog.ShowMessage("Не запустить программу сравнения.");
+                    Dialog.ShowMessage("Не удалось запустить программу сравнения.");
                     Errors.Save(ex);
                 }
             }
+        }
+
+        private void ButtonRestoreVersion_Click(object sender, RoutedEventArgs e)
+        {
+            ListVersion itemVersion = null;
+
+            foreach (ListVersion item in _listVersion)
+            {
+                if (item.Checked
+                    && !string.IsNullOrWhiteSpace(item.Path))
+                {
+                    itemVersion = item;
+                }
+            }
+
+            if (itemVersion != null)
+            {
+                bool? result = Dialog.ShowQuesttion($"Восстановить версию {itemVersion.FileName}?");
+                if (result.HasValue && result.Value)
+                {
+                    _callUpdate.CommentNewVersion = $"Восстановлено. {itemVersion.FileName}.";
+                    new Versions() { Subscriber = _fileSubscriberCurrentRow }.RestoreVersion(itemVersion);
+                }
+            }
+        }
+
+        private void ButtonVersions_Click(object sender, RoutedEventArgs e)
+        {
+            if (_openedGridSettings)
+                ChangeVisiblePanelSettings();
+
+            ChangeVisiblePanelVersion();
+
+            if (_openedGridListVersion)
+                LoadListVersion();
+        }
+
+        private void DataGridVersion_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            if (!e.Cancel)
+                ((ListVersion)e.Row.DataContext).Checked = !((ListVersion)e.Row.DataContext).Checked;
         }
 
         private void DataGridVersion_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -590,6 +616,12 @@ namespace ControlModifiedFiles
             {
                 selectedVersion.Checked = !selectedVersion.Checked;
             }
+        }
+
+        private void DataGridVersion_RowDetailsVisibilityChanged(object sender, DataGridRowDetailsEventArgs e)
+        {
+            if (DataGridVersion.SelectedItem is ListVersion listVersion)
+                e.DetailsElement.Visibility = listVersion.CommentIsFilled ? Visibility.Visible : Visibility.Collapsed;
         }
 
         #endregion
@@ -718,6 +750,15 @@ namespace ControlModifiedFiles
             subscriber.SetCurrentVersion();
             subscriber.SetCurrentSize();
 
+            if (!string.IsNullOrWhiteSpace(_callUpdate.CommentNewVersion))
+            {
+                new Versions() { Subscriber = subscriber }
+                    .SetCommentFile(
+                        subscriber.Version,
+                        _callUpdate.CommentNewVersion);
+                _callUpdate.CommentNewVersion = string.Empty;
+            }
+
             if (NeedNotified)
             {
                 if (subscriber.Version != subscriber.PreviousVersion)
@@ -764,10 +805,5 @@ namespace ControlModifiedFiles
 
         #endregion
 
-        private void DataGridVersion_RowDetailsVisibilityChanged(object sender, DataGridRowDetailsEventArgs e)
-        {
-            if (DataGridVersion.SelectedItem is ListVersion listVersion)
-                e.DetailsElement.Visibility = listVersion.CommentIsFilled ? Visibility.Visible : Visibility.Collapsed;
-        }
     }
 }

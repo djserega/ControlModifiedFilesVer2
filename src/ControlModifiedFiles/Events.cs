@@ -9,6 +9,7 @@ namespace ControlModifiedFiles
         internal event UpdateVersion CallUpdateVersion;
 
         internal bool NeedNotified { get; set; }
+        internal string CommentNewVersion;
         
         internal void Call(FileSubscriber subscriber)
         {
@@ -17,7 +18,6 @@ namespace ControlModifiedFiles
 
             CallUpdateVersion(subscriber, NeedNotified);
         }
-
     }
 
 
@@ -70,6 +70,5 @@ namespace ControlModifiedFiles
 
             ExitApp = false;
         }
-
     }
 }

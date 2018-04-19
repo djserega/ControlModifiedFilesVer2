@@ -141,6 +141,7 @@
                         <Label Style="{StaticResource LabelListVersion}"/>
                         <Separator Style="{StaticResource SeparatorBetweenElement10}"/>
                         <Button x:Name="ButtonCompareVersion" Style="{StaticResource ButtonCompareVersion}" Click="ButtonCompareVersion_Click"/>
+                        <Button x:Name="ButtonRestoreVersion" Style="{StaticResource ButtonRestoreVersion}" Click="ButtonRestoreVersion_Click"/>
                     </StackPanel>
 
                     <DataGrid x:Name="DataGridVersion" ItemsSource="{Binding _listVersion}" AutoGenerateColumns="False" IsReadOnly="True"

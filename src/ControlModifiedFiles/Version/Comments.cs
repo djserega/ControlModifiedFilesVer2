@@ -23,7 +23,6 @@ namespace ControlModifiedFiles
             string pathFileComment = Path.Combine(directoryInfo.FullName, "comments.js");
 
             _fileInfoComment = new FileInfo(pathFileComment);
-
         }
 
         internal void UpdateCommentFile(string textComment)

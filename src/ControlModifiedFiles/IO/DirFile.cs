@@ -8,6 +8,16 @@ namespace ControlModifiedFiles
 {
     internal static class DirFile
     {
+        private static string _tempPath;
+        private static readonly string _prefixTempFile = "controlmodifiedfiles_";
+        private static readonly string _extensionTempFile = "tmp";
+
+        static DirFile()
+        {
+            _tempPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Temp");
+        }
 
         #region internal methods
 
@@ -88,9 +98,8 @@ namespace ControlModifiedFiles
         internal static string GetTempFile()
         {
             return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "Temp",
-                $"controlmodifiedfiles_{Guid.NewGuid().ToString()}.tmp");
+               _tempPath,
+                $"{_prefixTempFile}{Guid.NewGuid().ToString()}.{_extensionTempFile}");
         }
 
         internal static void DeleteFile(FileInfo fileInfo)
@@ -108,7 +117,12 @@ namespace ControlModifiedFiles
 
         internal static bool FileExists(string fileName)
         {
-            return new FileInfo(fileName).Exists;
+            return FileExists(new FileInfo(fileName));
+        }
+
+        internal static bool FileExists(FileInfo fileInfo)
+        {
+            return fileInfo.Exists;
         }
 
         internal static void OpenDirectory(string path)
@@ -119,6 +133,14 @@ namespace ControlModifiedFiles
                 if (directory.Exists)
                     Process.Start("explorer.exe", $"{path}");
             }
+        }
+
+        internal static void DeleteTempFile()
+        {
+            DirectoryInfo directoryInfoTemp = new DirectoryInfo(_tempPath);
+            FileInfo[] tempFiles = directoryInfoTemp.GetFiles($"{_prefixTempFile}*.{_extensionTempFile}");
+            foreach (FileInfo item in tempFiles)
+                DeleteFile(item);
         }
 
         #endregion
