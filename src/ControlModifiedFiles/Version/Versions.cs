@@ -12,9 +12,6 @@ namespace ControlModifiedFiles
 
         #region Fields
 
-        private string _prefixVersion = "{version";
-        private string _postfixVersion = "}";
-
         private List<FileInfo> _tempFiles = new List<FileInfo>();
         private static readonly object _locker = new object();
 
@@ -44,7 +41,7 @@ namespace ControlModifiedFiles
 
             string fileNameWithoutExtension = FileName.Remove(FileName.Length - Extension.Length);
 
-            string newVersion = $"{fileNameWithoutExtension} {_prefixVersion} {maxVersion}{_postfixVersion}{Extension}";
+            string newVersion = $"{fileNameWithoutExtension} {Constants.prefixVersion} {maxVersion}{Constants.postfixVersion}{Extension}";
             string newFileName = Path.Combine(
                 Subscriber.DirectoryVersion,
                 newVersion);
@@ -160,7 +157,7 @@ namespace ControlModifiedFiles
                 if (GetMD5(fileInfoMaxEdited.FullName) == currentHash)
                     return null;
 
-            return int.Parse(fileInfoMaxEdited.Name.Substring($"{_prefixVersion} ", "}"));
+            return DirFile.GetNumberVersion(fileInfoMaxEdited.Name);
         }
 
         private string GetMD5(string path)
@@ -206,10 +203,10 @@ namespace ControlModifiedFiles
             => new DirectoryInfo(Subscriber.DirectoryVersion);
 
         private FileInfo[] GetFilesInDirectoryVersion()
-            => GetDirectoryInfoSubscriber().GetFiles($"*{_prefixVersion}*}}.*");
+            => GetDirectoryInfoSubscriber().GetFiles($"*{Constants.prefixVersion}*{Constants.postfixVersion}.*");
 
         private FileInfo[] GetFilesInDirectoryVersion(int version)
-            => GetDirectoryInfoSubscriber().GetFiles($"*{_prefixVersion} {version}*}}.*");
+            => GetDirectoryInfoSubscriber().GetFiles($"*{Constants.prefixVersion} {version}*{Constants.postfixVersion}.*");
 
         #endregion
 

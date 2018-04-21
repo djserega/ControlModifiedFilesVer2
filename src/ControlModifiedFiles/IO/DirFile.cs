@@ -143,6 +143,18 @@ namespace ControlModifiedFiles
                 DeleteFile(item);
         }
 
+        internal static int? GetNumberVersion(string fileName)
+        {
+            try
+            {
+                return int.Parse(fileName.Substring($"{Constants.prefixVersion} ", Constants.postfixVersion));
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         #endregion
 
         #region private methods
