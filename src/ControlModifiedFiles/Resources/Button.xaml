@@ -61,7 +61,6 @@
         <Setter Property="Width" Value="auto"/>
     </Style>
 
-
     <Style TargetType="Button" x:Key="ButtonRestoreVersion" BasedOn="{StaticResource ButtonBase}">
         <Setter Property="Content" Value=" Восстановить версию "/>
         <Setter Property="Width" Value="auto"/>
