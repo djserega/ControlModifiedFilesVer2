@@ -149,8 +149,14 @@
                               Height="{Binding Path=ActualHeight, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='37'}"
                               Width="{Binding Path=ActualWidth, ElementName=GridListVersion, Converter={local:ElementsFormConverter}, ConverterParameter='4'}"
                               RowEditEnding="DataGridVersion_RowEditEnding" MouseDoubleClick="DataGridVersion_MouseDoubleClick"
-                              RowDetailsVisibilityChanged="DataGridVersion_RowDetailsVisibilityChanged">
+                              RowDetailsVisibilityChanged="DataGridVersion_RowDetailsVisibilityChanged" SelectionChanged="DataGridVersion_SelectionChanged">
 
+                        <DataGrid.ContextMenu>
+                            <ContextMenu x:Name="ContextMenuListVersion">
+                                <MenuItem x:Name="ButtonAddCommentVersion" Header="Добавить комментарий" Click="ButtonAddCommentVersion_Click"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn x:Name="CheckBoxSelectVersion" Width="15" Binding="{Binding Checked}">
                                 <DataGridCheckBoxColumn.HeaderTemplate>

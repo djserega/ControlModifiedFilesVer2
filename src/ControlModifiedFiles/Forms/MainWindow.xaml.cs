@@ -82,6 +82,8 @@ namespace ControlModifiedFiles
             ChangeVisiblePanelSettings(true);
             ChangeVisiblePanelVersion(true);
             ChangeVisibleComparer(false);
+            ChangeVisibleButtonRestoreVersion();
+            ChangeVisibleButtonAddCommentVersion();
 
             LoadUserSettings();
             ChangeVisibleModifiedSettings();
@@ -415,6 +417,24 @@ namespace ControlModifiedFiles
             CheckBoxSelectVersion.Visibility = visible ? Visibility.Visible : Visibility.Hidden;
         }
 
+        private void ChangeVisibleElementVersion()
+        {
+            bool versionFilled = _listVersion.Count > 0;
+
+            ChangeVisibleButtonRestoreVersion(versionFilled);
+            ChangeVisibleButtonAddCommentVersion(versionFilled);
+        }
+
+        private void ChangeVisibleButtonRestoreVersion(bool visible = false)
+        {
+            ButtonRestoreVersion.Visibility = visible ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        private void ChangeVisibleButtonAddCommentVersion(bool visible = false)
+        {
+            ContextMenuListVersion.Visibility = visible ? Visibility.Visible : Visibility.Hidden;
+            ButtonAddCommentVersion.Visibility = visible ? Visibility.Visible : Visibility.Hidden;
+        }
 
         #endregion
 
@@ -569,6 +589,18 @@ namespace ControlModifiedFiles
             }
         }
 
+        private void ButtonAddCommentVersion_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataGridVersion.SelectedItem is ListVersion listVersion)
+            {
+                if (_fileSubscriberCurrentRow != null)
+                {
+                    new Comments(_fileSubscriberCurrentRow).OpenFormComment(listVersion.Version);
+                    LoadListVersion();
+                }
+            }
+        }
+
         private void ButtonRestoreVersion_Click(object sender, RoutedEventArgs e)
         {
             ListVersion itemVersion = null;
@@ -622,6 +654,11 @@ namespace ControlModifiedFiles
         {
             if (DataGridVersion.SelectedItem is ListVersion listVersion)
                 e.DetailsElement.Visibility = listVersion.CommentIsFilled ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void DataGridVersion_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ChangeVisibleElementVersion();
         }
 
         #endregion
@@ -705,6 +742,8 @@ namespace ControlModifiedFiles
                 }
                 SetItemSourceVersion();
 
+                ChangeVisibleElementVersion();
+
                 ChangeVisibleComparer(true);
             }
             else
@@ -773,6 +812,8 @@ namespace ControlModifiedFiles
                     subscriber.CountVersionWithoutNotify = 0;
                 }
             }
+
+            LoadListVersion();
         }
 
         private void MainMenuWindowShow()
@@ -804,6 +845,7 @@ namespace ControlModifiedFiles
         }
 
         #endregion
+
 
     }
 }

@@ -57,12 +57,12 @@ namespace ControlModifiedFiles
                 Top = _maxTop;
         }
 
-        public FormComment(FileSubscriber subscriber)
+        public FormComment(FileSubscriber subscriber, int? numberVersion = null)
         {
             InitializeComponent();
 
             _subscriber = subscriber;
-            Version = _subscriber.Version;
+            Version = numberVersion == null ? _subscriber.Version : (int)numberVersion;
 
             TextBlockHeader.Text = TextBlockHeader.Text.Replace("%1", Version.ToString());
         }

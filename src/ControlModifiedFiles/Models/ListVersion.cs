@@ -14,6 +14,7 @@ namespace ControlModifiedFiles
         private DateTime _dateModified;
         private string _comment;
         private DateTime? _dateComment;
+        private int? _version;
 
         public bool Checked
         {
@@ -102,6 +103,11 @@ namespace ControlModifiedFiles
                 }
             }
         }
+        public int? Version
+        {
+            get { return _version; }
+        }
+
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
@@ -116,6 +122,7 @@ namespace ControlModifiedFiles
             _dateModified = dateModified;
             _comment = commentVersion?.Comment;
             _dateComment = commentVersion?.DateTime;
+            _version = DirFile.GetNumberVersion(_fileName);
         }
 
     }
