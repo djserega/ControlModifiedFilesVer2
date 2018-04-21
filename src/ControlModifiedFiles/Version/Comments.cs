@@ -13,10 +13,10 @@ namespace ControlModifiedFiles
         internal FileInfo FileInfo { get; }
         private FileInfo _fileInfoComment;
 
-        public Comments(FileSubscriber subscriber, FileInfo fileInfo)
+        public Comments(FileSubscriber subscriber, FileInfo fileInfo = null)
         {
-            Subscriber = subscriber;
-            FileInfo = fileInfo;
+            Subscriber = subscriber ?? throw new ArgumentNullException("subscriber");
+            FileInfo = fileInfo ?? new FileInfo(subscriber.Path);
 
             DirectoryInfo directoryInfo = new DirectoryInfo(Subscriber.DirectoryVersion);
 
@@ -74,6 +74,25 @@ namespace ControlModifiedFiles
                 comments = new Json<CommentsVersion>().Deserialize(dataFile);
 
             return comments;
+        }
+
+        internal void OpenFormComment(int? numberVersion = null)
+        {
+            var mainWindow = App.Current.MainWindow;
+            mainWindow.Activate();
+
+            FormComment form = new FormComment(Subscriber, numberVersion) { Owner = mainWindow };
+            form.ShowDialog();
+            if (form.ClickOK)
+            {
+                string textComment = form.TextBoxComment.Text;
+                if (!string.IsNullOrWhiteSpace(textComment))
+                {
+                    new Versions() { Subscriber = Subscriber }.SetCommentFile(
+                        numberVersion == null ? form.Version : (int)numberVersion,
+                        textComment);
+                }
+            }
         }
 
     }

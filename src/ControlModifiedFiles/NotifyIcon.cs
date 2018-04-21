@@ -31,24 +31,14 @@ namespace ControlModifiedFiles
 
         private void _notifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
-            if (Subscriber != null)
-            {
-                var mainWindow = App.Current.MainWindow;
-                mainWindow.Activate();
+            if (Subscriber == null)
+                return;
 
-                FormComment form = new FormComment(Subscriber) { Owner = mainWindow };
-                form.ShowDialog();
-                if (form.ClickOK)
-                {
-                    string textComment = form.TextBoxComment.Text;
-                    if (!string.IsNullOrWhiteSpace(textComment))
-                    {
-                        new Versions() { Subscriber = Subscriber }.SetCommentFile(form.Version, textComment);
-                        Subscriber = null;
-                    }
-                }
-            }
+            new Comments(Subscriber).OpenFormComment();
+
+            Subscriber = null;
         }
+
 
         #region CreateContextMenu
 
