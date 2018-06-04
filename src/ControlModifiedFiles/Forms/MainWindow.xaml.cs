@@ -844,8 +844,12 @@ namespace ControlModifiedFiles
             }
         }
 
+
         #endregion
 
-
+        private void MainWindowControlModifiedFiles_Closed(object sender, EventArgs e)
+        {
+            _notifyIcon.Dispose();
+        }
     }
 }

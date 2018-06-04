@@ -5,7 +5,7 @@ using WF = System.Windows.Forms;
           
 namespace ControlModifiedFiles
 {
-    internal class NotifyIcon
+    internal class NotifyIcon : IDisposable
     {
         private WF.NotifyIcon _notifyIcon;
         private string _balloonTipTextByDefault;
@@ -195,6 +195,11 @@ namespace ControlModifiedFiles
         private void SetBalloonTipText(string text)
         {
             _notifyIcon.BalloonTipText = text;
+        }
+
+        public void Dispose()
+        {
+            _notifyIcon.Visible = false;
         }
 
         #endregion
